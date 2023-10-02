@@ -106,8 +106,7 @@ Modules with some small bits needed or needing sense checking:
 - **love.window** - couple stuff just nil checked as I think it's hardware dependent, needs checking
 
 Modules still to be completed or barely started
-- **love.graphics** - done a couple as an example of how we can test the drawing but not finished
-- **love.thread** - not started
+- **love.graphics** - done a couple as an example of how we can test the drawing but not really started
 - **love.objects** - not started (all obj tests so chunky)
 
 ---

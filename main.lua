@@ -21,12 +21,12 @@ require('tests.window')
 
 love.load = function(args)
 
-  -- runSpecificTest [module] [method]
-  if args[1] == '--runSpecificTest' then
+  -- runSpecificMethod [module] [method]
+  if args[1] == '--runSpecificMethod' then
     local testsuite = love.test.Suite:new()
     table.insert(love.test.testsuites, testsuite)
     love.test.testsuite = testsuite
-    love.test.testsuite:log('grey', '--runSpecificTest "' .. args[2] .. '" "' .. args[3] .. '"')
+    love.test.testsuite:log('grey', '--runSpecificMethod "' .. args[2] .. '" "' .. args[3] .. '"')
     love.test.testsuite:runTests(args[2], args[3])
   end
 
@@ -115,7 +115,10 @@ love.update = function(delta)
             love.test.testsuite = love.test.testsuites[love.test.current]
             love.test.testsuite:runTests(love.test.testsuite.module)
           else 
-            print("DONE")
+            love.test.testsuite:log('grey', '\nFINISHED\n')
+            local failedcol = '\27[31m'
+            if love.test.totals[2] == 0 then failedcol = '\27[30m' end
+            love.test.testsuite:log('green', tostring(love.test.totals[1]) .. ' PASSED' .. ' || ' .. failedcol .. tostring(love.test.totals[2]) .. ' FAILED || \27[30m' .. tostring(love.test.totals[3]) .. ' SKIPPED')
             love.event.quit(0)
           end
 

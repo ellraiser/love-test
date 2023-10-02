@@ -20,9 +20,10 @@ To run the tests, download the repo and then run the main.lua as you would a lö
 WINDOWS: `& 'c:\Program Files\LOVE\love.exe' PATH_TO_LOVETEST --console`  
 MACOS: `/Applications/love.app/Contents/MacOS/love PATH_TO_LOVETEST`
 
-By default all tests will be run for all modules - if you want to specify a module you can add:  
+By default all tests will be run for all modules.  
+If you want to specify a module you can add:  
 `--runSpecificModule "filesystem"`  
-For multiple modules, just space them seperately after the flag:
+For multiple modules, just space them seperately after the flag:  
 `--runSpecificModules "filesystem" "audio" "data"`
 
 If you want to specify only 1 specific method only you can use:  

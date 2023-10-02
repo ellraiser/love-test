@@ -238,11 +238,11 @@ love.test.filesystem.newFile = function(test)
   test:assertNotEquals(nil, file_a)
   test:assertNotEquals(nil, file_c)
   -- cleanup
-  file:release()
-  file_r:release()
-  file_w:release()
-  file_a:release()
-  file_c:release()
+  if file ~= nil then file:release() end
+  if file_r ~= nil then file_r:release() end
+  if file_w ~= nil then file_w:release() end
+  if file_a ~= nil then file_a:release() end
+  if file_c ~= nil then file_c:release() end
 end
 
 

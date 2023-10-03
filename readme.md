@@ -13,6 +13,7 @@ Currently written for löve 11.4 API
 - [x] Ability to run a subset of tests
 - [x] Ability to easily run an individual test.
 - [x] Tests can compare visual results to a reference image
+- [x] Ability to see all visual results at a glance
 
 ---
 
@@ -33,7 +34,8 @@ If you want to specify only 1 specific method only you can use:
 `--runSpecificMethod "filesystem" "write"`
 
 All results will be printed in the console per method as PASS, FAIL, or SKIP with total assertions met on a module level and overall level.  
-An XML file in the style of JUnit XML will be generated in your save directory (an example of the output can be seen in output/test.xml)
+
+An `XML` file in the style of [JUnit XML](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format) will be generated in your save directory, along with a `HTML` file with a summary of all tests (including visuals for love.graphics tests). Note that this can only be viewed locally as the generated images are written to the save directory also. An example of both outputs can be found in the `/output` folder
 
 ---
 
@@ -126,6 +128,5 @@ Also still need a HTML export format that can then show test vs expected for gra
 
 ## Stretch Goals
 - [ ] Ability to test loading different combinations of modules
-- [ ] Ability to see all visual results at a glance
 - [ ] Automatic testing that happens after every commit
 - [ ] Performance tests

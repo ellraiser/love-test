@@ -15,6 +15,7 @@ love.test.Suite = {
         yellow = '\27[33m'
       },
       xml = '',
+      html = '',
       tests = {},
       running = {},
       called = {},

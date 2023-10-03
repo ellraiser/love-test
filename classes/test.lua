@@ -163,13 +163,31 @@ love.test.Test = {
       if string.len(endtime) == 3 then endtime = ' ' .. endtime end
 
       local failure = ''
+      local msg = ''
       if self.passed == false and self.skipped == false then
-        failure = '\t\t\t<failure message="' .. self.result.message .. '"></failure>\n'
+        failure = '\t\t\t<failure message="' .. self.result.key .. ' ' ..  self.result.message .. '"></failure>\n'
+        msg = self.result.key .. ' ' ..  self.result.message
       end
 
       self.testsuite.xml = self.testsuite.xml .. '\t\t<testclass classname="' .. self.method .. 
         '" name="' .. self.method .. 
         '" time="' .. tostring(self.finish*1000) .. '">\n' .. failure .. '\t\t</testclass>\n'
+
+      local preview = ''
+      if self.testsuite.module == 'graphics' then
+        local filename = 'love_test_graphics_rectangle'
+        preview = '<div class="preview"><img src="' .. filename .. '_expected.png"/><p>Expected</p></div>' ..
+          '<div class="preview"><img src="' .. filename .. '_actual.png"/><p>Actual</p></div>'
+      end
+
+      local status = '🔴'
+      local cls = 'red'
+      if self.passed == true then status = '🟢'; cls = '' end
+      if self.skipped == true then status = '🟡'; cls = '' end
+      self.testsuite.html = self.testsuite.html .. '<tr class=" ' .. cls .. '"><td>' .. status .. '</td>' ..
+        '<td>' .. self.method .. '</td>' ..
+        '<td>' .. tostring(self.finish*1000) .. 'ms</td>' ..
+        '<td>' .. msg .. preview .. '</td></tr>'
 
       -- add message if assert failed
       local msg = ''

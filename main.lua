@@ -92,6 +92,7 @@ love.load = function(args)
     table.insert(love.test.testsuites, testsuite)
     love.test.testsuite = testsuite
     love.test.testsuite:log('grey', '--runSpecificMethod "' .. module .. '" "' .. method .. '"')
+    love.test.output = 'lovetest_runSpecificMethod_' .. module .. '_' .. method
     if #actualdisabled > 0 then love.test.testsuite:log('grey', '--disableModules "' .. table.concat(actualdisabled, '" "') .. '"') end
     love.test.testsuite:runTests(module, method)
   end
@@ -102,6 +103,7 @@ love.load = function(args)
     table.insert(love.test.testsuites, testsuite)
     love.test.testsuite = testsuite
     love.test.testsuite:log('grey', '--runSpecificModule "' .. module .. '"')
+    love.test.output = 'lovetest_runSpecificModule_' .. module
     if #actualdisabled > 0 then love.test.testsuite:log('grey', '--disableModules "' .. table.concat(actualdisabled, '" "') .. '"') end
     love.test.testsuite:runTests(module)
   end
@@ -116,6 +118,7 @@ love.load = function(args)
     end
     love.test.testsuite = love.test.testsuites[1]
     love.test.testsuite:log('grey', '--runSpecificModules "' .. table.concat(modulelist, '" "') .. '"')
+    love.test.output = 'lovetest_runSpecificModules_' .. table.concat(modulelist, '_')
     if #actualdisabled > 0 then love.test.testsuite:log('grey', '--disableModules "' .. table.concat(actualdisabled, '" "') .. '"') end
     love.test.testsuite:runTests(love.test.testsuite.module)
   end
@@ -128,6 +131,7 @@ love.load = function(args)
     end
     love.test.testsuite = love.test.testsuites[1]
     love.test.testsuite:log('grey', '--runAllTests')
+    love.test.output = 'lovetest_runAllTests'
     if #actualdisabled > 0 then love.test.testsuite:log('grey', '--disableModules "' .. table.concat(actualdisabled, '" "') .. '"') end
     love.test.testsuite:runTests(love.test.testsuite.module)
   end
@@ -183,6 +187,16 @@ love.update = function(delta)
             '" skipped="' .. tostring(love.test.testsuite.skipped) ..
             '" time="' .. tostring(love.test.testsuite.time*1000) .. '">\n' .. love.test.testsuite.xml .. '\t</testsuite>\n'
 
+          local status = '🔴'
+          if love.test.testsuite.failed == 0 then status = '🟢' end
+          love.test.html = love.test.html .. '<h2>' .. status .. '&nbsp;love.' .. love.test.testsuite.module .. '</h2><ul class="summary">' ..
+            '<li>🟢&nbsp;' .. tostring(love.test.testsuite.passed) .. ' Tests</li>' ..
+            '<li>🔴&nbsp;' .. tostring(love.test.testsuite.failed) .. ' Failures</li>' ..
+            '<li>🟡&nbsp;' .. tostring(love.test.testsuite.skipped) .. ' Skipped</li>' ..
+            '<li>' .. tostring(love.test.testsuite.time*1000) .. 'ms</li>' .. '<ul><br/><br/>' ..
+            '<table><thead><tr><td width="20px"></td><td width="100px">Method</td><td width="100px">Time</td><td>Details</td></tr></thead><tbody>' ..
+            love.test.testsuite.html .. '</tbody></table>'
+
           love.test.current = love.test.current + 1
           if #love.test.testsuites >= love.test.current then
             love.test.testsuite = love.test.testsuites[love.test.current]
@@ -197,7 +211,17 @@ love.update = function(delta)
               '" failures="' .. tostring(love.test.totals[2]) .. 
               '" skipped="' .. tostring(love.test.totals[3]) .. 
               '" time="' .. tostring(love.test.time*1000) .. '">\n'
-            love.filesystem.write('test.xml', header .. love.test.xml .. '</testsuites>')
+            love.filesystem.write(love.test.output .. '.xml', header .. love.test.xml .. '</testsuites>')
+
+            local status = '🔴'
+            if love.test.totals[2] == 0 then status = '🟢' end
+            local html = '<html><head><style>* { font-family: monospace; margin: 0; font-size: 11px; padding: 0; } body { margin: 50px; } h1 { padding-bottom: 10px; font-size: 13px; } h2 { padding: 20px 0 10px 0; font-size: 12px; } .summary { list-style: none; margin: 0; padding: 0; } .summary li { float: left; background: #eee; padding: 5px; margin-right: 10px; } table { background: #eee; margin-top: 10px; width: 100%; max-width: 800px; border-collapse: collapse } table thead { background: #ddd; } table th, table td { padding: 2px; } tr.red { color: red } .wrap { max-width: 800px; margin: auto; } .preview { width: 64px; height: 80px; float: left; margin-right: 10px; } .preview img { width: 100% } .preview p { text-align: center; }</style></head><body><div class="wrap"><h1>' .. status .. '&nbsp;love.test</h1><ul class="summary">'
+            html = html .. 
+              '<li>🟢&nbsp;' .. tostring(love.test.totals[1]) .. ' Tests</li>' ..
+              '<li>🔴&nbsp;' .. tostring(love.test.totals[2]) .. ' Failures</li>' ..
+              '<li>🟡&nbsp;' .. tostring(love.test.totals[3]) .. ' Skipped</li>' ..
+              '<li>' .. tostring(love.test.time*1000) .. 'ms</li></ul><br/><br/>'
+            love.filesystem.write(love.test.output .. '.html', html .. love.test.html .. '</div></body></html>')
 
             love.test.testsuite:log('grey', '\nFINISHED - ' .. finaltime .. 'ms\n')
             local failedcol = '\27[31m'

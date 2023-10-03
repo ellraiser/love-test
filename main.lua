@@ -181,7 +181,7 @@ love.update = function(delta)
             '" tests="' .. tostring(love.test.testsuite.passed) .. 
             '" failures="' .. tostring(love.test.testsuite.failed) .. 
             '" skipped="' .. tostring(love.test.testsuite.skipped) ..
-            '" time="' .. tostring(love.test.testsuite.time*1000) .. '">' .. love.test.testsuite.xml .. '\t</testsuite>\n'
+            '" time="' .. tostring(love.test.testsuite.time*1000) .. '">\n' .. love.test.testsuite.xml .. '\t</testsuite>\n'
 
           love.test.current = love.test.current + 1
           if #love.test.testsuites >= love.test.current then
@@ -196,7 +196,7 @@ love.update = function(delta)
             local header = '<testsuites name="love.test" tests="' .. tostring(love.test.totals[1]) .. 
               '" failures="' .. tostring(love.test.totals[2]) .. 
               '" skipped="' .. tostring(love.test.totals[3]) .. 
-              '" time="' .. tostring(love.test.time*1000) .. '">'
+              '" time="' .. tostring(love.test.time*1000) .. '">\n'
             love.filesystem.write('test.xml', header .. love.test.xml .. '</testsuites>')
 
             love.test.testsuite:log('grey', '\nFINISHED - ' .. finaltime .. 'ms\n')

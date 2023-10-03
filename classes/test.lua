@@ -163,7 +163,7 @@ love.test.Test = {
       if string.len(endtime) == 3 then endtime = ' ' .. endtime end
 
       local failure = ''
-      if self.passed == false then
+      if self.passed == false and self.skipped == false then
         failure = '\t\t\t<failure message="' .. self.result.message .. '"></failure>\n'
       end
 

@@ -1,0 +1,376 @@
+<testsuites name="love.test" tests="160" failures="2" skipped="11" time="7180.2220416666">	<testsuite name="love.audio" tests="26" failures="0" skipped="0" time="1.3442083333341">		<testclass classname="getActiveEffects" name="getActiveEffects" time="0.077583333333409">
+		</testclass>
+		<testclass classname="getActiveSourceCount" name="getActiveSourceCount" time="0.77041666666677">
+		</testclass>
+		<testclass classname="getDistanceModel" name="getDistanceModel" time="0.013583333333345">
+		</testclass>
+		<testclass classname="getDopplerScale" name="getDopplerScale" time="0.010166666666644">
+		</testclass>
+		<testclass classname="getEffect" name="getEffect" time="0.025791666666719">
+		</testclass>
+		<testclass classname="getMaxSceneEffects" name="getMaxSceneEffects" time="0.010583333333369">
+		</testclass>
+		<testclass classname="getMaxSourceEffects" name="getMaxSourceEffects" time="0.007833333333207">
+		</testclass>
+		<testclass classname="getOrientation" name="getOrientation" time="0.026041666666754">
+		</testclass>
+		<testclass classname="getPosition" name="getPosition" time="0.01029166666644">
+		</testclass>
+		<testclass classname="getRecordingDevices" name="getRecordingDevices" time="0.026874999999871">
+		</testclass>
+		<testclass classname="getVelocity" name="getVelocity" time="0.0098333333333755">
+		</testclass>
+		<testclass classname="getVolume" name="getVolume" time="0.009958333333282">
+		</testclass>
+		<testclass classname="isEffectsSupported" name="isEffectsSupported" time="0.0089166666668028">
+		</testclass>
+		<testclass classname="newQueueableSource" name="newQueueableSource" time="0.020291666666505">
+		</testclass>
+		<testclass classname="newSource" name="newSource" time="0.88495833333369">
+		</testclass>
+		<testclass classname="pause" name="pause" time="0.76929166666684">
+		</testclass>
+		<testclass classname="play" name="play" time="0.73175000000014">
+		</testclass>
+		<testclass classname="setDistanceModel" name="setDistanceModel" time="0.053791666666747">
+		</testclass>
+		<testclass classname="setDopplerScale" name="setDopplerScale" time="0.010041666667071">
+		</testclass>
+		<testclass classname="setEffect" name="setEffect" time="0.021958333333405">
+		</testclass>
+		<testclass classname="setMixWithSystem" name="setMixWithSystem" time="0.0084583333332944">
+		</testclass>
+		<testclass classname="setOrientation" name="setOrientation" time="0.060249999999762">
+		</testclass>
+		<testclass classname="setPosition" name="setPosition" time="0.013833333333491">
+		</testclass>
+		<testclass classname="setVelocity" name="setVelocity" time="0.013833333333046">
+		</testclass>
+		<testclass classname="setVolume" name="setVolume" time="0.011833333333655">
+		</testclass>
+		<testclass classname="stop" name="stop" time="0.80349999999996">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.data" tests="7" failures="0" skipped="3" time="0.47945833333521">		<testclass classname="compress" name="compress" time="0.21933333333335">
+		</testclass>
+		<testclass classname="decode" name="decode" time="0.064958333333198">
+		</testclass>
+		<testclass classname="decompress" name="decompress" time="0.18541666666705">
+		</testclass>
+		<testclass classname="encode" name="encode" time="0.039999999999374">
+		</testclass>
+		<testclass classname="getPackedSize" name="getPackedSize" time="0.0079583333332245">
+			<failure message="(0/0) - method skipped [dont understand lua packing types]"></failure>
+		</testclass>
+		<testclass classname="hash" name="hash" time="0.074166666667264">
+		</testclass>
+		<testclass classname="newByteData" name="newByteData" time="0.016208333334156">
+		</testclass>
+		<testclass classname="newDataView" name="newDataView" time="0.018166666666986">
+		</testclass>
+		<testclass classname="pack" name="pack" time="0.0044583333336234">
+			<failure message="(0/0) - method skipped [dont understand lua packing types]"></failure>
+		</testclass>
+		<testclass classname="unpack" name="unpack" time="0.072291666666668">
+			<failure message="(0/0) - method skipped [dont understand lua packing types]"></failure>
+		</testclass>
+	</testsuite>
+	<testsuite name="love.event" tests="4" failures="0" skipped="2" time="0.76770833333276">		<testclass classname="clear" name="clear" time="0.016125000000144">
+		</testclass>
+		<testclass classname="poll" name="poll" time="0.024583333332551">
+		</testclass>
+		<testclass classname="pump" name="pump" time="0.0099999999996214">
+			<failure message="(0/0) - method skipped [not sure we can test when its internal?]"></failure>
+		</testclass>
+		<testclass classname="push" name="push" time="0.01662499999977">
+		</testclass>
+		<testclass classname="quit" name="quit" time="0.0091250000009424">
+		</testclass>
+		<testclass classname="wait" name="wait" time="0.013499999999667">
+			<failure message="(0/0) - method skipped [not sure on best way to test this]"></failure>
+		</testclass>
+	</testsuite>
+	<testsuite name="love.filesystem" tests="27" failures="0" skipped="2" time="0.11491666666325">		<testclass classname="append" name="append" time="0.99437500000032">
+		</testclass>
+		<testclass classname="areSymlinksEnabled" name="areSymlinksEnabled" time="0.022125000000095">
+		</testclass>
+		<testclass classname="createDirectory" name="createDirectory" time="0.24674999999963">
+		</testclass>
+		<testclass classname="getAppdataDirectory" name="getAppdataDirectory" time="0.017541666666787">
+		</testclass>
+		<testclass classname="getCRequirePath" name="getCRequirePath" time="0.012208333332708">
+		</testclass>
+		<testclass classname="getDirectoryItems" name="getDirectoryItems" time="0.626708333332">
+		</testclass>
+		<testclass classname="getIdentity" name="getIdentity" time="0.086249999999843">
+		</testclass>
+		<testclass classname="getInfo" name="getInfo" time="0.92770833333322">
+		</testclass>
+		<testclass classname="getRealDirectory" name="getRealDirectory" time="0.86916666666603">
+		</testclass>
+		<testclass classname="getRequirePath" name="getRequirePath" time="0.017958333332402">
+		</testclass>
+		<testclass classname="getSaveDirectory" name="getSaveDirectory" time="0.054375000001272">
+		</testclass>
+		<testclass classname="getSource" name="getSource" time="0.012374999999842">
+			<failure message="(0/0) - method skipped [not sure we can test when its internal?]"></failure>
+		</testclass>
+		<testclass classname="getSourceBaseDirectory" name="getSourceBaseDirectory" time="0.011624999999071">
+		</testclass>
+		<testclass classname="getUserDirectory" name="getUserDirectory" time="0.016999999999712">
+		</testclass>
+		<testclass classname="getWorkingDirectory" name="getWorkingDirectory" time="0.020041666666692">
+		</testclass>
+		<testclass classname="isFused" name="isFused" time="0.015416666666823">
+		</testclass>
+		<testclass classname="lines" name="lines" time="0.42166666666787">
+		</testclass>
+		<testclass classname="load" name="load" time="0.92470833333369">
+		</testclass>
+		<testclass classname="mount" name="mount" time="0.67887500000019">
+		</testclass>
+		<testclass classname="newFile" name="newFile" time="0.12587500000016">
+		</testclass>
+		<testclass classname="newFileData" name="newFileData" time="0.01570833333453">
+		</testclass>
+		<testclass classname="read" name="read" time="0.18112500000012">
+		</testclass>
+		<testclass classname="remove" name="remove" time="0.84712499999995">
+		</testclass>
+		<testclass classname="setCRequirePath" name="setCRequirePath" time="0.021791666667603">
+		</testclass>
+		<testclass classname="setIdentity" name="setIdentity" time="0.097999999998599">
+		</testclass>
+		<testclass classname="setRequirePath" name="setRequirePath" time="0.011666666665633">
+		</testclass>
+		<testclass classname="setSource" name="setSource" time="0.0091250000009424">
+			<failure message="(0/0) - method skipped [not sure we can test when its internal?]"></failure>
+		</testclass>
+		<testclass classname="unmount" name="unmount" time="0.8273749999983">
+		</testclass>
+		<testclass classname="write" name="write" time="0.91999999999981">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.font" tests="4" failures="0" skipped="1" time="0.43691666666806">		<testclass classname="newBMFontRasterizer" name="newBMFontRasterizer" time="0.043708333333115">
+			<failure message="(0/0) - method skipped [wiki and source dont match, not sure expected usage]"></failure>
+		</testclass>
+		<testclass classname="newGlyphData" name="newGlyphData" time="0.20029166666813">
+		</testclass>
+		<testclass classname="newImageRasterizer" name="newImageRasterizer" time="0.23533333333248">
+		</testclass>
+		<testclass classname="newRasterizer" name="newRasterizer" time="0.14979166666684">
+		</testclass>
+		<testclass classname="newTrueTypeRasterizer" name="newTrueTypeRasterizer" time="0.14429166666652">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.graphics" tests="1" failures="0" skipped="0" time="1.1843333333321">		<testclass classname="rectangle" name="rectangle" time="1.8544166666672">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.image" tests="3" failures="0" skipped="0" time="1.0340833333341">		<testclass classname="isCompressed" name="isCompressed" time="0.10687500000017">
+		</testclass>
+		<testclass classname="newCompressedData" name="newCompressedData" time="0.14354166666664">
+		</testclass>
+		<testclass classname="newImageData" name="newImageData" time="0.15387499999875">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.math" tests="16" failures="0" skipped="0" time="0.073291666669112">		<testclass classname="colorFromBytes" name="colorFromBytes" time="0.1955416666668">
+		</testclass>
+		<testclass classname="colorToBytes" name="colorToBytes" time="0.10233333333431">
+		</testclass>
+		<testclass classname="gammaToLinear" name="gammaToLinear" time="0.015541666666508">
+		</testclass>
+		<testclass classname="getRandomSeed" name="getRandomSeed" time="0.023791666665218">
+		</testclass>
+		<testclass classname="getRandomState" name="getRandomState" time="0.060624999999703">
+		</testclass>
+		<testclass classname="isConvex" name="isConvex" time="0.011583333334286">
+		</testclass>
+		<testclass classname="linearToGamma" name="linearToGamma" time="0.017083333334611">
+		</testclass>
+		<testclass classname="newBezierCurve" name="newBezierCurve" time="0.021208333331302">
+		</testclass>
+		<testclass classname="newRandomGenerator" name="newRandomGenerator" time="0.024208333332609">
+		</testclass>
+		<testclass classname="newTransform" name="newTransform" time="0.021333333334539">
+		</testclass>
+		<testclass classname="noise" name="noise" time="0.019666666666751">
+		</testclass>
+		<testclass classname="random" name="random" time="0.017833333332717">
+		</testclass>
+		<testclass classname="randomNormal" name="randomNormal" time="0.017291666667418">
+		</testclass>
+		<testclass classname="setRandomSeed" name="setRandomSeed" time="0.053333333333683">
+		</testclass>
+		<testclass classname="setRandomState" name="setRandomState" time="0.019375000000821">
+		</testclass>
+		<testclass classname="triangulate" name="triangulate" time="0.01466666666694">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.objects" tests="0" failures="0" skipped="0" time="0.47070833333115">	</testsuite>
+	<testsuite name="love.physics" tests="22" failures="0" skipped="0" time="0.58799999999751">		<testclass classname="getDistance" name="getDistance" time="0.10495833333124">
+		</testclass>
+		<testclass classname="getMeter" name="getMeter" time="0.024916666665931">
+		</testclass>
+		<testclass classname="newBody" name="newBody" time="0.076333333334233">
+		</testclass>
+		<testclass classname="newChainShape" name="newChainShape" time="0.026958333332772">
+		</testclass>
+		<testclass classname="newCircleShape" name="newCircleShape" time="0.016791666666904">
+		</testclass>
+		<testclass classname="newDistanceJoint" name="newDistanceJoint" time="0.047250000001497">
+		</testclass>
+		<testclass classname="newEdgeShape" name="newEdgeShape" time="0.018958333331653">
+		</testclass>
+		<testclass classname="newFixture" name="newFixture" time="0.082916666668709">
+		</testclass>
+		<testclass classname="newFrictionJoint" name="newFrictionJoint" time="0.031166666666138">
+		</testclass>
+		<testclass classname="newGearJoint" name="newGearJoint" time="0.066625000002318">
+		</testclass>
+		<testclass classname="newMotorJoint" name="newMotorJoint" time="0.054208333335026">
+		</testclass>
+		<testclass classname="newMouseJoint" name="newMouseJoint" time="0.079291666665426">
+		</testclass>
+		<testclass classname="newPolygonShape" name="newPolygonShape" time="0.074124999997593">
+		</testclass>
+		<testclass classname="newPrismaticJoint" name="newPrismaticJoint" time="0.053874999998982">
+		</testclass>
+		<testclass classname="newPulleyJoint" name="newPulleyJoint" time="0.041166666663983">
+		</testclass>
+		<testclass classname="newRectangleShape" name="newRectangleShape" time="0.10208333333672">
+		</testclass>
+		<testclass classname="newRevoluteJoint" name="newRevoluteJoint" time="0.031583333333529">
+		</testclass>
+		<testclass classname="newRopeJoint" name="newRopeJoint" time="0.086250000000732">
+		</testclass>
+		<testclass classname="newWeldJoint" name="newWeldJoint" time="0.071874999997945">
+		</testclass>
+		<testclass classname="newWheelJoint" name="newWheelJoint" time="0.042666666665525">
+		</testclass>
+		<testclass classname="newWorld" name="newWorld" time="0.049291666666562">
+		</testclass>
+		<testclass classname="setMeter" name="setMeter" time="0.048541666664903">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.sound" tests="2" failures="0" skipped="0" time="1.0342499999972">		<testclass classname="newDecoder" name="newDecoder" time="0.19195833333185">
+		</testclass>
+		<testclass classname="newSoundData" name="newSoundData" time="0.78750000000127">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.system" tests="6" failures="0" skipped="2" time="0.04554166666923">		<testclass classname="getClipboardText" name="getClipboardText" time="2.5237083333352">
+		</testclass>
+		<testclass classname="getOS" name="getOS" time="0.012291666667608">
+		</testclass>
+		<testclass classname="getPowerInfo" name="getPowerInfo" time="0.053666666667951">
+		</testclass>
+		<testclass classname="getProcessorCount" name="getProcessorCount" time="0.016083333333583">
+		</testclass>
+		<testclass classname="hasBackgroundMusic" name="hasBackgroundMusic" time="0.050083333334783">
+		</testclass>
+		<testclass classname="openURL" name="openURL" time="0.025916666666959">
+			<failure message="(0/0) - method skipped [gets annoying to test everytime]"></failure>
+		</testclass>
+		<testclass classname="setClipboardText" name="setClipboardText" time="0.64874999999809">
+		</testclass>
+		<testclass classname="vibrate" name="vibrate" time="0.020624999997665">
+			<failure message="(0/0) - method skipped [cant really test this]"></failure>
+		</testclass>
+	</testsuite>
+	<testsuite name="love.thread" tests="3" failures="0" skipped="0" time="1.1152916666685">		<testclass classname="getChannel" name="getChannel" time="0.020000000001019">
+		</testclass>
+		<testclass classname="newChannel" name="newChannel" time="0.019708333333313">
+		</testclass>
+		<testclass classname="newThread" name="newThread" time="0.12466666666811">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.timer" tests="6" failures="0" skipped="0" time="3708.69225">		<testclass classname="getAverageDelta" name="getAverageDelta" time="0.0091250000036069">
+		</testclass>
+		<testclass classname="getDelta" name="getDelta" time="0.030416666666255">
+		</testclass>
+		<testclass classname="getFPS" name="getFPS" time="0.0082083333321492">
+		</testclass>
+		<testclass classname="getTime" name="getTime" time="1000.4909583333">
+		</testclass>
+		<testclass classname="sleep" name="sleep" time="1000.7637916667">
+		</testclass>
+		<testclass classname="step" name="step" time="0.0092916666645237">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.video" tests="1" failures="0" skipped="0" time="0.13720833333436">		<testclass classname="newVideoStream" name="newVideoStream" time="1.5230416666654">
+		</testclass>
+	</testsuite>
+	<testsuite name="love.window" tests="32" failures="2" skipped="1" time="7697.094375">		<testclass classname="close" name="close" time="20.008583333333">
+		</testclass>
+		<testclass classname="fromPixels" name="fromPixels" time="0.049499999999369">
+		</testclass>
+		<testclass classname="getDPIScale" name="getDPIScale" time="0.0091666666683921">
+		</testclass>
+		<testclass classname="getDesktopDimensions" name="getDesktopDimensions" time="0.028041666666923">
+		</testclass>
+		<testclass classname="getDisplayCount" name="getDisplayCount" time="0.0088333333323476">
+		</testclass>
+		<testclass classname="getDisplayName" name="getDisplayName" time="0.010875000000965">
+		</testclass>
+		<testclass classname="getDisplayOrientation" name="getDisplayOrientation" time="0.010666666664605">
+		</testclass>
+		<testclass classname="getFullscreen" name="getFullscreen" time="1101.44675">
+		</testclass>
+		<testclass classname="getFullscreenModes" name="getFullscreenModes" time="0.59170833333155">
+		</testclass>
+		<testclass classname="getIcon" name="getIcon" time="2.3642916666695">
+		</testclass>
+		<testclass classname="getMode" name="getMode" time="0.030916666666769">
+		</testclass>
+		<testclass classname="getPosition" name="getPosition" time="0.43462500000047">
+		</testclass>
+		<testclass classname="getSafeArea" name="getSafeArea" time="0.13508333333334">
+		</testclass>
+		<testclass classname="getTitle" name="getTitle" time="0.65125000000066">
+		</testclass>
+		<testclass classname="getVSync" name="getVSync" time="0.031208333329147">
+		</testclass>
+		<testclass classname="hasFocus" name="hasFocus" time="0.058291666665156">
+		</testclass>
+		<testclass classname="hasMouseFocus" name="hasMouseFocus" time="0.053374999996691">
+		</testclass>
+		<testclass classname="isDisplaySleepEnabled" name="isDisplaySleepEnabled" time="0.11775000000114">
+		</testclass>
+		<testclass classname="isMaximized" name="isMaximized" time="637.82354166667">
+			<failure message="expected 'true' got 'false'"></failure>
+		</testclass>
+		<testclass classname="isMinimized" name="isMinimized" time="638.57816666667">
+		</testclass>
+		<testclass classname="isOpen" name="isOpen" time="26.938583333333">
+		</testclass>
+		<testclass classname="isVisible" name="isVisible" time="26.565833333333">
+		</testclass>
+		<testclass classname="maximize" name="maximize" time="0.17841666666385">
+			<failure message="expected 'true' got 'false'"></failure>
+		</testclass>
+		<testclass classname="minimize" name="minimize" time="642.44858333333">
+		</testclass>
+		<testclass classname="restore" name="restore" time="644.26520833333">
+		</testclass>
+		<testclass classname="setDisplaySleepEnabled" name="setDisplaySleepEnabled" time="0.31016666666872">
+		</testclass>
+		<testclass classname="setFullscreen" name="setFullscreen" time="1331.797">
+		</testclass>
+		<testclass classname="setIcon" name="setIcon" time="1.2138749999977">
+		</testclass>
+		<testclass classname="setMode" name="setMode" time="32.50404166667">
+		</testclass>
+		<testclass classname="setPosition" name="setPosition" time="0.32108333333269">
+		</testclass>
+		<testclass classname="setTitle" name="setTitle" time="0.33099999999209">
+		</testclass>
+		<testclass classname="setVSync" name="setVSync" time="0.024374999998855">
+		</testclass>
+		<testclass classname="showMessageBox" name="showMessageBox" time="0.0075416666689421">
+			<failure message="(0/0) - method skipped [skipping cos annoying to test with]"></failure>
+		</testclass>
+		<testclass classname="toPixels" name="toPixels" time="0.016208333331491">
+		</testclass>
+		<testclass classname="updateMode" name="updateMode" time="44.389083333328">
+		</testclass>
+	</testsuite>
+</testsuites>

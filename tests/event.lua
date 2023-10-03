@@ -13,7 +13,7 @@ love.test.event.clear = function(test)
   for n, a, b, c, d, e, f in love.event.poll() do
     count = count + 1
   end
-  test:assertEquals(0, count)
+  test:assertEquals(0, count, 'check no events')
 end
 
 
@@ -28,14 +28,14 @@ love.test.event.poll = function(test)
   for n, a, b, c, d, e, f in love.event.poll() do
     count = count + 1
   end
-  test:assertEquals(3, count)
+  test:assertEquals(3, count, 'check 3 events')
 end
 
 
 -- love.event.pump
 -- @NOTE dont think can really test as internal?
 love.test.event.pump = function(test)
-  test:skipTest()
+  test:skipTest('not sure we can test when its internal?')
 end
 
 
@@ -52,7 +52,7 @@ love.test.event.push = function(test)
       count = count + a + b + c
     end
   end
-  test:assertEquals(12, count)
+  test:assertEquals(12, count, 'check total events')
 end
 
 
@@ -62,12 +62,12 @@ love.test.event.quit = function(test)
   -- this should call love.quit, which will prevent the quit
   -- if this fails then the test would just abort here
   love.event.quit(0)
-  test:assertEquals(true, true)
+  test:assertEquals(true, true, 'check quit hook called')
 end
 
 
 -- love.event.wait
 -- @NOTE not sure best way to test this one
 love.test.event.wait = function(test)
-  test:skipTest()
+  test:skipTest('not sure on best way to test this')
 end

@@ -10,6 +10,9 @@ Currently written for löve 11.4 API
 - [x] Ability to run all tests with a simple command.
 - [x] Ability to see how many tests are passing/failing
 - [x] No platform-specific dependencies / scripts
+- [x] Ability to run a subset of tests
+- [x] Ability to easily run an individual test.
+- [x] Tests can compare visual results to a reference image
 
 ---
 
@@ -29,7 +32,8 @@ For multiple modules, just space them seperately after the flag:
 If you want to specify only 1 specific method only you can use:  
 `--runSpecificMethod "filesystem" "write"`
 
-All results will be printed in the console per method as PASS, FAIL, or SKIP with total assertions met on a module level and overall level
+All results will be printed in the console per method as PASS, FAIL, or SKIP with total assertions met on a module level and overall level.  
+An XML file in the style of JUnit XML will be generated in your save directory.
 
 ---
 
@@ -43,6 +47,7 @@ When you run the tests, a love.test.Suite class is created which handles the pro
 - **assertMatch**({option1, option2, option3 ...}, actual) 
 - **assertGreaterEqual**(expected, actual)
 - **assertLessEqual**(expected, actual)
+- **assertObject**(table)
 
 Example test method:
 ```lua
@@ -51,13 +56,13 @@ Example test method:
 love.test.filesystem.read = function(test)
   -- setup any data needed then run any asserts using the passed test object
   local content, size = love.filesystem.read('test.txt')
-  test:assertNotEquals(nil, content)
-  test:assertEquals('helloworld', content)
-  test:assertEquals(10, size)
+  test:assertNotEquals(nil, content, 'check not nil')
+  test:assertEquals('helloworld', content, 'check content match')
+  test:assertEquals(10, size, 'check size match')
   content, size = love.filesystem.read('test.txt', 5)
-  test:assertNotEquals(nil, content)
-  test:assertEquals('hello', content)
-  test:assertEquals(5, size)
+  test:assertNotEquals(nil, content, 'check not nil')
+  test:assertEquals('hello', content, 'check content match')
+  test:assertEquals(5, size, 'check size match')
   -- no need to return anything just cleanup any objs if needed
 end
 ```
@@ -118,10 +123,7 @@ Modules still to be completed or barely started
 ---
 
 ## Stretch Goals
-- [x] Ability to run a subset of tests (for example all image module tests). 
-- [x] Ability to easily run an individual test.
-- [ ] Ability to test loading different combinations of modules.
-- [ ] Automatic testing that happens after every commit.
-- [ ] Tests can compare visual results to a reference image, possibly with an optional tolerance value in situations where different graphics drivers don't guarantee bit-exact results.
-- [ ] Ability to see all visual results at a glance (for example an output folder of screenshots and maybe a generated HTML file that shows thumbnails of them all).
-- [ ] Performance tests (doesn't necessarily need to output a pass/fail, but can be useful for tracking numbers over time or between changes, on the same system).
+- [ ] Ability to test loading different combinations of modules
+- [ ] Ability to see all visual results at a glance
+- [ ] Automatic testing that happens after every commit
+- [ ] Performance tests

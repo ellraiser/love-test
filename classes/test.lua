@@ -7,9 +7,11 @@ love.test.Test = {
         asserts = {},
         method = method,
         start = love.timer.getTime(),
+        finish = 0,
         count = 0,
         passed = false,
         skipped = false,
+        skipreason = '',
         message = nil,
         result = {}
       }
@@ -19,37 +21,40 @@ love.test.Test = {
     end,
 
     -- check 2 values are equal
-    assertEquals = function(self, expected, actual)
+    assertEquals = function(self, expected, actual, testmsg)
       self.count = self.count + 1
       table.insert(self.asserts, {
         key = 'assert #' .. tostring(self.count),
         passed = expected == actual,
-        message = 'expected "' .. tostring(expected) .. '" got "' .. tostring(actual) .. '"'
+        message = 'expected \'' .. tostring(expected) .. '\' got \'' .. tostring(actual) .. '\'',
+        test = testmsg
       })
     end,
 
     -- check two values are not equal
-    assertNotEquals = function(self, expected, actual)
+    assertNotEquals = function(self, expected, actual, testmsg)
       self.count = self.count + 1
       table.insert(self.asserts, {
         key = 'assert #' .. tostring(self.count),
         passed = expected ~= actual,
-        message = 'avoiding "' .. tostring(expected) .. '" got "' .. tostring(actual) .. '"'
+        message = 'avoiding \'' .. tostring(expected) .. '\' got \'' .. tostring(actual) .. '\'',
+        test = testmsg
       })
     end,
 
     -- check a value is within a range
-    assertRange = function(self, actual, min, max)
+    assertRange = function(self, actual, min, max, testmsg)
       self.count = self.count + 1
       table.insert(self.asserts, {
         key = 'assert #' .. tostring(self.count),
         passed = actual >= min and actual <= max,
-        message = 'value "' .. tostring(actual) .. '" out of range "' .. tostring(min) .. '-' .. tostring(max) .. '"'
+        message = 'value \'' .. tostring(actual) .. '\' out of range \'' .. tostring(min) .. '-' .. tostring(max) .. '\'',
+        test = testmsg
       })
     end,
 
     -- check a value is in a list
-    assertMatch = function(self, list, actual)
+    assertMatch = function(self, list, actual, testmsg)
       self.count = self.count + 1
       local found = false
       for l=1,#list do
@@ -58,12 +63,13 @@ love.test.Test = {
       table.insert(self.asserts, {
         key = 'assert #' .. tostring(self.count),
         passed = found == true,
-        message = 'value "' .. tostring(actual) .. '" not found in "' .. table.concat(list, ',') .. '"'
+        message = 'value \'' .. tostring(actual) .. '\' not found in \'' .. table.concat(list, ',') .. '\'',
+        test = testmsg
       })
     end,
 
     -- check a value is >= a number
-    assertGreaterEqual = function(self, value, actual)
+    assertGreaterEqual = function(self, value, actual, testmsg)
       self.count = self.count + 1
       local passing = false
       if value ~= nil and actual ~= nil then
@@ -72,12 +78,13 @@ love.test.Test = {
       table.insert(self.asserts, {
         key = 'assert #' .. tostring(self.count),
         passed = passing,
-        message = 'value "' .. tostring(actual) .. '" not >= "' .. tostring(value) .. '"'
+        message = 'value \'' .. tostring(actual) .. '\' not >= \'' .. tostring(value) .. '\'',
+        test = testmsg
       })
     end,
 
     -- check a value is <= a number
-    assertLessEqual = function(self, value, actual)
+    assertLessEqual = function(self, value, actual, testmsg)
       self.count = self.count + 1
       local passing = false
       if value ~= nil and actual ~= nil then
@@ -86,13 +93,22 @@ love.test.Test = {
       table.insert(self.asserts, {
         key = 'assert #' .. tostring(self.count),
         passed = passing,
-        message = 'value "' .. tostring(actual) .. '" not <= "' .. tostring(value) .. '"'
+        message = 'value \'' .. tostring(actual) .. '\' not <= \'' .. tostring(value) .. '\'',
+        test = testmsg
       })
     end,
 
+    -- check a table is a love object
+    assertObject = function(self, table)
+      self:assertNotEquals(nil, table, 'check not nill')
+      self:assertEquals('userdata', type(table), 'check is userdata')
+      self:assertNotEquals(nil, table:type(), 'check has :type()')
+    end,
+
     -- skip a test, either todo later or cos it can't be tested easily
-    skipTest = function(self)
+    skipTest = function(self, reason)
       self.skipped = true
+      self.skipreason = reason
     end,
 
     -- evaluate the test class and all asserts for a final pass/fail
@@ -109,10 +125,11 @@ love.test.Test = {
       end
       local passed = #self.asserts - failures
       local total = '(' .. tostring(passed) .. '/' .. tostring(#self.asserts) .. ')'
+
       if self.skipped == true then
         self.testsuite.skipped = self.testsuite.skipped + 1
         love.test.totals[3] = love.test.totals[3] + 1
-        self.result = { total = '', result = "SKIP", passed = false, message = '(0/0) method skipped'}
+        self.result = { total = '', result = "SKIP", passed = false, message = '(0/0) - method skipped [' .. self.skipreason .. ']'}
       else
         if failure == '' and #self.asserts > 0 then
           self.passed = true
@@ -126,18 +143,34 @@ love.test.Test = {
           if #self.asserts == 0 then
             self.result = { total = total, result = 'FAIL', passed = false, key = 'test', message = 'no asserts defined' }
           else
-            self.result = { total = total, result = 'FAIL', passed = false, key = failure['key'], message = failure['message'] }
+            self.result = { total = total, result = 'FAIL', passed = false, key = failure['key'] .. ' [' .. failure['test'] .. ']', message = failure['message'] }
           end
         end
       end
+
       self:printResult()
     end,
 
     -- print result all pretty
     printResult = function(self)
       -- time taken for test? not used currently, could slap before the ==>?
-      local endtime = tostring(math.floor((love.timer.getTime() - self.start)*1000)) .. 'ms'
-      if string.len(endtime) == 3 then endtime = '0' .. endtime end
+      self.finish = love.timer.getTime() - self.start
+      love.test.time = love.test.time + self.finish
+      self.testsuite.time = self.testsuite.time + self.finish
+      local endtime = tostring(math.floor((love.timer.getTime() - self.start)*1000))
+      if string.len(endtime) == 1 then endtime = '   ' .. endtime end
+      if string.len(endtime) == 2 then endtime = '  ' .. endtime end
+      if string.len(endtime) == 3 then endtime = ' ' .. endtime end
+
+      local failure = ''
+      if self.passed == false then
+        failure = '\t\t\t<failure message="' .. self.result.message .. '"></failure>\n'
+      end
+
+      self.testsuite.xml = self.testsuite.xml .. '\t\t<testclass classname="' .. self.method .. 
+        '" name="' .. self.method .. 
+        '" time="' .. tostring(self.finish*1000) .. '">\n' .. failure .. '\t\t</testclass>\n'
+
       -- add message if assert failed
       local msg = ''
       if self.result.message ~= nil and self.skipped == false then 
@@ -152,7 +185,7 @@ love.test.Test = {
       self.testsuite:log(
         self.testsuite.colors[self.result.result],
         '  ' .. tested .. matching,
-        ' ==> ' .. self.result.result .. ' ' .. self.result.total .. msg
+        ' ==> ' .. self.result.result .. ' - ' .. endtime .. 'ms ' .. self.result.total .. msg
       )
     end
 

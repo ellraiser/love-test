@@ -29,12 +29,11 @@ love.test.graphics.rectangle = function(test)
     local pos = comparepixels[c]
     local cr, cg, cb, ca = comparedata:getPixel(pos[1], pos[2])
     local tr, tg, tb, ta = imgdata:getPixel(pos[1], pos[2])
-    local compare_id = tostring(pos[1]) .. '-' .. tostring(pos[2])
-    -- this is so when the assertion fails we can easily see which pixel rgb caused it
-    test:assertEquals(compare_id .. '-r-' .. tostring(cr), compare_id .. '-r-' .. tostring(tr))
-    test:assertEquals(compare_id .. '-g-' .. tostring(cg), compare_id .. '-g-' .. tostring(tg))
-    test:assertEquals(compare_id .. '-b-' .. tostring(cb), compare_id .. '-b-' .. tostring(tb))
-    test:assertEquals(compare_id .. '-a-' .. tostring(ca), compare_id .. '-a-' .. tostring(ta))
+    local compare_id = tostring(pos[1]) .. 'x,' .. tostring(pos[2]) .. 'y'
+    test:assertEquals(cr, tr, 'check ' .. compare_id .. ' R')
+    test:assertEquals(cg, tg, 'check ' .. compare_id .. ' G')
+    test:assertEquals(cb, tb, 'check ' .. compare_id .. ' B')
+    test:assertEquals(ca, ta, 'check ' .. compare_id .. ' A')
   end
 end
 

@@ -5,9 +5,7 @@
 -- @NOTE this is just basic nil checking, full obj test are in objects.lua
 love.test.thread.getChannel = function(test)
   local channel = love.thread.getChannel('test')
-  test:assertNotEquals(nil, channel)
-  test:assertEquals('userdata', type(channel))
-  test:assertNotEquals(nil, channel:type())
+  test:assertObject(channel)
   channel:release()
 end
 
@@ -16,9 +14,7 @@ end
 -- @NOTE this is just basic nil checking, full obj test are in objects.lua
 love.test.thread.newChannel = function(test)
   local channel = love.thread.newChannel()
-  test:assertNotEquals(nil, channel)
-  test:assertEquals('userdata', type(channel))
-  test:assertNotEquals(nil, channel:type())
+  test:assertObject(channel)
   channel:release()
 end
 
@@ -27,8 +23,6 @@ end
 -- @NOTE this is just basic nil checking, full obj test are in objects.lua
 love.test.thread.newThread = function(test)
   local thread = love.thread.newThread('lovetest.lua')
-  test:assertNotEquals(nil, thread)
-  test:assertEquals('userdata', type(thread))
-  test:assertNotEquals(nil, thread:type())
+  test:assertObject(thread)
   thread:release()
 end

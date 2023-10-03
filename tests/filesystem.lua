@@ -206,7 +206,7 @@ end
 -- love.filesystem.mount
 love.test.filesystem.mount = function(test)
   -- setup 
-  local contents, size = love.filesystem.read('test.zip') -- contains test.txt
+  local contents, size = love.filesystem.read('resources/test.zip') -- contains test.txt
   love.filesystem.write('test.zip', contents, size)
   -- tests
   local success = love.filesystem.mount('test.zip', 'test')
@@ -257,11 +257,11 @@ end
 
 -- love.filesystem.read
 love.test.filesystem.read = function(test)
-  local content, size = love.filesystem.read('test.txt')
+  local content, size = love.filesystem.read('resources/test.txt')
   test:assertNotEquals(nil, content, 'check not nil')
   test:assertEquals('helloworld', content, 'check content match')
   test:assertEquals(10, size, 'check size match')
-  content, size = love.filesystem.read('test.txt', 5)
+  content, size = love.filesystem.read('resources/test.txt', 5)
   test:assertNotEquals(nil, content, 'check not nil')
   test:assertEquals('hello', content, 'check content match')
   test:assertEquals(5, size, 'check size match')
@@ -323,7 +323,7 @@ end
 -- love.filesystem.unmount
 love.test.filesystem.unmount = function(test)
   --setup
-  local contents, size = love.filesystem.read('test.zip') -- contains test.txt
+  local contents, size = love.filesystem.read('resources/test.zip') -- contains test.txt
   love.filesystem.write('test.zip', contents, size)
   love.filesystem.mount('test.zip', 'test')
   -- tests

@@ -81,7 +81,7 @@ end
 -- love.window.getIcon
 love.test.window.getIcon = function(test)
   test:assertEquals(nil, love.window.getIcon(), 'check nil by default') -- nil if not set
-  local icon = love.image.newImageData('love.png')
+  local icon = love.image.newImageData('resources/love.png')
   love.window.setIcon(icon)
   test:assertNotEquals(nil, love.window.getIcon(), 'check not nil')
   icon:release()
@@ -250,7 +250,7 @@ end
 -- love.window.setIcon
 -- @NOTE could check the image data itself?
 love.test.window.setIcon = function(test)
-  local icon = love.image.newImageData('love.png')
+  local icon = love.image.newImageData('resources/love.png')
   love.window.setIcon(icon)
   test:assertNotEquals(nil, love.window.getIcon(), 'check icon not nil')
   icon:release()

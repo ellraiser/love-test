@@ -41,5 +41,5 @@ love.window.setMode(256, 256, {
 love.graphics.setDefaultFilter("nearest", "nearest")
 love.graphics.setLineStyle('rough')
 love.graphics.setLineWidth(1)
-logo_texture = love.graphics.newImage('love.png')
+logo_texture = love.graphics.newImage('resources/love.png')
 logo_image = love.graphics.newQuad(0, 0, 64, 64, logo_texture)

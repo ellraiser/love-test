@@ -33,7 +33,7 @@ If you want to specify only 1 specific method only you can use:
 `--runSpecificMethod "filesystem" "write"`
 
 All results will be printed in the console per method as PASS, FAIL, or SKIP with total assertions met on a module level and overall level.  
-An XML file in the style of JUnit XML will be generated in your save directory.
+An XML file in the style of JUnit XML will be generated in your save directory (an example of the output can be seen in output/test.xml)
 
 ---
 
@@ -55,11 +55,11 @@ Example test method:
 -- all methods should be put under love.test.MODULE.METHOD, matching the API
 love.test.filesystem.read = function(test)
   -- setup any data needed then run any asserts using the passed test object
-  local content, size = love.filesystem.read('test.txt')
+  local content, size = love.filesystem.read('resources/test.txt')
   test:assertNotEquals(nil, content, 'check not nil')
   test:assertEquals('helloworld', content, 'check content match')
   test:assertEquals(10, size, 'check size match')
-  content, size = love.filesystem.read('test.txt', 5)
+  content, size = love.filesystem.read('resources/test.txt', 5)
   test:assertNotEquals(nil, content, 'check not nil')
   test:assertEquals('hello', content, 'check content match')
   test:assertEquals(5, size, 'check size match')
@@ -113,6 +113,8 @@ Modules with some small bits needed or needing sense checking:
 Modules still to be completed or barely started
 - **love.graphics** - done a couple as an example of how we can test the drawing but not really started
 - **love.objects** - not started (all obj tests so chunky)
+
+Also still need a HTML export format that can then show test vs expected for graphics methods, so we'll need to save the test images somewhere to compare
 
 ---
 

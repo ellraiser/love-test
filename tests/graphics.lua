@@ -18,7 +18,7 @@ love.test.graphics.rectangle = function(test)
     love.graphics.setColor(1, 1, 1, 1)
   love.graphics.setCanvas()
   local imgdata = canvas:newImageData()
-  local comparedata = love.image.newImageData('graphics/love-test-graphics-rectangle.png')
+  local comparedata = love.image.newImageData('resources/love-test-graphics-rectangle.png')
   -- test, check green border, red bg, and blue central square
   local comparepixels = {
     {0, 0}, {15, 0}, {15, 15}, {0, 15},

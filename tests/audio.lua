@@ -20,7 +20,7 @@ love.test.audio.getActiveSourceCount = function(test)
   -- tests
   test:assertNotEquals(nil, love.audio.getActiveSourceCount(), 'check not nil')
   test:assertEquals(0, love.audio.getActiveSourceCount(), 'check 0 by default')
-  local testsource = love.audio.newSource('click.ogg', 'static')
+  local testsource = love.audio.newSource('resources/click.ogg', 'static')
   test:assertEquals(0, love.audio.getActiveSourceCount(), 'check not active')
   love.audio.play(testsource)
   test:assertEquals(1, love.audio.getActiveSourceCount(), 'check now active')
@@ -153,8 +153,8 @@ end
 -- @NOTE this is just basic nil checking, full obj test are in objects.lua
 love.test.audio.newSource = function(test)
   -- setup
-  local source1 = love.audio.newSource('click.ogg', 'static')
-  local source2 = love.audio.newSource('click.ogg', 'stream')
+  local source1 = love.audio.newSource('resources/click.ogg', 'static')
+  local source2 = love.audio.newSource('resources/click.ogg', 'stream')
   -- tests
   test:assertObject(source1)
   test:assertObject(source2)
@@ -170,7 +170,7 @@ love.test.audio.pause = function(test)
   local nopauses = love.audio.pause()
   test:assertNotEquals(nil, nopauses, 'check not nil')
   test:assertEquals(0, #nopauses, 'check nothing paused')
-  local source = love.audio.newSource('click.ogg', 'static')
+  local source = love.audio.newSource('resources/click.ogg', 'static')
   love.audio.play(source)
   local onepause = love.audio.pause()
   test:assertEquals(1, #onepause, 'check 1 paused')
@@ -181,7 +181,7 @@ end
 -- love.audio.play
 love.test.audio.play = function(test)
   -- setup
-  local source = love.audio.newSource('click.ogg', 'static')
+  local source = love.audio.newSource('resources/click.ogg', 'static')
   -- tests
   love.audio.play(source)
   test:assertEquals(true, source:isPlaying(), 'check something playing')
@@ -286,7 +286,7 @@ end
 -- love.audio.stop
 love.test.audio.stop = function(test)
   -- setup
-  local source = love.audio.newSource('click.ogg', 'static')
+  local source = love.audio.newSource('resources/click.ogg', 'static')
   love.audio.play(source)
   -- tests
   test:assertEquals(true, source:isPlaying(), 'check is playing')

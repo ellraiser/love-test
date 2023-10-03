@@ -116,8 +116,6 @@ Modules still to be completed or barely started
 - **love.graphics** - done a couple as an example of how we can test the drawing but not really started
 - **love.objects** - not started (all obj tests so chunky)
 
-Also still need a HTML export format that can then show test vs expected for graphics methods, so we'll need to save the test images somewhere to compare
-
 ---
 
 ## Failures

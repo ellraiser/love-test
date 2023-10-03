@@ -35,13 +35,17 @@ love.test = {
   window = {}
 }
 
-love.window.setMode(256, 256, {
-  fullscreen = false,
-  resizable = true,
-  centered = true
-})
-love.graphics.setDefaultFilter("nearest", "nearest")
-love.graphics.setLineStyle('rough')
-love.graphics.setLineWidth(1)
-logo_texture = love.graphics.newImage('resources/love.png')
-logo_image = love.graphics.newQuad(0, 0, 64, 64, logo_texture)
+if love.window ~= nil then
+  love.window.setMode(256, 256, {
+    fullscreen = false,
+    resizable = true,
+    centered = true
+  })
+  if love.graphics ~= nil then
+    love.graphics.setDefaultFilter("nearest", "nearest")
+    love.graphics.setLineStyle('rough')
+    love.graphics.setLineWidth(1)
+    logo_texture = love.graphics.newImage('resources/love.png')
+    logo_image = love.graphics.newQuad(0, 0, 64, 64, logo_texture)
+  end
+end

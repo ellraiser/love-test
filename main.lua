@@ -3,23 +3,40 @@
 require('lovetest')
 require('classes.suite')
 require('classes.test')
-require('tests.audio')
-require('tests.data')
-require('tests.event')
-require('tests.filesystem')
-require('tests.font')
-require('tests.graphics')
-require('tests.image')
-require('tests.math')
-require('tests.physics')
-require('tests.sound')
-require('tests.system')
-require('tests.thread')
-require('tests.timer')
-require('tests.video')
-require('tests.window')
+if love.audio ~= nil then require('tests.audio') end
+if love.data ~= nil then require('tests.data') end
+if love.event ~= nil then require('tests.event') end
+if love.filesystem ~= nil then require('tests.filesystem') end
+if love.font ~= nil then require('tests.font') end
+if love.graphics ~= nil then require('tests.graphics') end
+if love.image ~= nil then require('tests.image') end
+if love.math ~= nil then require('tests.math') end
+if love.physics ~= nil then require('tests.physics') end
+if love.sound ~= nil then require('tests.sound') end
+if love.system ~= nil then require('tests.system') end
+if love.thread ~= nil then require('tests.thread') end
+if love.timer ~= nil then require('tests.timer') end
+if love.video ~= nil then require('tests.video') end
+if love.window ~= nil then require('tests.window') end
+
+function string_split(str, splitter)
+  local splits = {}
+  for word in string.gmatch(str, splitter) do
+    table.insert(splits, word)
+  end
+  return splits
+end
 
 love.load = function(args)
+
+  local arglist = {}
+
+  for a=1,#args do
+    local splits = string_split(args[a], '([^,]+)')
+    for s=1,#splits do
+      table.insert(arglist, splits[s])
+    end
+  end
 
   local testcmd = '--runAllTests'
   local module = ''
@@ -31,45 +48,32 @@ love.load = function(args)
   }
   local disable = false
   local disabled = {}
-  for a=1,#args do
+  for a=1,#arglist do
     if testcmd == '--runSpecificMethod' then
-      if module == '' and love[args[a]] ~= nil then 
-        module = args[a] 
+      if module == '' and love[ arglist[a] ] ~= nil then 
+        module = arglist[a] 
         table.insert(modules, module)
       end
-      if module ~= '' and love[module][args[a]] ~= nil and method == '' then method = args[a] end
+      if module ~= '' and love[module][ arglist[a] ] ~= nil and method == '' then method = arglist[a] end
       if module ~= '' and method ~= '' and disable == true then
-        table.insert(disabled, args[a])
-      end
-    end
-    if testcmd == '--runSpecificModule' then
-      if module == '' and love[args[a]] ~= nil then 
-        module = args[a]
-        table.insert(modules, module)
-      end
-      if module ~= '' and disable == true then
-        table.insert(disabled, args[a])
+        table.insert(disabled, arglist[a])
       end
     end
     if testcmd == '--runSpecificModules' then
-      if love[args[a]] ~= nil and disable == false then table.insert(modules, args[a]) end
+      if love[ arglist[a] ] ~= nil and disable == false then table.insert(modules, arglist[a]) end
       if disable == true then
-        table.insert(disabled, args[a])
+        table.insert(disabled, arglist[a])
       end
     end
-    if args[a] == '--runSpecificMethod' then
-      testcmd = args[a]
+    if arglist[a] == '--runSpecificMethod' then
+      testcmd = arglist[a]
       modules = {}
     end
-    if args[a] == '--runSpecificModule' then
-      testcmd = args[a]
+    if arglist[a] == '--runSpecificModules' then
+      testcmd = arglist[a]
       modules = {}
     end
-    if args[a] == '--runSpecificModules' then
-      testcmd = args[a]
-      modules = {}
-    end
-    if args[a] == '--disableModules' then
+    if arglist[a] == '--disableModules' then
       disable = true
     end
   end
@@ -81,12 +85,14 @@ love.load = function(args)
       if modules[m] == disabled[d] then inlist = true break end
     end
     if disabled[d] ~= module and inlist == false then
-      love[disabled[d]] = nil
+      love[ disabled[d] ] = nil
       table.insert(actualdisabled, disabled[d])
     end
   end
 
-  -- runSpecificMethod [module] [method]
+  print(testcmd, module, method, table.concat(modules, ','), table.concat(actualdisabled, ','))
+
+
   if testcmd == '--runSpecificMethod' then
     local testsuite = love.test.Suite:new()
     table.insert(love.test.testsuites, testsuite)
@@ -97,18 +103,6 @@ love.load = function(args)
     love.test.testsuite:runTests(module, method)
   end
 
-  ---- runSpecificModule [module]
-  if testcmd == '--runSpecificModule' then
-    local testsuite = love.test.Suite:new()
-    table.insert(love.test.testsuites, testsuite)
-    love.test.testsuite = testsuite
-    love.test.testsuite:log('grey', '--runSpecificModule "' .. module .. '"')
-    love.test.output = 'lovetest_runSpecificModule_' .. module
-    if #actualdisabled > 0 then love.test.testsuite:log('grey', '--disableModules "' .. table.concat(actualdisabled, '" "') .. '"') end
-    love.test.testsuite:runTests(module)
-  end
-
-  ---- runSpecificModules [module1] [module2] [module3]
   if testcmd == '--runSpecificModules' then
     local modulelist = {}
     for m=1,#modules do
@@ -123,8 +117,7 @@ love.load = function(args)
     love.test.testsuite:runTests(love.test.testsuite.module)
   end
 
-  ---- runAllTests
-  if args[1] == nil or args[1] == '' or args[1] == '--runAllTests' then
+  if arglist[1] == nil or arglist[1] == '' or arglist[1] == '--runAllTests' then
     for m=1,#modules do
       local testsuite = love.test.Suite:new(modules[m])
       table.insert(love.test.testsuites, testsuite)
@@ -163,7 +156,10 @@ love.update = function(delta)
               )
             -- otherwise run the test method then eval the asserts
             else
-              love.test[love.test.testsuite.module][method](test)
+              local ok, chunk, err = pcall(love.test[love.test.testsuite.module][method], test)
+              if ok == false then
+                test.fatal = chunk
+              end
               test:evaluateTest()
             end
             -- move onto the next test

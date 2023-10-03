@@ -12,6 +12,7 @@ love.test.Test = {
         passed = false,
         skipped = false,
         skipreason = '',
+        fatal = '',
         message = nil,
         result = {}
       }
@@ -123,6 +124,7 @@ love.test.Test = {
           failures = failures + 1
         end
       end
+      if self.fatal ~= '' then failure = self.fatal end
       local passed = #self.asserts - failures
       local total = '(' .. tostring(passed) .. '/' .. tostring(#self.asserts) .. ')'
 
@@ -141,7 +143,9 @@ love.test.Test = {
           self.testsuite.failed = self.testsuite.failed + 1
           love.test.totals[2] = love.test.totals[2] + 1
           if #self.asserts == 0 then
-            self.result = { total = total, result = 'FAIL', passed = false, key = 'test', message = 'no asserts defined' }
+            local msg = 'no asserts defined'
+            if self.fatal ~= '' then msg = self.fatal end
+            self.result = { total = total, result = 'FAIL', passed = false, key = 'test', message = msg }
           else
             self.result = { total = total, result = 'FAIL', passed = false, key = failure['key'] .. ' [' .. failure['test'] .. ']', message = failure['message'] }
           end
@@ -167,6 +171,9 @@ love.test.Test = {
       if self.passed == false and self.skipped == false then
         failure = '\t\t\t<failure message="' .. self.result.key .. ' ' ..  self.result.message .. '"></failure>\n'
         msg = self.result.key .. ' ' ..  self.result.message
+      end
+      if msg == '' and self.skipped == true then
+        msg = self.skipreason
       end
 
       self.testsuite.xml = self.testsuite.xml .. '\t\t<testclass classname="' .. self.method .. 

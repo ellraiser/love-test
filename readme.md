@@ -14,6 +14,7 @@ Currently written for löve 11.4 API
 - [x] Ability to easily run an individual test.
 - [x] Tests can compare visual results to a reference image
 - [x] Ability to see all visual results at a glance
+- [x] Ability to test loading different combinations of modules
 
 ---
 
@@ -25,22 +26,45 @@ WINDOWS: `& 'c:\Program Files\LOVE\love.exe' PATH_TO_LOVETEST --console`
 MACOS: `/Applications/love.app/Contents/MacOS/love PATH_TO_LOVETEST`
 
 By default all tests will be run for all modules.  
+
 If you want to specify a module you can add:  
-`--runSpecificModule "filesystem"`  
-For multiple modules, just space them seperately after the flag:  
-`--runSpecificModules "filesystem" "audio" "data"`
+`--runSpecificModules filesystem`  
+For multiple modules, provide a comma seperate list:  
+`--runSpecificModules filesystem,audio,data"`
 
 If you want to specify only 1 specific method only you can use:  
-`--runSpecificMethod "filesystem" "write"`
+`--runSpecificMethod filesystem write`
 
 All results will be printed in the console per method as PASS, FAIL, or SKIP with total assertions met on a module level and overall level.  
 
-An `XML` file in the style of [JUnit XML](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format) will be generated in your save directory, along with a `HTML` file with a summary of all tests (including visuals for love.graphics tests). Note that this can only be viewed locally as the generated images are written to the save directory also. An example of both outputs can be found in the `/output` folder
+An `XML` file in the style of [JUnit XML](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format) will be generated in your save directory, along with a `HTML` file with a summary of all tests (including visuals for love.graphics tests). 
+> Note that this can only be viewed properly locally as the generated images are written to the save directory.   
+> An example of both types of output can be found in the `/output` folder
+
+---
+
+## Disabling Modules
+If you want to disable specific modules when testing you need to use the `run.sh` bash script provided so that the `conf.lua` file can be modified before running it as these can't be disabled during runtime.  
+> Running this script will not reset the `conf.lua` file!  
+> Be sure to turn modules you need back on after
+
+The bash script has the following flags:  
+`-r all|modules|method` - type of test to run  
+`-l PATH_TO_LOVE` - path to love i.e. `/Applications/love.app/Contents/MacOS/love`  
+`-p PATH_TO_MAIN` - path to test game folder, i.e. `./` if running directly in the root of this repo  
+`-m module1,module2` - specific modules to test if using `-r modules`  
+`-f method` - specific method to test is using `-r method`  
+`-d disable1,disable2` - specific modules to disable while testing  
+
+Example uses:  
+`bash ./run.sh -l "/Applications/love.app/Contents/MacOS/love" -p "./" -r all`  
+`bash ./run.sh -l "/Applications/love.app/Contents/MacOS/love" -p "./" -r modules -m window,math -d physics,graphics`  
+`bash ./run.sh -l "/Applications/love.app/Contents/MacOS/love" -p "./" -r method -m graphics -f rectangle -d window`
 
 ---
 
 ## Architecture
-Each method has it's own test method written in /tests under the matching module name.
+Each method has it's own test method written in `/tests` under the matching module name.
 
 When you run the tests, a love.test.Suite class is created which handles the progress + totals per module. Each method tested has it's own love.test.Test class which keeps track of assertions for that method. You can currently do the following assertions:
 - **assertEquals**(expected, actual)
@@ -71,12 +95,13 @@ end
 
 After each test method is ran, the assertions are totalled up, printed, and we move onto the next method! Once all methods in the suite are run a total pass/fail/skip is given for that module and we move onto the next module (if any)
 
-For sanity-checking, I've put a test method for every method, even if it's currently not covered or we're not sure how to test yet, and set the test to be skipped with `test:skipTest()` - this way we still see the method listed in the tests without it affected the pass/fail totals
+For sanity-checking, I've put a test method for every method, even if it's currently not covered or we're not sure how to test yet, and set the test to be skipped with `test:skipTest(reason)` - this way we still see the method listed in the tests without it affected the pass/fail totals
 
 ---
 
 ## Coverage
-The following love modules are currently available to test, "objects" is a special module to cover any object specific tests, i.e. testing a FileData object functions as expected
+This is the status of all module tests currently.  
+"objects" is a special module to cover any object specific tests, i.e. testing a FileData object functions as expected
 ```lua
 -- [x] audio        26 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] data          7 PASSED |  0 FAILED |  3 SKIPPED      [SEE BELOW]
@@ -125,6 +150,5 @@ Modules still to be completed or barely started
 ---
 
 ## Stretch Goals
-- [ ] Ability to test loading different combinations of modules
 - [ ] Automatic testing that happens after every commit
 - [ ] Performance tests

@@ -3,41 +3,51 @@
 
 -- DRAWING
 
+
+
 -- love.graphics.rectangle
 love.test.graphics.rectangle = function(test)
-  -- setup, draw a 16x16 red rectangle with a green border
+  -- setup, draw a 16x16 red rectangle with a blue central square
   local canvas = love.graphics.newCanvas(16, 16)
   love.graphics.setCanvas(canvas)
-    love.graphics.clear(0, 0, 0, 0)
+    love.graphics.clear(0, 0, 0, 1)
     love.graphics.setColor(1, 0, 0, 1)
-    love.graphics.rectangle('fill', 0, 0, 16, 16, nil, nil, nil)
+    love.graphics.rectangle('fill', 0, 0, 16, 16)
     love.graphics.setColor(0, 0, 1, 1)
-    love.graphics.rectangle('fill', 6, 6, 4, 4, nil, nil, nil)
-    love.graphics.setColor(0, 1, 0, 1)
-    love.graphics.rectangle('line', 1, 1, 15, 15, nil, nil, nil)
+    love.graphics.rectangle('fill', 6, 6, 4, 4)
     love.graphics.setColor(1, 1, 1, 1)
   love.graphics.setCanvas()
-  local imgdata = canvas:newImageData()
-  local comparedata = love.image.newImageData('resources/love_test_graphics_rectangle_expected.png')
-  -- test, check green border, red bg, and blue central square
+  local imgdata1 = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  -- test, check red bg and blue central square
   local comparepixels = {
-    {0, 0}, {15, 0}, {15, 15}, {0, 15},
-    {1, 1}, {14, 1}, {14, 14}, {1, 14},
-    {6, 6}, {9, 6}, {9, 9}, {6, 9}
+    red = {{0,0},{15,0},{15,15},{0,15}},
+    blue = {{6,6},{9,6},{9,9},{6,9}}
   }
-  for c=1,#comparepixels do
-    local pos = comparepixels[c]
-    local cr, cg, cb, ca = comparedata:getPixel(pos[1], pos[2])
-    local tr, tg, tb, ta = imgdata:getPixel(pos[1], pos[2])
-    local compare_id = tostring(pos[1]) .. 'x,' .. tostring(pos[2]) .. 'y'
-    test:assertEquals(cr, tr, 'check ' .. compare_id .. ' R')
-    test:assertEquals(cg, tg, 'check ' .. compare_id .. ' G')
-    test:assertEquals(cb, tb, 'check ' .. compare_id .. ' B')
-    test:assertEquals(ca, ta, 'check ' .. compare_id .. ' A')
-  end
-  -- write to save data for test html results
-  imgdata:encode('png', 'love_test_graphics_rectangle_actual.png')
-  comparedata:encode('png', 'love_test_graphics_rectangle_expected.png')
+  test:assertPixels(imgdata1, comparepixels, 'fill')
+  -- clear canvas to do some line testing
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.rectangle('line', 1, 1, 15, 15) -- red border
+    love.graphics.setColor(0, 0, 1, 1)
+    love.graphics.rectangle('line', 1, 1, 2, 15) -- 3x16 left aligned blue outline
+    love.graphics.setColor(0, 1, 0, 1)
+    love.graphics.rectangle('line', 11, 1, 5, 15) -- 6x16 right aligned green outline
+  love.graphics.setCanvas()
+  local imgdata2 = love.graphics.readbackTexture(canvas, {1, 1, 0, 0, 16, 16})
+  -- -- check corners and inner corners
+  comparepixels = {
+    red = {{3,0},{9,0},{3,15,9,15}},
+    blue = {{0,0},{2,0},{0,15},{2,15}},
+    green = {{10,0},{15,0},{10,15},{15,15}},
+    black = {{1,1},{1,14},{3,1},{9,1},{3,14},{9,14},{11,1},{14,1},{11,14},{14,14}}
+  }
+  test:assertPixels(imgdata2, comparepixels, 'line')
+  -- -- write to save data for sanity checking
+  -- imgdata1:encode('png', 'love_test_graphics_rectangle_actual1.png')
+  -- imgdata2:encode('png', 'love_test_graphics_rectangle_actual2.png')
+  -- imgdata1:release()
+  -- imgdata2:release()
 end
 
 -- love.graphics.arc

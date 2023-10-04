@@ -12,6 +12,24 @@
 # -f method1
 # -d disable1,disable2
 
+## Disabling Modules
+# If you want to disable specific modules when testing you need to use the `run.sh` bash script provided so that the `conf.lua` file can be modified before running it as these can't be disabled during runtime.  
+# > Running this script will not reset the `conf.lua` file!  
+# > Be sure to turn modules you need back on after
+# 
+# The bash script has the following flags:  
+# `-r all|modules|method` - type of test to run  
+# `-l PATH_TO_LOVE` - path to love i.e. `/Applications/love.app/Contents/MacOS/love`  
+# `-p PATH_TO_MAIN` - path to test game folder, i.e. `./` if running directly in the root of this repo  
+# `-m module1,module2` - specific modules to test if using `-r modules`  
+# `-f method` - specific method to test is using `-r method`  
+# `-d disable1,disable2` - specific modules to disable while testing  
+# 
+# Example uses:  
+# `bash ./run.sh -l "/Applications/love.app/Contents/MacOS/love" -p "./" -r all`  
+# `bash ./run.sh -l "/Applications/love.app/Contents/MacOS/love" -p "./" -r modules -m window,math -d physics,graphics`  
+# `bash ./run.sh -l "/Applications/love.app/Contents/MacOS/love" -p "./" -r method -m graphics -f rectangle -d window`
+
 while getopts l:p:r:m:f:d: flag
 do
     case "${flag}" in

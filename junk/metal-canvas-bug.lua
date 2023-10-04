@@ -1,0 +1,14 @@
+-- minimal example for metal rendering canvas bug
+-- run with macosx metal you'll see glitching artifacts outside the canvas
+
+-- love.load = function(args)
+--   Canvas = love.graphics.newCanvas(16, 16)
+-- end
+-- 
+-- love.draw = function()
+--   love.graphics.setCanvas(Canvas)
+--     love.graphics.clear(255, 255, 255, 1)
+--   love.graphics.setCanvas()
+--   -- happens at any scale
+--   love.graphics.draw(Canvas, 0, 0, 0, 4, 4)
+-- end

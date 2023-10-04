@@ -1,7 +1,7 @@
 # löve.test
 Basic testing suite for the löve APIs, based off of [this issue](https://github.com/love2d/love/issues/1745)
 
-Currently written for löve 11.4 API
+Currently written for löve 12
 
 ---
 
@@ -12,9 +12,6 @@ Currently written for löve 11.4 API
 - [x] No platform-specific dependencies / scripts
 - [x] Ability to run a subset of tests
 - [x] Ability to easily run an individual test.
-- [x] Tests can compare visual results to a reference image
-- [x] Ability to see all visual results at a glance
-- [x] Ability to test loading different combinations of modules
 
 ---
 
@@ -43,30 +40,11 @@ An `XML` file in the style of [JUnit XML](https://www.ibm.com/docs/en/developer-
 
 ---
 
-## Disabling Modules
-If you want to disable specific modules when testing you need to use the `run.sh` bash script provided so that the `conf.lua` file can be modified before running it as these can't be disabled during runtime.  
-> Running this script will not reset the `conf.lua` file!  
-> Be sure to turn modules you need back on after
-
-The bash script has the following flags:  
-`-r all|modules|method` - type of test to run  
-`-l PATH_TO_LOVE` - path to love i.e. `/Applications/love.app/Contents/MacOS/love`  
-`-p PATH_TO_MAIN` - path to test game folder, i.e. `./` if running directly in the root of this repo  
-`-m module1,module2` - specific modules to test if using `-r modules`  
-`-f method` - specific method to test is using `-r method`  
-`-d disable1,disable2` - specific modules to disable while testing  
-
-Example uses:  
-`bash ./run.sh -l "/Applications/love.app/Contents/MacOS/love" -p "./" -r all`  
-`bash ./run.sh -l "/Applications/love.app/Contents/MacOS/love" -p "./" -r modules -m window,math -d physics,graphics`  
-`bash ./run.sh -l "/Applications/love.app/Contents/MacOS/love" -p "./" -r method -m graphics -f rectangle -d window`
-
----
-
 ## Architecture
 Each method has it's own test method written in `/tests` under the matching module name.
 
-When you run the tests, a love.test.Suite class is created which handles the progress + totals per module. Each method tested has it's own love.test.Test class which keeps track of assertions for that method. You can currently do the following assertions:
+When you run the tests, a single TestSuite object is created which handles the progress + totals for all the tests.  
+Each module has a TestModule object created, and each test method has a TestMethod object created which keeps track of assertions for that method. You can currently do the following assertions:
 - **assertEquals**(expected, actual)
 - **assertNotEquals**(expected, actual)
 - **assertRange**(actual, min, max)
@@ -106,19 +84,19 @@ This is the status of all module tests currently.
 -- [x] audio        26 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] data          7 PASSED |  0 FAILED |  3 SKIPPED      [SEE BELOW]
 -- [x] event         4 PASSED |  0 FAILED |  2 SKIPPED      [SEE BELOW]
--- [x] filesystem   27 PASSED |  0 FAILED |  2 SKIPPED      [SEE BELOW]
+-- [x] filesystem   26 PASSED |  1 FAILED |  2 SKIPPED      [SEE BELOW]
 -- [x] font          4 PASSED |  0 FAILED |  1 SKIPPED      [SEE BELOW]
--- [ ] graphics     TODO
+-- [ ] graphics     STILL TO BE DONE
 -- [x] image         3 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] math         16 PASSED |  0 FAILED |  0 SKIPPED      [SEE BELOW]
--- [x] physics      22 PASSED |  0 FAILED |  0 SKIPPED
+-- [x] physics      21 PASSED |  1 FAILED |  0 SKIPPED      [SEE BELOW]
 -- [x] sound         2 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] system        7 PASSED |  0 FAILED |  1 SKIPPED
 -- [ ] thread        3 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] timer         6 PASSED |  0 FAILED |  0 SKIPPED      [SEE BELOW]
 -- [x] video         1 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] window       32 PASSED |  2 FAILED |  1 SKIPPED      [SEE BELOW]
--- [ ] objects      TODO
+-- [ ] objects      STILL TO BE DONE
 ```
 
 The following modules are not covered as we can't really emulate input nicely:  
@@ -138,17 +116,25 @@ Modules with some small bits needed or needing sense checking:
 - **love.window** - couple stuff just nil checked as I think it's hardware dependent, needs checking
 
 Modules still to be completed or barely started
-- **love.graphics** - done a couple as an example of how we can test the drawing but not really started
-- **love.objects** - not started (all obj tests so chunky)
+- **love.graphics** - done 1 as an example of how we can test the drawing but not really started
+- **love.objects** - done 1 as an example of how we can test objs
 
 ---
 
 ## Failures
 - **love.window.isMaximized()** - returns false after calling love.window.maximize?
 - **love.window.maximize()** - same as above
+- **love.filesystem.newFile()** - something changed in 12
+- **love.graphics.rectangle()** - something changed in 12
+- **love.physics.newGearJoint()** - something changed in 12
 
 ---
 
 ## Stretch Goals
+- [ ] Tests can compare visual results to a reference image
+- [ ] Ability to see all visual results at a glance
 - [ ] Automatic testing that happens after every commit
+- [ ] Ability to test loading different combinations of modules
 - [ ] Performance tests
+
+There is some unused code in the Test.lua class to add preview vs actual images to the HTML output

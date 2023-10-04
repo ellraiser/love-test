@@ -1,6 +1,0 @@
-<testsuites name="love.test" tests="1" failures="0" skipped="0" time="5.097">
-	<testsuite name="love.graphics" tests="1" failures="0" skipped="0" time="162.27758333333">
-		<testclass classname="rectangle" name="rectangle" time="5.097">
-		</testclass>
-	</testsuite>
-</testsuites>

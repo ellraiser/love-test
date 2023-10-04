@@ -22,7 +22,7 @@ end
 -- love.thread.newThread
 -- @NOTE this is just basic nil checking, full obj test are in objects.lua
 love.test.thread.newThread = function(test)
-  local thread = love.thread.newThread('lovetest.lua')
+  local thread = love.thread.newThread('classes/TestSuite.lua')
   test:assertObject(thread)
   thread:release()
 end

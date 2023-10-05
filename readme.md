@@ -86,7 +86,7 @@ This is the status of all module tests currently.
 -- [x] event         4 PASSED |  0 FAILED |  2 SKIPPED      [SEE BELOW]
 -- [x] filesystem   27 PASSED |  0 FAILED |  2 SKIPPED
 -- [x] font          4 PASSED |  0 FAILED |  1 SKIPPED      [SEE BELOW]
--- [ ] graphics     40 PASSED |  0 FAILED | 54 SKIPPED      [SEE BELOW]
+-- [ ] graphics     65 PASSED |  0 FAILED | 31 SKIPPED      [SEE BELOW]
 -- [x] image         3 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] math         17 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] physics      22 PASSED |  0 FAILED |  0 SKIPPED
@@ -96,9 +96,10 @@ This is the status of all module tests currently.
 -- [x] timer         6 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] video         1 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] window       32 PASSED |  2 FAILED |  2 SKIPPED      [SEE BELOW]
+
 -- [ ] objects      STILL TO BE DONE
 --------------------------------------------------------------------------------
--- [x] totals      201 PASSED |  2 FAILED | 66 SKIPPED
+-- [x] totals      226 PASSED |  4 FAILED | 43 SKIPPED
 ```
 
 The following modules are not covered as we can't really emulate input nicely:  

@@ -608,8 +608,8 @@ love.test.graphics.setBackgroundColor = function(test)
   love.graphics.setBackgroundColor(1, 0, 0, 1)
   local r, g, b, a = love.graphics.getBackgroundColor()
   test:assertEquals(1, r, 'check set bg r')
-  test:assertEquals(1, g, 'check set bg g')
-  test:assertEquals(1, b, 'check set bg b')
+  test:assertEquals(0, g, 'check set bg g')
+  test:assertEquals(0, b, 'check set bg b')
   test:assertEquals(1, a, 'check set bg a')
 end
 
@@ -645,11 +645,11 @@ end
 -- love.graphics.setDefaultFilter
 love.test.graphics.setDefaultFilter = function(test)
   -- check setting filter val works
-  love.graphics.setDefaultFilter('linear', 'linear', 0)
+  love.graphics.setDefaultFilter('linear', 'linear', 1)
   local min, mag, anisotropy = love.graphics.getDefaultFilter()
   test:assertEquals('linear', min, 'check default filter min')
   test:assertEquals('linear', mag, 'check default filter mag')
-  test:assertEquals(0, anisotropy, 'check default filter mag')
+  test:assertEquals(1, anisotropy, 'check default filter mag')
   love.graphics.setDefaultFilter('nearest', 'nearest', 1) -- reset
 end
 

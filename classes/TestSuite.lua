@@ -10,7 +10,7 @@ TestSuite = {
       -- testsuite internals
       modules = {},
       module = nil,
-      testcanvas = love.graphics.newCanvas(16, 16),
+      testcanvas = nil,
       current = 1,
       output = '',
       totals = {0, 0, 0},

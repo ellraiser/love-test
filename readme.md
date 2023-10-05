@@ -86,7 +86,7 @@ This is the status of all module tests currently.
 -- [x] event         4 PASSED |  0 FAILED |  2 SKIPPED      [SEE BELOW]
 -- [x] filesystem   27 PASSED |  0 FAILED |  2 SKIPPED
 -- [x] font          4 PASSED |  0 FAILED |  1 SKIPPED      [SEE BELOW]
--- [ ] graphics     STILL TO BE DONE
+-- [ ] graphics     40 PASSED |  0 FAILED | 54 SKIPPED      [SEE BELOW]
 -- [x] image         3 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] math         17 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] physics      22 PASSED |  0 FAILED |  0 SKIPPED
@@ -98,7 +98,7 @@ This is the status of all module tests currently.
 -- [x] window       32 PASSED |  2 FAILED |  2 SKIPPED      [SEE BELOW]
 -- [ ] objects      STILL TO BE DONE
 --------------------------------------------------------------------------------
--- [x] totals      159 PASSED |  4 FAILED | 11 SKIPPED
+-- [x] totals      201 PASSED |  2 FAILED | 66 SKIPPED
 ```
 
 The following modules are not covered as we can't really emulate input nicely:  
@@ -111,19 +111,16 @@ Modules with some small bits needed or needing sense checking:
 - **love.data** - packing methods need writing cos i dont really get what they are
 - **love.event** - love.event.wait or love.event.pump need writing if possible I dunno how to check
 - **love.font** - newBMFontRasterizer() wiki entry is wrong so not sure whats expected
+- **love.graphics** - still need to do tests for the drawing and state methods
 - **love.image** - ideally isCompressed should have an example of all compressed files love can take
 - **love.math** - linearToGamma + gammaToLinear using direct formulas don't get same value back
-
-Modules still to be completed or barely started
-- **love.graphics** - done 1 as an example of how we can test the drawing but not really started
-- **love.objects** - done 1 as an example of how we can test objs with mini scenarios
+- **love.objects** - not started properly yet
 
 ---
 
 ## Failures
 - **love.window.isMaximized()** - returns false after calling love.window.maximize?
 - **love.window.maximize()** - same as above
-- **love.objects.File()** - dont think I understand the buffering system
 
 ---
 

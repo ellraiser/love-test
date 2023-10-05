@@ -1,9 +1,10 @@
 `/Applications/love_12.app/Contents/MacOS/love ./testing`
 
-
-# v0.5
+# v0.2
 
 ## Changed
+- Added tests for all obj creation, transformation, window + system info graphics methods
+- Added half the state methods for graphics + added skips for missing drawing methods
 - Added TestMethod:assertNotNil() for quick nil checking
 - Added time total to the end of each module summary in console log to match file output
 - Removed a bunch of unessecary nil checks
@@ -15,4 +16,6 @@
 - Some general cleanup, incl. better comments and time format in file output
 
 ## Todo
+- graphics state methods
+- graphics drawing methods
 - need a platform: format table somewhere for compressed formats (i.e. DXT not supported)

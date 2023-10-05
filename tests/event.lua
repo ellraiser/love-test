@@ -58,7 +58,7 @@ end
 
 -- love.event.quit
 love.test.event.quit = function(test)
-  love.test.testsuite.fakequit = true
+  love.test.module.fakequit = true
   -- this should call love.quit, which will prevent the quit
   -- if this fails then the test would just abort here
   love.event.quit(0)

@@ -16,11 +16,11 @@ Currently written for löve 12
 ---
 
 ## Running Tests
-My initial attempt is to keep things as simple as possible, and just run all the tests inside Löve to match how they'd be used by developers in-engine.
+The initial pass is to keep things as simple as possible, and just run all the tests inside Löve to match how they'd be used by developers in-engine.
 To run the tests, download the repo and then run the main.lua as you would a löve game, i.e:
 
-WINDOWS: `& 'c:\Program Files\LOVE\love.exe' PATH_TO_LOVETEST --console`  
-MACOS: `/Applications/love.app/Contents/MacOS/love PATH_TO_LOVETEST`
+WINDOWS: `& 'c:\Program Files\LOVE\love.exe' PATH_TO_TESTING_FOLDER --console`  
+MACOS: `/Applications/love.app/Contents/MacOS/love PATH_TO_TESTING_FOLDER`
 
 By default all tests will be run for all modules.  
 
@@ -73,13 +73,13 @@ end
 
 After each test method is ran, the assertions are totalled up, printed, and we move onto the next method! Once all methods in the suite are run a total pass/fail/skip is given for that module and we move onto the next module (if any)
 
-For sanity-checking, I've put a test method for every method, even if it's currently not covered or we're not sure how to test yet, and set the test to be skipped with `test:skipTest(reason)` - this way we still see the method listed in the tests without it affected the pass/fail totals
+For sanity-checking, if it's currently not covered or we're not sure how to test yet we can set the test to be skipped with `test:skipTest(reason)` - this way we still see the method listed in the tests without it affected the pass/fail totals
 
 ---
 
 ## Coverage
 This is the status of all module tests currently.  
-"objects" is a special module to cover any object specific tests, i.e. testing a FileData object functions as expected
+"objects" is a special module to cover any object specific tests, i.e. testing a File object functions as expected
 ```lua
 -- [x] audio        26 PASSED |  0 FAILED |  0 SKIPPED
 -- [x] data          7 PASSED |  0 FAILED |  3 SKIPPED      [SEE BELOW]
@@ -117,16 +117,15 @@ Modules with some small bits needed or needing sense checking:
 
 Modules still to be completed or barely started
 - **love.graphics** - done 1 as an example of how we can test the drawing but not really started
-- **love.objects** - done 1 as an example of how we can test objs
+- **love.objects** - done 1 as an example of how we can test objs with mini scenarios
 
 ---
 
 ## Failures
 - **love.window.isMaximized()** - returns false after calling love.window.maximize?
 - **love.window.maximize()** - same as above
-- **love.filesystem.newFile()** - something changed in 12
-- **love.graphics.rectangle()** - something changed in 12
 - **love.physics.newGearJoint()** - something changed in 12
+- **love.objects.File()** - dont think I understand the buffering system
 
 ---
 

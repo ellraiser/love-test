@@ -46,8 +46,8 @@ love.test.graphics.rectangle = function(test)
   -- -- write to save data for sanity checking
   -- imgdata1:encode('png', 'love_test_graphics_rectangle_actual1.png')
   -- imgdata2:encode('png', 'love_test_graphics_rectangle_actual2.png')
-  -- imgdata1:release()
-  -- imgdata2:release()
+  imgdata1:release()
+  imgdata2:release()
 end
 
 -- love.graphics.arc

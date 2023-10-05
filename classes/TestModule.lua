@@ -18,7 +18,7 @@ TestModule = {
         PASS = 'green', FAIL = 'red', SKIP = 'grey'
       },
       colormap = {
-        grey = '\27[30m',
+        grey = '\27[37m',
         green = '\27[32m',
         red = '\27[31m',
         yellow = '\27[33m'
@@ -102,9 +102,9 @@ TestModule = {
     -- print module results to console
     self:log('yellow', 'love.' .. self.module .. '.testmodule.end')
     local failedcol = '\27[31m'
-    if self.failed == 0 then failedcol = '\27[30m' end
+    if self.failed == 0 then failedcol = '\27[37m' end
     self:log('green', tostring(self.passed) .. ' PASSED' .. ' || ' .. 
-      failedcol .. tostring(self.failed) .. ' FAILED || \27[30m' .. 
+      failedcol .. tostring(self.failed) .. ' FAILED || \27[37m' .. 
       tostring(self.skipped) .. ' SKIPPED')
     self.start = false
     self.fakequit = false

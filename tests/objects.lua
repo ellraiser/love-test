@@ -83,8 +83,6 @@ love.test.objects.File = function(test)
   test:assertEquals(counter, 15)
   file1:close()
 
-  file1:release()
-
 end
 
 

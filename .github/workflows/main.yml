@@ -1,0 +1,43 @@
+name: report-test
+on: [push, pull_request]
+
+jobs:
+  macOS:
+    runs-on: macos-latest
+    steps:
+    - name: Get sample file
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: examples/lovetest_runAllTests.md
+    - name: Love Test Report
+      uses: ellraiser/love-test-report@main
+      with:
+        name: Love Testsuite MacOS
+        title: macos-test-report
+        path: examples/lovetest_runAllTests.md
+  windows:
+    runs-on: windows-latest
+    steps:
+    - name: Get sample file
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: examples/lovetest_runAllTests.md
+    - name: Love Test Report
+      uses: ellraiser/love-test-report@main
+      with:
+        name: Love Testsuite Windows
+        title: windows-test-report
+        path: examples/lovetest_runAllTests.md
+  linux-os:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Get sample file
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: examples/lovetest_runAllTests.md
+    - name: Love Test Report
+      uses: ellraiser/love-test-report@main
+      with:
+        name: Love Testsuite Linux
+        title: linux-test-report
+        path: examples/lovetest_runAllTests.md

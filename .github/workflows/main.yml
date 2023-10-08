@@ -25,17 +25,17 @@ jobs:
         powershell.exe ./systemwidedeploy.cmd 1
     - name: Download Love
       run: |
-        curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -L -o love12.zip "https://github.com/love2d/love/suites/17006638388/artifacts/971298540"
-        tar -xf love12.zip
-        tar -xf love12/love-12.0-win64.zip
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://github.com/love2d/love/suites/17006638388/artifacts/971298540"
+        7z x love12.zip
+        7z x love12/love-12.0-win64.zip
     - name: Run Test Suite
-      run: love12\love-12.0-win64\lovec.exe ./
+      run: love12\love-12.0-win64\lovec.exe main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Windows
         title: windows-test-report
-        path: examples/lovetest_runAllTests.md
+        path: output/lovetest_runAllTests.md
   linux-os:
     runs-on: ubuntu-20.04
     steps:

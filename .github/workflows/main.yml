@@ -24,9 +24,12 @@ jobs:
         7z x mesa.7z
         powershell.exe ./systemwidedeploy.cmd 1
     - name: Download Love
-      run: curl.exe -L --output love.exe --url https://github.com/love2d/love/releases/download/11.4/love-11.4-win64.exe
+      run: |
+        curl.exe -L --output install/love-windows-x64.zip --url https://github.com/love2d/love/suites/17006638388/artifacts/971298540
+        tar -xf love-windows-x64.zip
+        tar -xf love-windows-x64/love-12.0-win64.zip
     - name: Run Test Suite
-      run: love.exe ./
+      run: love-windows-x64\love-12.0-win64\lovec.exe ./
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:

@@ -5,10 +5,8 @@ jobs:
   macOS:
     runs-on: macos-latest
     steps:
-    - name: Get sample file
+    - name: Checkout Repo
       uses: actions/checkout@v4
-      with:
-        sparse-checkout: examples/lovetest_runAllTests.md
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:
@@ -20,8 +18,12 @@ jobs:
     steps:
     - name: Get sample file
       uses: actions/checkout@v4
-      with:
-        sparse-checkout: examples/lovetest_runAllTests.md
+    - name: Install Mesa 
+      if: steps.vars.outputs.arch != 'ARM64'
+      run: |
+        curl.exe -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/23.2.1/mesa3d-23.2.1-release-msvc.7z
+        7z x mesa.7z
+        powershell.exe systemwidedeploy.cmd
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:

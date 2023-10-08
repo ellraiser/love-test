@@ -9,7 +9,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://github.com/love2d/love/suites/17006638388/artifacts/971298535/zip"
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298535/zip"
         7z x love12.zip
     - name: Run Test Suite
       run: love.app/Contents/MacOS/love main.lua
@@ -31,7 +31,7 @@ jobs:
         powershell.exe ./systemwidedeploy.cmd 1
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://github.com/love2d/love/suites/17006638388/artifacts/971298540/zip"
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298540/zip"
         7z x love12.zip
         7z x love12/love-12.0-win64.zip
     - name: Run Test Suite
@@ -49,7 +49,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://github.com/love2d/love/suites/17006638388/artifacts/971298534/zip"
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
         chmod a+x love12.AppImage
     - name: Run All Tests
       run: xvfb-run --a love12.AppImage main.lua

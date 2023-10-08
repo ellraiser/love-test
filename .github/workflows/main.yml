@@ -9,10 +9,10 @@ jobs:
       uses: actions/checkout@v4
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output builds/love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298535/zip"
-        7z x builds/love12.zip
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298535/zip"
+        7z x love12.zip
     - name: Run Test Suite
-      run: builds/love.app/Contents/MacOS/love main.lua
+      run: love.app/Contents/MacOS/love main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:
@@ -31,11 +31,11 @@ jobs:
         powershell.exe ./systemwidedeploy.cmd 1
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output builds/love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298540/zip"
-        7z x builds/love12.zip
-        7z x builds/love12/love-12.0-win64.zip
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298540/zip"
+        7z x love12.zip -o love12
+        7z x love12/love-12.0-win64.zip
     - name: Run Test Suite
-      run: builds\love12\love-12.0-win64\lovec.exe main.lua
+      run: love12\love-12.0-win64\lovec.exe main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:
@@ -49,10 +49,10 @@ jobs:
       uses: actions/checkout@v4
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output builds/love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
-        chmod a+x builds/love12.AppImage
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
+        chmod a+x love12.AppImage
     - name: Run All Tests
-      run: xvfb-run --auto-servernum builds/love12.AppImage main.lua
+      run: xvfb-run --auto-servernum love12.AppImage main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:

@@ -2,23 +2,23 @@ name: report-test
 on: [push, pull_request]
 
 jobs:
-  # macOS:
-  #   runs-on: macos-latest
-  #   steps:
-  #   - name: Checkout Repo
-  #     uses: actions/checkout@v4
-  #   - name: Run Test Suite
-  #     run: |
-  #       curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298535/zip"
-  #       7z x love12.zip -o*
-  #       7z x love12/love-macos.zip -o*
-  #       love-macos/love.app/Contents/MacOS/love main.lua
-  #   - name: Love Test Report
-  #     uses: ellraiser/love-test-report@main
-  #     with:
-  #       name: Love Testsuite MacOS
-  #       title: macos-test-report
-  #       path: output/lovetest_runAllTests.md
+  macOS:
+    runs-on: macos-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+    - name: Run Test Suite
+      run: |
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298535/zip"
+        7z x love12.zip -o*
+        7z x love12/love-macos.zip -o*
+        love-macos/love.app/Contents/MacOS/love main.lua
+    - name: Love Test Report
+      uses: ellraiser/love-test-report@main
+      with:
+        name: Love Testsuite MacOS
+        title: macos-test-report
+        path: output/lovetest_runAllTests.md
   windows:
     runs-on: windows-latest
     steps:
@@ -49,20 +49,20 @@ jobs:
         name: Love Testsuite Windows
         title: windows-test-report
         path: output/lovetest_runAllTests.md
-  # linux-os:
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #   - name: Checkout Repo
-  #     uses: actions/checkout@v4
-  #   - name: Run Test Suite
-  #     run: |
-  #       curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
-  #       chmod +x love12.AppImage
-  #       ls
-  #       xvfb-run ./love12.AppImage main.lua #works as a command but file dl is invalid
-  #   - name: Love Test Report
-  #     uses: ellraiser/love-test-report@main
-  #     with:
-  #       name: Love Testsuite Linux
-  #       title: linux-test-report
-  #       path: output/lovetest_runAllTests.md
+  linux-os:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+    - name: Run Test Suite
+      run: |
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
+        chmod +x love12.AppImage
+        ls
+        xvfb-run ./love12.AppImage main.lua
+    - name: Love Test Report
+      uses: ellraiser/love-test-report@main
+      with:
+        name: Love Testsuite Linux
+        title: linux-test-report
+        path: output/lovetest_runAllTests.md

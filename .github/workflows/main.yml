@@ -25,7 +25,7 @@ jobs:
         powershell.exe ./systemwidedeploy.cmd 1
     - name: Download Love
       run: |
-        curl.exe -L --output love-windows-x64.zip --url https://github.com/love2d/love/suites/17006638388/artifacts/971298540
+        curl.exe -vLJ -H 'Accept: application/octet-stream' --output love-windows-x64.zip --url https://github.com/love2d/love/suites/17006638388/artifacts/971298540
         tar -xf love-windows-x64.zip
         tar -xf love-windows-x64/love-12.0-win64.zip
     - name: Run Test Suite

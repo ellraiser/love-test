@@ -34,10 +34,10 @@ jobs:
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298540/zip"
         7z x love12.zip -o*
         7z x love12/love-12.0-win64.zip -o*
-        echo "==> love12"
-        cd love12
-        dir
         echo "==> love-12.0-win64"
+        cd love-12.0-win64
+        dir
+        echo "==> love-12.0-win64/love-12.0-win64"
         cd love-12.0-win64
         dir
         powershell.exe ./love-test/love-test/love-12.0-win64/love-12.0-win64/lovec.exe ./

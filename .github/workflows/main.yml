@@ -34,10 +34,12 @@ jobs:
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298540/zip"
         7z x love12.zip -o*
         7z x love12/love-12.0-win64.zip -o*
+        echo "unzipped"
+        dir
         cd love12
         echo "love12"
         dir
-        cd
+        cd ..
         cd love-12.0-win64
         echo "love-12.0-win65"
         dir
@@ -61,7 +63,7 @@ jobs:
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
         chmod +x love12.AppImage
         ls
-        love12.AppImage main.lua
+        ./love12.AppImage main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:

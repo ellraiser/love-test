@@ -7,12 +7,11 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4
-    - name: Download Love
+    - name: Run Test Suite
       run: |
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298535/zip"
         7z x love12.zip
-    - name: Run Test Suite
-      run: love.app/Contents/MacOS/love main.lua
+        love.app/Contents/MacOS/love main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:
@@ -29,13 +28,12 @@ jobs:
         curl -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/23.2.1/mesa3d-23.2.1-release-msvc.7z
         7z x mesa.7z
         powershell.exe ./systemwidedeploy.cmd 1
-    - name: Download Love
+    - name: Run Test Suite
       run: |
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298540/zip"
         7z x love12.zip -o love12
         7z x love12/love-12.0-win64.zip
-    - name: Run Test Suite
-      run: love12\love-12.0-win64\lovec.exe main.lua
+        love12\love-12.0-win64\lovec.exe main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:
@@ -47,12 +45,11 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4
-    - name: Download Love
+    - name: Run Test Suite
       run: |
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
         chmod a+x love12.AppImage
-    - name: Run All Tests
-      run: xvfb-run --auto-servernum love12.AppImage main.lua
+        xvfb-run --auto-servernum love12.AppImage main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:

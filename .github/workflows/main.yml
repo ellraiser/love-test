@@ -34,7 +34,7 @@ jobs:
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298540/zip"
         7z x love12.zip -o*
         7z x love12/love-12.0-win64.zip -o*
-        cd love12/love-12.0-win64.zip
+        cd love-12.0-win64
         dir
         lovec.exe main.lua
     - name: Love Test Report
@@ -51,7 +51,7 @@ jobs:
     - name: Run Test Suite
       run: |
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
-        chmod a+x love12.AppImage
+        chmod +x love12.AppImage
         ls
         xvfb-run .love12.AppImage main.lua
     - name: Love Test Report

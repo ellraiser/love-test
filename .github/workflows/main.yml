@@ -7,16 +7,22 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4
+    - name: Download Love
+      run: |
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://github.com/love2d/love/suites/17006638388/artifacts/971298535/zip"
+        7z x love12.zip
+    - name: Run Test Suite
+      run: love.app/Contents/MacOS/love main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite MacOS
         title: macos-test-report
-        path: examples/lovetest_runAllTests.md
+        path: output/lovetest_runAllTests.md
   windows:
     runs-on: windows-latest
     steps:
-    - name: Get sample file
+    - name: Checkout Repo
       uses: actions/checkout@v4
     - name: Install Mesa 
       run: |
@@ -25,7 +31,7 @@ jobs:
         powershell.exe ./systemwidedeploy.cmd 1
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://github.com/love2d/love/suites/17006638388/artifacts/971298540"
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://github.com/love2d/love/suites/17006638388/artifacts/971298540/zip"
         7z x love12.zip
         7z x love12/love-12.0-win64.zip
     - name: Run Test Suite
@@ -39,13 +45,17 @@ jobs:
   linux-os:
     runs-on: ubuntu-20.04
     steps:
-    - name: Get sample file
+    - name: Checkout Repo
       uses: actions/checkout@v4
-      with:
-        sparse-checkout: examples/lovetest_runAllTests.md
+    - name: Download Love
+      run: |
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://github.com/love2d/love/suites/17006638388/artifacts/971298534/zip"
+        chmod a+x love12.AppImage
+    - name: Run All Tests
+      run: xvfb-run --a love12.AppImage main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Linux
         title: linux-test-report
-        path: examples/lovetest_runAllTests.md
+        path: output/lovetest_runAllTests.md

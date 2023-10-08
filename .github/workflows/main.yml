@@ -41,20 +41,20 @@ jobs:
         name: Love Testsuite Windows
         title: windows-test-report
         path: output/lovetest_runAllTests.md
-   linux-os:
-     runs-on: ubuntu-20.04
-     steps:
-     - name: Checkout Repo
-       uses: actions/checkout@v4
-     - name: Run Test Suite
-       run: |
-         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
-         chmod +x love12.AppImage
-         ls
-         xvfb-run ./love12.AppImage main.lua
-     - name: Love Test Report
-       uses: ellraiser/love-test-report@main
-       with:
-         name: Love Testsuite Linux
-         title: linux-test-report
-         path: output/lovetest_runAllTests.md
+  linux-os:
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+    - name: Run Test Suite
+      run: |
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971298534/zip"
+        chmod +x love12.AppImage
+        ls
+        xvfb-run ./love12.AppImage main.lua
+    - name: Love Test Report
+      uses: ellraiser/love-test-report@main
+      with:
+        name: Love Testsuite Linux
+        title: linux-test-report
+        path: output/lovetest_runAllTests.md

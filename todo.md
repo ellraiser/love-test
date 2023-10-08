@@ -3,6 +3,7 @@
 ## TESTSUITE
 - [ ] setStencilMode to replace setStencilTest
 - [ ] start graphics drawing methods
+- [ ] move object methods to respective modules
 - [ ] start object methods
 
 ## GRAPHICS
@@ -20,15 +21,12 @@ Methods that need a better actual graphics check if possible:
 
 ## GITHUB ACTION CI
 - [ ] linux needs to run xvfb-run with the appimage
-- [ ] windows can try installing mesa for opengl replacement
+- [ ] try vulkan on windows/linux
 - [ ] ios test run?
 
+## NOTES
 Can't run --renderers metal on github action images:
 Run love-macos/love.app/Contents/MacOS/love testing --renderers metal
 Cannot create Metal renderer: Metal is not supported on this system.
 Cannot create graphics: no supported renderer on this system.
 Error: Cannot create graphics: no supported renderer on this system.
-
-Can't run test suite on windows as it stands:
-Unable to create renderer
-This program requires a graphics card and video drivers which support OpenGL 2.1 or OpenGL ES 2.

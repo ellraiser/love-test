@@ -53,6 +53,7 @@ jobs:
         .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install
     - name: Run Test Suite (Vulkan)
       run: |
+        $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
         echo "Setting Mesa Files"
         $Env:Path += "C:/VulkanSDK/$ver/Bin"
         $Env:VULKAN_SDK = "C:/VulkanSDK/$ver"

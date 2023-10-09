@@ -48,16 +48,19 @@ jobs:
         $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
         echo Downloaded
-        .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install com.lunarg.vulkan.glm
+        .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install
         echo "Setting Mesa Files"
         set VK_ICD_FILENAMES="mesa\x64\lvp_icd.x86_64.json"
         set SDL_VULKAN_LIBRARY="mesa\x64\vulkan_lvp.dll"
         echo "dir is C:\VulkanSDK\$ver"
         dir C:\VulkanSDK\$ver
         dir C:\VulkanSDK\$ver\Bin
-        echo "Set Vulkan Envs"
-        $Env:VULKAN_SDK = "C:\VulkanSDK\$ver"
-        $Env:Path += ";C:\VulkanSDK\$ver\Bin"
+        echo "Check Vulkan Envs"
+        echo "PATH" $ENV:PATH
+        echo "VULKAN_SDK" $ENV:VULKAN_SDK
+        echo "VK_SDK_PATH" $ENV:VK_SDK_PATH
+        echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
+        echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
         echo "Vulkan Maintenance"
         powershell.exe "C:\VulkanSDK\$ver\maintenancetool.exe" list
     - name: Run Test Suite (Vulkan)

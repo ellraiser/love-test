@@ -43,7 +43,7 @@ jobs:
     #     name: Love Testsuite Windows (opengl)
     #     title: windows-test-report-opengl
     #     path: output/lovetest_runAllTests.md
-      -name: Prepare Vulkan SDK
+    - name: Prepare Vulkan SDK
       uses: humbletim/setup-vulkan-sdk@v1.2.0
       with:
         vulkan-query-version: 1.3.204.0

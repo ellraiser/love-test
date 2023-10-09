@@ -29,12 +29,13 @@ jobs:
         curl -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/23.2.1/mesa3d-23.2.1-release-msvc.7z
         7z x mesa.7z -o*
         powershell.exe mesa\systemwidedeploy.cmd 1
-    # - name: Run Test Suite (opengl)
-    #   run: |
-    #     curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550225/zip"
-    #     7z x love12.zip -o*
-    #     7z x love12/love-12.0-win64.zip -o*
-    #     powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
+    - name: Install Love
+      run: |
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550225/zip"
+        7z x love12.zip -o*
+        7z x love12/love-12.0-win64.zip -o*
+    # - name: Run Tests (opengl)
+    #   run: powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
     # - name: Love Test Report (opengl)
     #   uses: ellraiser/love-test-report@main
     #   with:
@@ -68,10 +69,7 @@ jobs:
         powershell.exe "C:\VulkanSDK\$ver\maintenancetool.exe" list
     - name: Run Test Suite (Vulkan)
       run: |
-        dir 
-        dir love-12.0-win64
-        dir love-12.0-win64/love-12.0-win64
-        powershell.exe "love-12.0-win64/love-12.0-win64/lovec.exe" ./ --renderers vulkan
+        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
     - name: Love Test Report (Vulkan)
       uses: ellraiser/love-test-report@main
       with:

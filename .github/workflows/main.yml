@@ -53,6 +53,7 @@ jobs:
         $Env:VK_ICD_FILENAMES = "mesa\x64\lvp_icd.x86_64.json"
         $Env:SDL_VULKAN_LIBRARY = "mesa\x64\vulkan_lvp.dll"
         $Env:VULKAN_SDK = "C:\VulkanSDK\$ver"
+        $Env:VK_SDK_PATH = "C:\VulkanSDK\$ver"
         $Env:PATH += ";C:\VulkanSDK\$ver\Bin"
         echo "dir is C:\VulkanSDK\$ver"
         dir C:\VulkanSDK\$ver
@@ -65,9 +66,13 @@ jobs:
         echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
         echo "Vulkan Maintenance"
         powershell.exe "C:\VulkanSDK\$ver\maintenancetool.exe" list
+        powershell.exe "C:\VulkanSDK\1.3.261.1\Bin\vulkaninfoSDK.exe"
     - name: Run Test Suite (Vulkan)
       run: |
-        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
+        dir 
+        dir love-12.0-win64
+        dir love-12.0-win64/love-12.0-win64
+        powershell.exe "love-12.0-win64/love-12.0-win64/lovec.exe" ./ --renderers vulkan
     - name: Love Test Report (Vulkan)
       uses: ellraiser/love-test-report@main
       with:

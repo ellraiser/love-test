@@ -7,16 +7,14 @@
 - [ ] start object methods
 
 ## GRAPHICS
-Methods that need a better actual graphics check if possible:
+Methods that need a actual graphic pixel checks if possible:
 - [ ] setDepthMode
 - [ ] setFrontFaceWinding
 - [ ] setMeshCullMode
 
 ## FUTURE
 - [ ] need a platform: format table somewhere for compressed formats (i.e. DXT not supported)
-      could add platform as global to command and then use in tests?
 - [ ] use coroutines for the delay action? i.e. wrap each test call in coroutine 
-      and then every test can use coroutine.yield() if needed
 - [ ] could nil check some joystick and keyboard methods?
 
 ## GITHUB ACTION CI

@@ -2,3 +2,4 @@
 /output/*.xml
 /output/*.html
 /output/*.md
+/output/expected/*.png

@@ -10,31 +10,159 @@
 
 -- love.graphics.arc
 love.test.graphics.arc = function(test)
-  test:skipTest('test class needs writing')
+  -- draw some arcs using pi format
+  local canvas = love.graphics.newCanvas(32, 32)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.arc('line', "pie", 16, 16, 16, 0 * (math.pi/180), 360 * (math.pi/180), 10)
+    love.graphics.arc('fill', "pie", 16, 16, 16, 270 * (math.pi/180), 45 * (math.pi/180), 10)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.arc('line', "pie", 16, 16, 16, 0 * (math.pi/180), 90 * (math.pi/180), 10)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.arc('line', "pie", 16, 16, 16, 180 * (math.pi/180), 135 * (math.pi/180), 10)
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata1 = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata1, {
+    white = {{11,0},{20,0},{0,13},{0,14},{31,13},{31,14},{15,14}},
+    black = {{16,14},{16,16},{30,14},{30,16}},
+    yellow = {{15,15},{15,16},{16,15},{0,15},{4,27},{5,26},{14,17}},
+    red = {{15,17},{15,31},{17,15},{31,15},{28,26},{27,27}}
+  }, 'arc pi')
+  -- draw some arcs with open format
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.arc('line', "open", 16, 16, 16, 0 * (math.pi/180), 315 * (math.pi/180), 10)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.arc('fill', "open", 16, 16, 16, 0 * (math.pi/180), 180 * (math.pi/180), 10)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.arc('fill', "open", 16, 16, 16, 180 * (math.pi/180), 90 * (math.pi/180), 10)
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata2 = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata2, {
+    white = {{11,0},{20,0},{26,4},{5,4},{0,15},{19,31},{31,19}},
+    black = {{27,5},{27,4},{26,5},{1,15},{31,15}},
+    yellow = {{0,17},{0,19},{12,31},{14,31},{6,23},{7,24}},
+    red = {{0,16},{31,16},{31,18},{30,21},{18,31},{15,16},{16,16}}
+  }, 'arc open')
+  -- draw some arcs with closed format
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.arc('line', "closed", 16, 16, 16, 0 * (math.pi/180), 315 * (math.pi/180), 10)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.arc('fill', "closed", 16, 16, 16, 0 * (math.pi/180), 180 * (math.pi/180), 10)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.arc('line', "closed", 16, 16, 16, 180 * (math.pi/180), 90 * (math.pi/180), 10)
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata3 = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata3, {
+    white = {{11,0},{20,0},{26,4},{5,4},{0,15},{19,31},{31,19}},
+    yellow = {{0,17},{0,19},{12,31},{14,31}},
+    red = {{31,16},{31,18},{30,21},{18,31},{15,16},{16,16}}
+  }, 'arc open')
+  test:exportImg(imgdata1)
+  test:exportImg(imgdata2)
+  test:exportImg(imgdata3)
 end
 
 
 -- love.graphics.circle
 love.test.graphics.circle = function(test)
-  test:skipTest('test class needs writing')
+  -- draw some circles
+  local canvas = love.graphics.newCanvas(32, 32)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.circle('fill', 16, 16, 16)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.circle('line', 16, 16, 16)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.circle('fill', 16, 16, 8)
+    love.graphics.setColor(0, 1, 0, 1)
+    love.graphics.circle('fill', 16, 16, 4)
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    white = {{13,8},{18,8},{23,13},{23,18}},
+    green = {
+      {15,12},{16,12},{13,13},{18,13},{12,15},{12,16},{13,18},{18,18},
+      {15,19},{16,19},{19,15},{19,16}
+    },
+    black = {{10,0},{21,0},{0,10},{0,21},{31,10},{31,21},{10,31},{21,31}},
+    yellow = {
+      {11,10},{10,11},{8,14},{8,17},{10,20},{11,21},{14,23},{17,23},{20,21},
+      {21,20},{23,17},{23,14},{20,10},{21,11},{17,8},{14,8}
+    },
+    red = {{11,0},{20,0},{11,31},{20,31},{0,11},{0,20},{31,20},{31,11}}
+  }, 'circle')
+  test:exportImg(imgdata)
 end
+
 
 
 -- love.graphics.clear
 love.test.graphics.clear = function(test)
-  test:skipTest('test class needs writing')
+  local canvas = love.graphics.newCanvas(16, 16)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.clear(1, 1, 0, 1)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    yellow = {{0,0},{15,0},{0,15},{15,15},{8,8}}
+  }, 'clear')
+  test:exportImg(imgdata)
 end
 
 
 -- love.graphics.discard
 love.test.graphics.discard = function(test)
-  test:skipTest('test class needs writing')
+  test:skipTest('cant test this worked')
+  -- wrote all this before seeing "on some desktops this may do nothing"
+  -- leaving in case we need it in future
+  --local canvas = love.graphics.newCanvas(32, 32)
+  --love.graphics.setCanvas(canvas)
+  --  love.graphics.clear(0, 0, 0, 1)
+  --  love.graphics.draw(Logo.texture, Logo.img, 0, 0)
+  --  love.graphics.discard(true, true)
+  --love.graphics.setCanvas()
 end
 
 
 -- love.graphics.draw
 love.test.graphics.draw = function(test)
-  test:skipTest('test class needs writing')
+  local canvas1 = love.graphics.newCanvas(32, 32)
+  local canvas2 = love.graphics.newCanvas(32, 32)
+  local transform = love.math.newTransform( )
+  transform:translate(16, 0)
+  transform:scale(0.5, 0.5)
+  love.graphics.setCanvas(canvas1)
+    love.graphics.clear(0, 0, 0, 1)
+    -- img, offset
+    love.graphics.draw(Logo.texture, Logo.img, 0, 0, 0, 1, 1, 16, 16)
+  love.graphics.setCanvas()
+  love.graphics.setCanvas(canvas2)
+    love.graphics.clear(1, 0, 0, 1)
+    -- canvas, scale, shear, transform obj
+    love.graphics.draw(canvas1, 0, 0, 0, 0.5, 0.5, 0, 0, 2, 2)
+    love.graphics.draw(canvas1, 0, 16, 0, 0.5, 0.5)
+    love.graphics.draw(canvas1, 16, 16, 0, 0.5, 0.5)
+    love.graphics.draw(canvas1, transform)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas2, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    lovepink = {{23,3},{23,19},{7,19},{0,0},{16,0},{0,16},{16,16}},
+    loveblue = {{0,31},{15,17},{15,31},{16,31},{31,17},{31,31},{16,15},{31,15}},
+    white = {{15, 15},{6,19},{8,19},{22,19},{24,19},{22,3},{24,3}},
+    red = {{0,1},{1,0},{15,0},{15,7},{0,15},{7,15}}
+  }, 'drawing')
+  test:exportImg(imgdata)
 end
 
 
@@ -46,19 +174,55 @@ end
 
 -- love.graphics.drawLayer
 love.test.graphics.drawLayer = function(test)
-  test:skipTest('test class needs writing')
+  local image = love.graphics.newArrayImage({
+    'resources/love.png', 'resources/loveinv.png',
+    'resources/love.png', 'resources/loveinv.png'
+  })
+  local canvas = love.graphics.newCanvas(64, 64)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.drawLayer(image, 1, 0, 0, 0, 1, 1)
+    love.graphics.drawLayer(image, 2, 32, 0, 0, 0.5, 0.5)
+    love.graphics.drawLayer(image, 4, 0, 32, 0, 0.5, 0.5)
+    love.graphics.drawLayer(image, 3, 32, 32, 0, 2, 2, 16, 16)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    lovepink = {{30,2},{33,2},{2,30},{2,33},{4,60},{4,63},{60,4},{63,4},{31,23},{32,23}},
+    loveblue = {{14,33},{17,33},{46,1},{49,1},{1,46},{1,49},{33,14},{33,17}},
+    black = {{0,0},{63,0},{0,63},{39,6},{40,6},{6,39},{6,40},{6,55},{55,6}},
+    white = {{46,11},{48,11},{14,43},{16,43},{30,23},{33,23},{34,54},{53,40},{63,63}}
+  }, 'draw layer')
+  test:exportImg(imgdata)
 end
 
 
 -- love.graphics.ellipse
 love.test.graphics.ellipse = function(test)
-  test:skipTest('test class needs writing')
+  local canvas = love.graphics.newCanvas(32, 32)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.ellipse('fill', 16, 16, 16, 8)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.ellipse('fill', 24, 24, 10, 24)
+    love.graphics.setColor(1, 0, 1, 1)
+    love.graphics.ellipse('fill', 16, 0, 8, 16)
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    red = {{0,14},{0,17},{7,9},{7,22},{14,15},{14,16}},
+    pink = {{15,15},{16,15},{8,0},{8,4},{23,0},{23,4},{13,14},{18,14}},
+    yellow = {{24,0},{25,0},{14,17},{14,30},{15,31},{31,8}}
+  }, 'ellipses')
+  test:exportImg(imgdata)
 end
 
 
 -- love.graphics.flushBatch
 love.test.graphics.flushBatch = function(test)
-  test:skipTest('test class needs writing')
+  test:skipTest('not sure can be tested as used internally')
 end
 
 
@@ -138,6 +302,8 @@ love.test.graphics.rectangle = function(test)
       {9,14},{11,1},{14,1},{11,14},{14,14}
     }
   }, 'line')
+  test:exportImg(imgdata1)
+  test:exportImg(imgdata2)
 end
 
 
@@ -557,7 +723,8 @@ love.test.graphics.intersectScissor = function(test)
     love.graphics.origin()
     love.graphics.setScissor(0, 0, 8, 16)
     love.graphics.intersectScissor(0, 0, 4, 4)
-    love.graphics.clear(1, 0, 0, 1)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.rectangle('fill', 0, 0, 16, 16)
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setScissor()
   love.graphics.setCanvas()
@@ -566,6 +733,7 @@ love.test.graphics.intersectScissor = function(test)
     red = {{0,0},{3,3}},
     black ={{4,0},{0,4},{4,4}}
   }, 'intersect scissor')
+  test:exportImg(imgdata)
 end
 
 
@@ -651,6 +819,7 @@ love.test.graphics.setBlendMode = function(test)
     bluefade = {{0,15}}
   }, 'blend mode')
   love.graphics.setBlendMode('alpha', 'alphamultiply') -- reset 
+  test:exportImg(imgdata)
 end
 
 
@@ -673,6 +842,7 @@ love.test.graphics.setCanvas = function(test)
   test:assertPixels(imgdata, {
     red = {{0,0},{15,0},{15,15},{0,15}}
   }, 'set canvas')
+  test:exportImg(imgdata)
 end
 
 
@@ -704,6 +874,7 @@ love.test.graphics.setColor = function(test)
     greenhalf = {{0,2},{5,2},{10,2},{15,2}},
     blue = {{0,3},{5,3},{10,3},{15,3}}
   }, 'set color')
+  test:exportImg(imgdata)
 end
 
 
@@ -729,6 +900,7 @@ love.test.graphics.setColorMask = function(test)
   test:assertPixels(imgdata, {
     yellow = {{0,0},{0,15},{15,15},{15,0}}
   }, 'set color mask')
+  test:exportImg(imgdata)
 end
 
 
@@ -780,6 +952,7 @@ love.test.graphics.setFont = function(test)
       {14,2},{12,6}
     }
   }, 'set font for print')
+  test:exportImg(imgdata)
 end
 
 
@@ -827,6 +1000,7 @@ love.test.graphics.setLineJoin = function(test)
     yellow = {{8,7}},
     blue = {{8,8}}
   }, 'set line join')
+  test:exportImg(imgdata)
 end
 
 
@@ -852,6 +1026,7 @@ love.test.graphics.setLineStyle = function(test)
     red = {{0,0},{7,0},{15,0}},
     red07 = {{0,4},{7,4},{15,4}}
   }, 'set line style')
+  test:exportImg(imgdata)
 end
 
 
@@ -884,6 +1059,7 @@ love.test.graphics.setLineWidth = function(test)
     yellow = {{0,3},{0,5},{6,6},{8,6}},
     blue = {{0,7},{0,10},{6,15},{9,15}}
   }, 'set line width')
+  test:exportImg(imgdata)
 end
 
 
@@ -910,7 +1086,8 @@ love.test.graphics.setScissor = function(test)
     love.graphics.clear(0, 0, 0, 1)
     love.graphics.origin()
     love.graphics.setScissor(0, 0, 8, 16)
-    love.graphics.clear(1, 0, 0, 1)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.rectangle('fill', 0, 0, 16, 16)
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setScissor()
   love.graphics.setCanvas()
@@ -919,6 +1096,7 @@ love.test.graphics.setScissor = function(test)
     red = {{0,0},{7,0},{0,15},{7,15}},
     black ={{8,0},{8,15},{15,0},{15,15}}
   }, 'set scissor')
+  test:exportImg(imgdata)
 end
 
 
@@ -942,6 +1120,7 @@ love.test.graphics.setShader = function(test)
   test:assertPixels(imgdata, { 
     yellow = {{0,0},{15,0},{0,15},{15,15}},
   }, 'check shader set to yellow')
+  test:exportImg(imgdata)
 end
 
 
@@ -963,6 +1142,7 @@ love.test.graphics.setStencilTest = function(test)
   test:assertPixels(imgdata, { 
     red = {{6,2},{9,2},{2,6},{2,9},{13,6},{9,6},{6,13},{9,13}}
   }, 'check stencil test')
+  test:exportImg(imgdata)
 end
 
 
@@ -983,6 +1163,7 @@ love.test.graphics.setWireframe = function(test)
     yellow = {{1,14},{14,1},{14,14},{2,2},{13,13}},
     black = {{2,13},{13,2}}
   }, 'set wireframe')
+  test:exportImg(imgdata)
 end
 
 
@@ -1008,6 +1189,7 @@ love.test.graphics.applyTransform = function(test)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
   test:assertPixels(imgdata, { red = {{10, 0}} }, 'apply transform 10')
+  test:exportImg(imgdata)
 end
 
 
@@ -1044,6 +1226,7 @@ love.test.graphics.origin = function(test)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
   test:assertPixels(imgdata, { red = {{0, 0}} }, 'origin check')
+  test:exportImg(imgdata)
 end
 
 
@@ -1065,6 +1248,7 @@ love.test.graphics.pop = function(test)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
   test:assertPixels(imgdata, { red = {{0, 0}} }, 'pop 1')
+  test:exportImg(imgdata)
 end
 
 
@@ -1087,6 +1271,7 @@ love.test.graphics.push = function(test)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
   test:assertPixels(imgdata, { red = {{1, 1}} }, 'push 1')
+  test:exportImg(imgdata)
 end
 
 
@@ -1108,6 +1293,7 @@ love.test.graphics.replaceTransform = function(test)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
   test:assertPixels(imgdata, { red = {{10, 0}} }, 'replace transform 10')
+  test:exportImg(imgdata)
 end
 
 
@@ -1126,6 +1312,7 @@ love.test.graphics.rotate = function(test)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
   test:assertPixels(imgdata, { red = {{0,0},{3,0},{3,3},{0,3}} }, 'rotate 90')
+  test:exportImg(imgdata)
 end
 
 
@@ -1173,6 +1360,8 @@ love.test.graphics.shear = function(test)
   love.graphics.setCanvas()
   local imgdata2 = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
   test:assertPixels(imgdata2, { red = { {0,1},{0,4},{3,7},{3,10}} }, 'shear y')
+  test:exportImg(imgdata1)
+  test:exportImg(imgdata2)
 end
 
 
@@ -1210,6 +1399,7 @@ love.test.graphics.translate = function(test)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
   test:assertPixels(imgdata, { red = {{5,0},{0,5},{5,5},{0,0}} }, 'translate 4x')
+  test:exportImg(imgdata)
 end
 
 

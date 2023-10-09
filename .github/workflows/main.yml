@@ -58,7 +58,7 @@ jobs:
         dir "C:/VulkanSDK/$ver"
         dir "C:/VulkanSDK/$ver/Bin"
         powershell.exe "C:/VulkanSDK/$ver/maintenancetool.exe"
-        $ENV:Path += "C:/VulkanSDK/$ver/Bin"
+        $ENV:Path += ";C:/VulkanSDK/$ver/Bin"
         $ENV:VULKAN_SDK = "C:/VulkanSDK/$ver"
         echo "Setting Mesa Files"
         dir "mesa/x64/"

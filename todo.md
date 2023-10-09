@@ -1,7 +1,6 @@
 `/Applications/love_12.app/Contents/MacOS/love ./testing`
 
 ## TESTSUITE
-- [ ] move object methods to respective modules
 - [ ] start object methods
 - [ ] setStencilMode to replace setStencilTest
 
@@ -15,13 +14,15 @@ Methods that need a actual graphic pixel checks if possible:
 
 ## FUTURE
 - [ ] need a platform: format table somewhere for compressed formats (i.e. DXT not supported)
-- [ ] use coroutines for the delay action? i.e. wrap each test call in coroutine 
-- [ ] could nil check some joystick and keyboard methods?
 
 ## GITHUB ACTION CI
-- [ ] linux needs to run xvfb-run with the appimage
-- [ ] try vulkan on windows/linux
-- [ ] ios test run?
+- [x] MacOS OpenGL
+- [ ] MacOS Metal (not currently possible)
+- [x] Windows OpenGL (via Mesa3D)
+- [ ] Windows Vulkan (via Mesa3D)
+- [ ] Linux OpenGL (via xvfb)
+- [ ] Linux Vulkan
+- [ ] iOS?
 
 ## NOTES
 Can't run --renderers metal on github action images:

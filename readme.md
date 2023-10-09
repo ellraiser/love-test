@@ -46,18 +46,19 @@ The Markdown file can be used with [this github action](https://github.com/ellra
 ---
 
 ## Architecture
-Each method has it's own test method written in `/tests` under the matching module name.
+Each method and object has it's own test method written in `/tests` under the matching module name.
 
 When you run the tests, a single TestSuite object is created which handles the progress + totals for all the tests.  
 Each module has a TestModule object created, and each test method has a TestMethod object created which keeps track of assertions for that method. You can currently do the following assertions:
 - **assertNotNil**(value)
-- **assertEquals**(expected, actual)
-- **assertNotEquals**(expected, actual)
-- **assertRange**(actual, min, max)
-- **assertMatch**({option1, option2, option3 ...}, actual) 
-- **assertGreaterEqual**(expected, actual)
-- **assertLessEqual**(expected, actual)
+- **assertEquals**(expected, actual, label)
+- **assertNotEquals**(expected, actual, label)
+- **assertRange**(actual, min, max, label)
+- **assertMatch**({option1, option2, option3 ...}, actual, label) 
+- **assertGreaterEqual**(expected, actual, label)
+- **assertLessEqual**(expected, actual, label)
 - **assertObject**(table)
+- **assertPixels**(imgdata, pixeltable, label)
 
 Example test method:
 ```lua
@@ -79,29 +80,29 @@ end
 
 After each test method is ran, the assertions are totalled up, printed, and we move onto the next method! Once all methods in the suite are run a total pass/fail/skip is given for that module and we move onto the next module (if any)
 
-For sanity-checking, if it's currently not covered or we're not sure how to test yet we can set the test to be skipped with `test:skipTest(reason)` - this way we still see the method listed in the tests without it affected the pass/fail totals
+For sanity-checking, if it's currently not covered or it's not possible to test the method we can set the test to be skipped with `test:skipTest(reason)` - this way we still see the method listed in the test output without it affected the pass/fail totals
 
 ---
 
 ## Coverage
 This is the status of all module tests currently.  
-| Module                | Passed | Failed | Skipped | Time   |
-| --------------------- | ------ | ------ | ------- | ------ |
-| 🟢 audio | 26 | 0 | 2 | 0.473s |
-| 🟢 data | 7 | 0 | 5 | 0.212s |
-| 🟢 event | 4 | 0 | 2 | 0.108s |
-| 🟢 filesystem | 28 | 0 | 3 | 0.556s |
-| 🟢 font | 4 | 0 | 3 | 0.127s |
-| 🟢 graphics | 92 | 0 | 15 | 2.091s |
-| 🟢 image | 3 | 0 | 2 | 0.087s |
-| 🟢 math | 17 | 0 | 3 | 0.358s |
-| 🟢 physics | 22 | 0 | 6 | 0.492s |
-| 🟢 sound | 2 | 0 | 2 | 0.072s |
-| 🟢 system | 6 | 0 | 2 | 0.142s |
-| 🟢 thread | 3 | 0 | 2 | 0.088s |
-| 🟢 timer | 6 | 0 | 0 | 2.086s |
-| 🟢 video | 1 | 0 | 1 | 0.031s |
-| 🟢 window | 34 | 0 | 2 | 5.273s |
+| Module                | Written | Todo | Skipped |
+| --------------------- | ------ | ------ | ------- |
+| 🟡 audio | 26 | 2 | 0 |
+| 🟡 data | 7 | 5 | 0 |
+| 🟡 event | 4 | 1 | 1 |
+| 🟡 filesystem | 28 | 1 | 2 |
+| 🟡 font | 4 | 3 | 0 |
+| 🟡 graphics | 92 | 13 | 2 |
+| 🟡 image | 3 | 2 | 0 |
+| 🟡 math | 17 | 3 | 0 |
+| 🟡 physics | 22 | 6 | 0 |
+| 🟡 sound | 2 | 2 | 0 |
+| 🟢 system | 6 | 0 | 2 |
+| 🟡 thread | 3 | 2 | 0 |
+| 🟢 timer | 6 | 0 | 0 |
+| 🟡 video | 1 | 1 | 0 |
+| 🟢 window | 34 | 0 | 2 |
 
 The following modules are not covered as we can't really emulate input nicely:  
 `joystick`, `keyboard`, `mouse`, and `touch`
@@ -122,6 +123,6 @@ Modules with some small bits needed or needing sense checking:
 ---
 
 ## Future Goals
-- [ ] Tests can compare visual results to a reference image
+- [ ] Tests can compare visual results to a reference image (partially done)
 - [ ] Ability to test loading different combinations of modules
 - [ ] Performance tests

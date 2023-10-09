@@ -168,7 +168,7 @@ TestSuite = {
       tostring(self.totals[1]) .. '** passed, **' ..
       tostring(self.totals[2]) .. '** failed, and **' ..
       tostring(self.totals[3]) .. '** skipped\n\n### Report\n' ..
-      '| Module                | Passed | Failed | Skipped | Time   |\n' ..
+      '| Module                | Pass | Fail | Skip | Time   |\n' ..
       '| --------------------- | ------ | ------ | ------- | ------ |\n' ..
       self.mdrows .. '\n\n### Failures\n' .. self.mdfailures
 

@@ -35,8 +35,7 @@ If you want to specify only 1 specific method only you can use:
 
 All results will be printed in the console per method as PASS, FAIL, or SKIP with total assertions met on a module level and overall level.  
 
-An `XML` file in the style of [JUnit XML](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format) will be generated in the `/output` directory, along with a `HTML` (including visuals for love.graphics tests) and a `Markdown` file with a summary of all tests.  
-> The HTML output will need to be viewed locally as the actual test output will be stored in `/output` too
+An `XML` file in the style of [JUnit XML](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format) will be generated in the `/output` directory, along with a `HTML` and a `Markdown` file with a summary of all tests (including visuals for love.graphics tests).  
 > An example of both types of output can be found in the `/examples` folder  
 
 The Markdown file can be used with [this github action](https://github.com/ellraiser/love-test-report) if you want to output the report results to your CI.

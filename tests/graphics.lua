@@ -228,19 +228,61 @@ end
 
 -- love.graphics.line
 love.test.graphics.line = function(test)
-  test:skipTest('test class needs writing')
+  local canvas = love.graphics.newCanvas(16, 16)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.line(1,1,16,1,16,16,1,16,1,1)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.line({0,0,8,8,16,0,8,8,16,16,8,8,0,16})
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    yellow = {{0,0},{15,0},{0,15},{15,15},{7,7},{8,7},{8,7},{8,8}},
+    red = {{1,0},{14,0},{0,1},{0,14},{15,1},{15,14},{1,15},{14,15}}
+  }, 'lines')
+  test:exportImg(imgdata)
 end
 
 
 -- love.graphics.points
 love.test.graphics.points = function(test)
-  test:skipTest('test class needs writing')
+  local canvas = love.graphics.newCanvas(16, 16)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.points(1,1,16,1,16,16,1,16,1,1)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.points({2,2,8,8,15,2,8,9,15,15,9,9,2,15,9,8})
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    yellow = {{1,1},{14,1},{1,14},{14,14},{7,7},{8,7},{8,7},{8,8}},
+    red = {{0,0},{15,0},{15,15},{0,15}}
+  }, 'points')
+  test:exportImg(imgdata)
 end
 
 
 -- love.graphics.polygon
 love.test.graphics.polygon = function(test)
-  test:skipTest('test class needs writing')
+  local canvas = love.graphics.newCanvas(16, 16)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.polygon("fill", 1, 1, 4, 5, 8, 10, 16, 2, 7, 3, 5, 16, 16, 16, 1, 8)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.polygon("line", {2, 2, 4, 5, 3, 7, 8, 15, 12, 4, 5, 10})
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    yellow = {{1,0},{1,1},{5,9},{7,14},{8,14},{12,3}},
+    red = {{2,1},{1,2},{1,7},{5,15},{14,15},{8,8},{14,2},{7,1}}
+  }, 'polygon')
+  test:exportImg(imgdata)
 end
 
 
@@ -252,13 +294,61 @@ end
 
 -- love.graphics.print
 love.test.graphics.print = function(test)
-  test:skipTest('test class needs writing')
+  love.graphics.setFont(Font)
+  local canvas = love.graphics.newCanvas(16, 16)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.print('love', 0, 3, 0, 1, 1, 0, 0)
+    love.graphics.setColor(0, 1, 0, 1)
+    love.graphics.print('ooo', 0, 3, 0, 2, 2, 0, 0)
+    love.graphics.setColor(0, 0, 1, 1)
+    love.graphics.print('hello', 0, 3, 90*(math.pi/180), 1, 1, 0, 8)
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    red = {{0,0},{1,0},{1,1},{2,6},{4,4},{7,6},{10,2},{11,5},{14,3},{14,4}},
+    green = {
+      {2,1},{2,2},{0,3},{1,3},{1,8},{2,9},{7,10},{8,8},{9,4},{13,3},{14,2},
+      {13,8},{14,9}
+    },
+    blue = {
+      {4,15},{10,15},{4,12},{6,12},{8,12},{5,9},{7,9},{4,3},{10,3},{8,6},{7,7},
+      {4,7},{7,13},{8,12}
+    }
+  }, 'print')
+  test:exportImg(imgdata)
 end
 
 
 -- love.graphics.printf
 love.test.graphics.printf = function(test)
-  test:skipTest('test class needs writing')
+  love.graphics.setFont(Font)
+  local canvas = love.graphics.newCanvas(32, 32)
+  love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0, 0, 1)
+    love.graphics.setColor(1, 0, 0, 1)
+    love.graphics.printf('love', 0, 0, 8, "left")
+    love.graphics.setColor(0, 1, 0, 1)
+    love.graphics.printf('love', 0, 5, 16, "right")
+    love.graphics.setColor(0, 0, 1, 1)
+    love.graphics.printf('love', 0, 7, 32, "center")
+    love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.setCanvas()
+  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  test:assertPixels(imgdata, {
+    red = {
+      {1,0},{1,1},{0,3},{2,3},{2,7},{0,9},{3,11},{4,10},{0,15},{4,15},{2,19},
+      {0,24},{1,23},{3,23},{4,24},{0,26},{1,27},{2,27},{3,27}
+    },
+    green = {
+      {1,2},{0,8},{1,8},{2,8},{4,7},{5,8},{7,8},{8,7},{10,4},{14,4},{11,7},
+      {12,8},{10,13},{11,12},{13,12},{14,13},{10,15},{11,16}
+    },
+    blue = {{6,4},{6,10},{9,7},{10,6},{16,9},{18,9},{21,8},{25,8}}
+  }, 'printf')
+  test:exportImg(imgdata)
 end
 
 

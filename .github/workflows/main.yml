@@ -51,15 +51,17 @@ jobs:
         .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install com.lunarg.vulkan.glm
         echo "Setting VK_ICD_FILENAMES"
         set VK_ICD_FILENAMES="mesa\x64\lvp_icd.x86_64.json"
+        set SDL_VULKAN_LIBRARY="mesa\x64\vulkan_lvp.dll"
+        echo "dir is C:\VulkanSDK\$ver"
         dir C:\VulkanSDK\$ver
         dir C:\VulkanSDK\$ver\Bin
         echo "Set Vulkan Envs"
         $Env:VULKAN_SDK = "C:\VulkanSDK\$ver"
         $Env:Path += ";C:\VulkanSDK\$ver\Bin"
         echo "Vulkan Maintenance"
-        "C:\VulkanSDK\$ver\maintenancetool.exe" list
+        powershell.exe "C:\VulkanSDK\$ver\maintenancetool.exe" list
         echo "Vulkan Info"
-        "C:\VulkanSDK\$ver\Bin\vulkaninfoSDK.exe"
+        powershell.exe "C:\VulkanSDK\$ver\Bin\vulkaninfoSDK.exe"
     - name: Run Test Suite (Vulkan)
       run: |
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan

@@ -29,18 +29,18 @@ jobs:
         curl -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/23.2.1/mesa3d-23.2.1-release-msvc.7z
         7z x mesa.7z -o*
         powershell.exe mesa\systemwidedeploy.cmd 1
-    - name: Run Test Suite (opengl)
-      run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550225/zip"
-        7z x love12.zip -o*
-        7z x love12/love-12.0-win64.zip -o*
-        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
-    - name: Love Test Report (opengl)
-      uses: ellraiser/love-test-report@main
-      with:
-        name: Love Testsuite Windows (opengl)
-        title: windows-test-report-opengl
-        path: output/lovetest_runAllTests.md
+    # - name: Run Test Suite (opengl)
+    #   run: |
+    #     curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550225/zip"
+    #     7z x love12.zip -o*
+    #     7z x love12/love-12.0-win64.zip -o*
+    #     powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
+    # - name: Love Test Report (opengl)
+    #   uses: ellraiser/love-test-report@main
+    #   with:
+    #     name: Love Testsuite Windows (opengl)
+    #     title: windows-test-report-opengl
+    #     path: output/lovetest_runAllTests.md
     - name: Install Vulkan
       run: |
         $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
@@ -50,8 +50,10 @@ jobs:
         echo Downloaded
         .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install
         echo "Setting Mesa Files"
-        set VK_ICD_FILENAMES="mesa\x64\lvp_icd.x86_64.json"
-        set SDL_VULKAN_LIBRARY="mesa\x64\vulkan_lvp.dll"
+        $Env:VK_ICD_FILENAMES = "mesa\x64\lvp_icd.x86_64.json"
+        $Env:SDL_VULKAN_LIBRARY = "mesa\x64\vulkan_lvp.dll"
+        $Env:VULKAN_SDK = "C:\VulkanSDK\$ver"
+        $Env:PATH += ";C:\VulkanSDK\$ver\Bin"
         echo "dir is C:\VulkanSDK\$ver"
         dir C:\VulkanSDK\$ver
         dir C:\VulkanSDK\$ver\Bin

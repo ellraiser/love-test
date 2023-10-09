@@ -48,12 +48,16 @@ jobs:
         $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
         echo Downloaded
-        .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
+        .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install com.lunarg.vulkan.glm
         echo "Setting VK_ICD_FILENAMES"
         set VK_ICD_FILENAMES="mesa\x64\lvp_icd.x86_64.json"
         dir C:\VulkanSDK\Bin
-        $Env:VULKAN_SDK = "C:/VulkanSDK"
-        $Env:Path += ";C:/VulkanSDK/Bin"
+        echo "Set Vulkan Envs"
+        $Env:VULKAN_SDK = "C:\VulkanSDK"
+        $Env:Path += ";C:\VulkanSDK\Bin"
+        C:\VulkanSDK\maintenancetool.exe list
+        vkcube
+        vulkaninfo
         powershell.exe C:\VulkanSDK\Bin\vulkaninfoSDK.exe
     - name: Run Test Suite (Vulkan)
       run: |

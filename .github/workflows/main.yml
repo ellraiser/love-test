@@ -43,33 +43,24 @@ jobs:
     #     name: Love Testsuite Windows (opengl)
     #     title: windows-test-report-opengl
     #     path: output/lovetest_runAllTests.md
-    - name: Prepare Vulkan SDK
-      uses: humbletim/setup-vulkan-sdk@v1.2.0
-      with:
-        vulkan-query-version: 1.3.204.0
-        vulkan-components: Vulkan-Headers, Vulkan-Loader
-        vulkan-use-cache: true
-    # - name: Install Vulkan
-    #   run: |
-    #     $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
-    #     echo Version $ver
-    #     $ProgressPreference = 'SilentlyContinue'
-    #     Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
-    #     echo Downloaded
-    #     .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install
-    - name: Check Vulkan
+    - name: Install Vulkan
+      run: |
+        $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
+        echo Version $ver
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
+        echo Downloaded
+        .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install
+    - name: Run Test Suite (Vulkan)
       run: |
         echo "Setting Mesa Files"
-        $Env:VK_ICD_FILENAMES = "mesa\x64\lvp_icd.x86_64.json"
-        $Env:SDL_VULKAN_LIBRARY = "mesa\x64\vulkan_lvp.dll"
+        $Env:Path += "C:/VulkanSDK/$ver/Bin"
+        $Env:VULKAN_SDK = "C:/VulkanSDK/$ver"
+        $Env:VK_ICD_FILENAMES = "mesa/x64/lvp_icd.x86_64.json"
         echo "Check Vulkan Envs"
         echo "PATH" $ENV:PATH
         echo "VULKAN_SDK" $ENV:VULKAN_SDK
-        echo "VK_SDK_PATH" $ENV:VK_SDK_PATH
         echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
-        echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
-    - name: Run Test Suite (Vulkan)
-      run: |
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
     - name: Love Test Report (Vulkan)
       uses: ellraiser/love-test-report@main

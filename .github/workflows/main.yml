@@ -68,7 +68,6 @@ jobs:
         echo "VK_SDK_PATH" $ENV:VK_SDK_PATH
         echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
         echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
-        vulkaninfo
     - name: Run Test Suite (Vulkan)
       run: |
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan

@@ -24,6 +24,12 @@ jobs:
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4
+    - name: Install Vulkan
+      uses: humbletim/setup-vulkan-sdk@v1.2.0
+      with:
+        vulkan-query-version: 1.3.204.0
+        vulkan-components: Vulkan-Headers, Vulkan-Loader
+        vulkan-use-cache: true
     - name: Install Mesa 
       run: |
         curl -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/23.2.1/mesa3d-23.2.1-release-msvc.7z
@@ -41,12 +47,6 @@ jobs:
         name: Love Testsuite Windows (opengl)
         title: windows-test-report-opengl
         path: output/lovetest_runAllTests.md
-    - name: Prepare Vulkan SDK
-      uses: humbletim/setup-vulkan-sdk@v1.2.0
-      with:
-        vulkan-query-version: 1.3.204.0
-        vulkan-components: Vulkan-Headers, Vulkan-Loader
-        vulkan-use-cache: true
     - name: Run Test Suite (Vulkan)
       run: |
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan

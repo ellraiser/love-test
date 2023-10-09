@@ -21,8 +21,6 @@ jobs:
         path: output/lovetest_runAllTests.md
   windows:
     runs-on: windows-latest
-    env:
-      VULKAN_SDK: C:\VulkanSDK\
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4    
@@ -53,9 +51,10 @@ jobs:
         .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
         echo "Setting VK_ICD_FILENAMES"
         set VK_ICD_FILENAMES="mesa\x64\lvp_icd.x86_64.json"
-        dir C:\VulkanSDK
         dir C:\VulkanSDK\Bin
-        powershell.eve C:\VulkanSDK\Bin\vulkaninfoSDK.exe
+        $Env:VULKAN_SDK = "C:/VulkanSDK"
+        $Env:Path += ";C:/VulkanSDK/Bin"
+        powershell.exe C:\VulkanSDK\Bin\vulkaninfoSDK.exe
     - name: Run Test Suite (Vulkan)
       run: |
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan

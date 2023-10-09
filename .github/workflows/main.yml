@@ -35,6 +35,7 @@ jobs:
         curl -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/23.2.1/mesa3d-23.2.1-release-msvc.7z
         7z x mesa.7z -o*
         powershell.exe mesa\systemwidedeploy.cmd 1
+        set VK_ICD_FILENAMES="mesa\x64\lvp_icd.x86_64.json"
     - name: Run Test Suite (opengl)
       run: |
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550225/zip"

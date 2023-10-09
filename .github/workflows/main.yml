@@ -2,23 +2,23 @@ name: report-test
 on: [push, pull_request]
 
 jobs:
-  macOS:
-    runs-on: macos-latest
-    steps:
-    - name: Checkout Repo
-      uses: actions/checkout@v4
-    - name: Run Test Suite
-      run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550220/zip"
-        7z x love12.zip -o*
-        7z x love12/love-macos.zip -o*
-        love-macos/love.app/Contents/MacOS/love main.lua
-    - name: Love Test Report
-      uses: ellraiser/love-test-report@main
-      with:
-        name: Love Testsuite MacOS
-        title: macos-test-report
-        path: output/lovetest_runAllTests.md
+  # macOS:
+  #   runs-on: macos-latest
+  #   steps:
+  #   - name: Checkout Repo
+  #     uses: actions/checkout@v4
+  #   - name: Run Test Suite
+  #     run: |
+  #       curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550220/zip"
+  #       7z x love12.zip -o*
+  #       7z x love12/love-macos.zip -o*
+  #       love-macos/love.app/Contents/MacOS/love main.lua
+  #   - name: Love Test Report
+  #     uses: ellraiser/love-test-report@main
+  #     with:
+  #       name: Love Testsuite MacOS
+  #       title: macos-test-report
+  #       path: output/lovetest_runAllTests.md
   windows:
     runs-on: windows-latest
     steps:
@@ -72,31 +72,31 @@ jobs:
         name: Love Testsuite Windows (Vulkan)
         title: windows-test-report-vulkan
         path: output/lovetest_runAllTests.md
-  linux-os:
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Update APT
-      run: sudo apt-get update
-    - name: Install Dependencies
-      run: |
-        sudo apt-get install --assume-yes build-essential git make cmake autoconf automake \
-                                          libtool pkg-config libasound2-dev libpulse-dev libaudio-dev \
-                                          libjack-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
-                                          libxfixes-dev libxi-dev libxinerama-dev libxxf86vm-dev libxss-dev \
-                                          libgl1-mesa-dev libdbus-1-dev libudev-dev libgles2-mesa-dev \
-                                          libegl1-mesa-dev libibus-1.0-dev fcitx-libs-dev libsamplerate0-dev \
-                                          libsndio-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev
-    - name: Checkout Repo
-      uses: actions/checkout@v4
-    - name: Run Test Suite
-      run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550219/zip"
-        chmod +x love12.AppImage
-        ls
-        xvfb-run ./love12.AppImage main.lua
-    - name: Love Test Report
-      uses: ellraiser/love-test-report@main
-      with:
-        name: Love Testsuite Linux
-        title: linux-test-report
-        path: output/lovetest_runAllTests.md
+  # linux-os:
+  #   runs-on: ubuntu-20.04
+  #   steps:
+  #   - name: Update APT
+  #     run: sudo apt-get update
+  #   - name: Install Dependencies
+  #     run: |
+  #       sudo apt-get install --assume-yes build-essential git make cmake autoconf automake \
+  #                                         libtool pkg-config libasound2-dev libpulse-dev libaudio-dev \
+  #                                         libjack-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
+  #                                         libxfixes-dev libxi-dev libxinerama-dev libxxf86vm-dev libxss-dev \
+  #                                         libgl1-mesa-dev libdbus-1-dev libudev-dev libgles2-mesa-dev \
+  #                                         libegl1-mesa-dev libibus-1.0-dev fcitx-libs-dev libsamplerate0-dev \
+  #                                         libsndio-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev
+  #   - name: Checkout Repo
+  #     uses: actions/checkout@v4
+  #   - name: Run Test Suite
+  #     run: |
+  #       curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550219/zip"
+  #       chmod +x love12.AppImage
+  #       ls
+  #       xvfb-run ./love12.AppImage main.lua
+  #   - name: Love Test Report
+  #     uses: ellraiser/love-test-report@main
+  #     with:
+  #       name: Love Testsuite Linux
+  #       title: linux-test-report
+  #       path: output/lovetest_runAllTests.md

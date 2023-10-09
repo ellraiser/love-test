@@ -1,47 +1,44 @@
-# löve.test
-Basic testing suite for the löve APIs, based off of [this issue](https://github.com/love2d/love/issues/1745)
+# Lövetest
+Basic testing suite for the [Löve](https://github.com/love2d/love) APIs, based off of [this issue](https://github.com/love2d/love/issues/1745).
 
-Currently written for löve 12
+Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-development), which is still in development.
 
 ---
 
-## Primary Goals
+## Features
 - [x] Simple pass/fail tests in Lua with minimal setup 
-- [x] Ability to run all tests with a simple command.
+- [x] Ability to run all tests with a simple command
 - [x] Ability to see how many tests are passing/failing
-- [x] No platform-specific dependencies / scripts
-
-## Stretch Goals
 - [x] Ability to run a subset of tests
-- [x] Ability to easily run an individual test.
-- [x] Automatic testing that happens after every commit
+- [x] Ability to easily run an individual test
 - [x] Ability to see all visual results at a glance
+- [x] Automatic testing that happens after every commit
+- [x] No platform-specific dependencies / scripts
 
 ---
 
 ## Running Tests
-The initial pass is to keep things as simple as possible, and just run all the tests inside Löve to match how they'd be used by developers in-engine.
-To run the tests, download the repo and then run the main.lua as you would a löve game, i.e:
+The testsuite aims to keep things as simple as possible, and just runs all the tests inside Löve to match how they'd be used by developers in-engine.
+To run the tests, download the repo and then run the main.lua as you would a Löve game, i.e:
 
 WINDOWS: `& 'c:\Program Files\LOVE\love.exe' PATH_TO_TESTING_FOLDER --console`  
-MACOS: `/Applications/love.app/Contents/MacOS/love PATH_TO_TESTING_FOLDER`
+MACOS: `/Applications/love.app/Contents/MacOS/love PATH_TO_TESTING_FOLDER`  
+LINUX: `./love.AppImage PATH_TO_TESTING_FOLDER`
 
 By default all tests will be run for all modules.  
-
-If you want to specify a module you can add:  
-`--runSpecificModules filesystem`  
-For multiple modules, provide a comma seperate list:  
-`--runSpecificModules filesystem,audio,data"`
-
+If you want to specify a module/s you can use:  
+`--runSpecificModules filesystem,audio`  
 If you want to specify only 1 specific method only you can use:  
 `--runSpecificMethod filesystem write`
 
 All results will be printed in the console per method as PASS, FAIL, or SKIP with total assertions met on a module level and overall level.  
 
-An `XML` file in the style of [JUnit XML](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format) will be generated in the `/output` directory, along with a `HTML` and a `Markdown` file with a summary of all tests (including visuals for love.graphics tests).  
-> An example of both types of output can be found in the `/examples` folder  
-
-The Markdown file can be used with [this github action](https://github.com/ellraiser/love-test-report) if you want to output the report results to your CI.
+When finished, the following files will be generated in the `/output` directory with a summary of the test results:
+- an `XML` file in the style of [JUnit XML](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format)
+- a `HTML` file that shows any visual test results
+- a `Markdown` file for use with [this github action](https://github.com/ellraiser/love-test-report)
+> An example of all types of output can be found in the `/examples`  
+> The visual results of any graphic tests can be found in `/output/actual`
 
 ---
 
@@ -104,8 +101,8 @@ This is the status of all module tests currently.
 | 🟡 video | 1 | 1 | 0 |
 | 🟢 window | 34 | 0 | 2 |
 
-The following modules are not covered as we can't really emulate input nicely:  
-`joystick`, `keyboard`, `mouse`, and `touch`
+> The following modules are not covered as we can't really emulate input nicely:  
+> `joystick`, `keyboard`, `mouse`, and `touch`
 
 ---
 

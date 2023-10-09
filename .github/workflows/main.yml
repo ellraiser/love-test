@@ -7,12 +7,13 @@ jobs:
   #   steps:
   #   - name: Checkout Repo
   #     uses: actions/checkout@v4
-  #   - name: Run Test Suite
+  #   - name: Download Love
   #     run: |
   #       curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550220/zip"
   #       7z x love12.zip -o*
   #       7z x love12/love-macos.zip -o*
-  #       love-macos/love.app/Contents/MacOS/love main.lua
+  #   - name: Run Test Suite
+  #     run: love-macos/love.app/Contents/MacOS/love main.lua
   #   - name: Love Test Report
   #     uses: ellraiser/love-test-report@main
   #     with:
@@ -29,7 +30,7 @@ jobs:
         curl -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/23.2.1/mesa3d-23.2.1-release-msvc.7z
         7z x mesa.7z -o*
         powershell.exe mesa\systemwidedeploy.cmd 1
-    - name: Install Love
+    - name: Download Love
       run: |
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550225/zip"
         7z x love12.zip -o*
@@ -42,23 +43,29 @@ jobs:
     #     name: Love Testsuite Windows (opengl)
     #     title: windows-test-report-opengl
     #     path: output/lovetest_runAllTests.md
-    - name: Install Vulkan
+      -name: Prepare Vulkan SDK
+      uses: humbletim/setup-vulkan-sdk@v1.2.0
+      with:
+        vulkan-query-version: 1.3.204.0
+        vulkan-components: Vulkan-Headers, Vulkan-Loader
+        vulkan-use-cache: true
+    # - name: Install Vulkan
+    #   run: |
+    #     $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
+    #     echo Version $ver
+    #     $ProgressPreference = 'SilentlyContinue'
+    #     Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
+    #     echo Downloaded
+    #     .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install
+    - name: Check Vulkan
       run: |
-        $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
-        echo Version $ver
-        $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
-        echo Downloaded
-        .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install
         echo "Setting Mesa Files"
         $Env:VK_ICD_FILENAMES = "mesa\x64\lvp_icd.x86_64.json"
         $Env:SDL_VULKAN_LIBRARY = "mesa\x64\vulkan_lvp.dll"
-        $Env:VULKAN_SDK = "C:\VulkanSDK\$ver"
-        $Env:VK_SDK_PATH = "C:\VulkanSDK\$ver"
-        $Env:PATH += ";C:\VulkanSDK\$ver\Bin"
-        echo "dir is C:\VulkanSDK\$ver"
-        dir C:\VulkanSDK\$ver
-        dir C:\VulkanSDK\$ver\Bin
+        echo "dir is C:\VulkanSDK\1.3.204.0"
+        dir C:\VulkanSDK
+        dir C:\VulkanSDK\1.3.204.0
+        dir C:\VulkanSDK\1.3.204.0\Bin
         echo "Check Vulkan Envs"
         echo "PATH" $ENV:PATH
         echo "VULKAN_SDK" $ENV:VULKAN_SDK
@@ -92,10 +99,12 @@ jobs:
   #                                         libsndio-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev
   #   - name: Checkout Repo
   #     uses: actions/checkout@v4
-  #   - name: Run Test Suite
+  #   - name: Download Love
   #     run: |
   #       curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.AppImage --url "https://api.github.com/repos/love2d/love/actions/artifacts/971550219/zip"
   #       chmod +x love12.AppImage
+  #   - name: Run Test Suite
+  #     run: |
   #       ls
   #       xvfb-run ./love12.AppImage main.lua
   #   - name: Love Test Report

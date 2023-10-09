@@ -55,10 +55,10 @@ jobs:
         echo "Set Vulkan Envs"
         $Env:VULKAN_SDK = "C:\VulkanSDK"
         $Env:Path += ";C:\VulkanSDK\Bin"
+        echo "Vulkan Maintenance"
         C:\VulkanSDK\maintenancetool.exe list
-        vkcube
-        vulkaninfo
-        powershell.exe C:\VulkanSDK\Bin\vulkaninfoSDK.exe
+        echo "Vulkan Info"
+        C:\VulkanSDK\Bin\vulkaninfoSDK.exe
     - name: Run Test Suite (Vulkan)
       run: |
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan

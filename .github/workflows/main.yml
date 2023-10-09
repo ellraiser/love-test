@@ -62,18 +62,13 @@ jobs:
         echo "Setting Mesa Files"
         $Env:VK_ICD_FILENAMES = "mesa\x64\lvp_icd.x86_64.json"
         $Env:SDL_VULKAN_LIBRARY = "mesa\x64\vulkan_lvp.dll"
-        echo "dir is C:\VulkanSDK\1.3.204.0"
-        dir C:\VulkanSDK
-        dir C:\VulkanSDK\1.3.204.0
-        dir C:\VulkanSDK\1.3.204.0\Bin
         echo "Check Vulkan Envs"
         echo "PATH" $ENV:PATH
         echo "VULKAN_SDK" $ENV:VULKAN_SDK
         echo "VK_SDK_PATH" $ENV:VK_SDK_PATH
         echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
         echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
-        echo "Vulkan Maintenance"
-        powershell.exe "C:\VulkanSDK\$ver\maintenancetool.exe" list
+        vulkaninfo
     - name: Run Test Suite (Vulkan)
       run: |
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan

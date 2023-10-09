@@ -1,6 +1,113 @@
 -- love.filesystem
 
 
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+------------------------------------OBJECTS-------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+-- File (love.filesystem.newFile)
+love.test.filesystem.File = function(test)
+
+  -- setup a file to play with
+  local file1 = love.filesystem.openFile('data.txt', 'w')
+  file1:write('helloworld')
+  test:assertObject(file1)
+  file1:close()
+
+  -- test read mode
+  file1:open('r')
+  test:assertEquals('r', file1:getMode(), 'check read mode')
+  local contents, size = file1:read()
+  test:assertEquals('helloworld', contents)
+  test:assertEquals(10, size, 'check file read')
+  test:assertEquals(10, file1:getSize())
+  local ok, err = file1:write('hello')
+  test:assertNotEquals(nil, err, 'check cant write in read mode')
+  local iterator = file1:lines()
+  test:assertNotEquals(nil, iterator, 'check can read lines')
+  test:assertEquals('data.txt', file1:getFilename(), 'check filename matches')
+  file1:close()
+
+  -- test write mode
+  file1:open('w')
+  test:assertEquals('w', file1:getMode(), 'check write mode')
+  contents, size = file1:read()
+  test:assertEquals(nil, contents, 'check cant read file in write mode')
+  test:assertEquals('string', type(size), 'check err message shown')
+  ok, err = file1:write('helloworld')
+  test:assertEquals(true, ok, 'check file write')
+  test:assertEquals(nil, err, 'check no err writing')
+
+  -- test open/closing
+  file1:open('r')
+  test:assertEquals(true, file1:isOpen(), 'check file is open')
+  file1:close()
+  test:assertEquals(false, file1:isOpen(), 'check file gets closed')
+  file1:close()
+
+  -- test buffering 
+  -- @NOTE think I'm just not understanding how this is supposed to work?
+  -- I thought if buffering is enabled then nothing should get written until 
+  -- buffer overflows?
+  -- file1:open('a')
+  -- ok, err = file1:setBuffer('full', 10000)
+  -- test:assertEquals(true, ok)
+  -- test:assertEquals('full', file1:getBuffer())
+  -- file1:write('morecontent')
+  -- file1:close()
+  -- file1:open('r')
+  -- contents, size = file1:read()
+  -- test:assertEquals('helloworld', contents, 'check buffered content wasnt written')
+  -- file1:close()
+
+  -- @NOTE :close() commits buffer content so need to check before not after
+
+  -- test buffering and flushing
+  file1:open('w')
+  ok, err = file1:setBuffer('full', 10000)
+  test:assertEquals(true, ok)
+  test:assertEquals('full', file1:getBuffer())
+  file1:write('replacedcontent')
+  file1:flush()
+  file1:close()
+  file1:open('r')
+  contents, size = file1:read()
+  test:assertEquals('replacedcontent', contents, 'check buffered content was written')
+  file1:close()
+
+  -- loop through file data with seek/tell until EOF
+  file1:open('r')
+  local counter = 0
+  for i=1,100 do
+    file1:seek(i)
+    test:assertEquals(i, file1:tell())
+    if file1:isEOF() == true then
+      counter = i
+      break
+    end
+  end
+  test:assertEquals(counter, 15)
+  file1:close()
+
+end
+
+
+-- FileData (love.filesystem.newFileData)
+love.test.filesystem.FileData = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+------------------------------------METHODS-------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
 -- love.filesystem.append
 love.test.filesystem.append = function(test)
 	-- create a new file to test with

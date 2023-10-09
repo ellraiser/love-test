@@ -1,6 +1,38 @@
 -- love.math
 
 
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+------------------------------------OBJECTS-------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+-- BezierCurve (love.math.newBezierCurve)
+love.test.math.BezierCurve = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- RandomGenerator (love.math.RandomGenerator)
+love.test.math.RandomGenerator = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Transform (love.math.Transform)
+love.test.math.Transform = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+------------------------------------METHODS-------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
 -- love.math.colorFromBytes
 love.test.math.colorFromBytes = function(test)
   -- check random value

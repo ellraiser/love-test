@@ -10,9 +10,12 @@ Currently written for löve 12
 - [x] Ability to run all tests with a simple command.
 - [x] Ability to see how many tests are passing/failing
 - [x] No platform-specific dependencies / scripts
+
+## Stretch Goals
 - [x] Ability to run a subset of tests
 - [x] Ability to easily run an individual test.
 - [x] Automatic testing that happens after every commit
+- [x] Ability to see all visual results at a glance
 
 ---
 
@@ -84,21 +87,21 @@ For sanity-checking, if it's currently not covered or we're not sure how to test
 This is the status of all module tests currently.  
 | Module                | Passed | Failed | Skipped | Time   |
 | --------------------- | ------ | ------ | ------- | ------ |
-| 🟢 love.audio | 26 | 0 | 0 | 2.602s |
-| 🟢 love.data | 7 | 0 | 3 | 1.003s |
-| 🟢 love.event | 4 | 0 | 2 | 0.599s |
-| 🟢 love.filesystem | 27 | 0 | 2 | 2.900s |
-| 🟢 love.font | 4 | 0 | 1 | 0.500s |
-| 🟢 love.graphics | 81 | 0 | 15 | 10.678s |
-| 🟢 love.image | 3 | 0 | 0 | 0.300s |
-| 🟢 love.math | 17 | 0 | 0 | 1.678s |
-| 🟢 love.physics | 22 | 0 | 0 | 2.197s |
-| 🟢 love.sound | 2 | 0 | 0 | 0.200s |
-| 🟢 love.system | 6 | 0 | 2 | 0.802s |
-| 🟢 love.thread | 3 | 0 | 0 | 0.300s |
-| 🟢 love.timer | 6 | 0 | 0 | 2.358s |
-| 🟢 love.video | 1 | 0 | 0 | 0.100s |
-| 🟢 love.window | 34 | 0 | 2 | 8.050s |  
+| 🟢 audio | 26 | 0 | 2 | 0.473s |
+| 🟢 data | 7 | 0 | 5 | 0.212s |
+| 🟢 event | 4 | 0 | 2 | 0.108s |
+| 🟢 filesystem | 28 | 0 | 3 | 0.556s |
+| 🟢 font | 4 | 0 | 3 | 0.127s |
+| 🟢 graphics | 92 | 0 | 15 | 2.091s |
+| 🟢 image | 3 | 0 | 2 | 0.087s |
+| 🟢 math | 17 | 0 | 3 | 0.358s |
+| 🟢 physics | 22 | 0 | 6 | 0.492s |
+| 🟢 sound | 2 | 0 | 2 | 0.072s |
+| 🟢 system | 6 | 0 | 2 | 0.142s |
+| 🟢 thread | 3 | 0 | 2 | 0.088s |
+| 🟢 timer | 6 | 0 | 0 | 2.086s |
+| 🟢 video | 1 | 0 | 1 | 0.031s |
+| 🟢 window | 34 | 0 | 2 | 5.273s |
 
 The following modules are not covered as we can't really emulate input nicely:  
 `joystick`, `keyboard`, `mouse`, and `touch`
@@ -118,10 +121,7 @@ Modules with some small bits needed or needing sense checking:
 
 ---
 
-## Stretch Goals
+## Future Goals
 - [ ] Tests can compare visual results to a reference image
-- [ ] Ability to see all visual results at a glance
 - [ ] Ability to test loading different combinations of modules
 - [ ] Performance tests
-
-There is some unused code in the Test.lua class to add preview vs actual images to the HTML output

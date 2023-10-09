@@ -35,7 +35,6 @@ TestSuite = {
       joystick = {},
       math = {},
       mouse = {},
-      objects = {}, -- special for all object class contructor tests
       physics = {},
       sound = {},
       system = {},
@@ -76,7 +75,7 @@ TestSuite = {
               TextRun:set('love.' .. self.module.module .. '.' .. method)
 
               -- check method exists in love first
-              if self.module.module ~= 'objects' and (love[self.module.module] == nil or love[self.module.module][method] == nil) then
+              if love[self.module.module] == nil then
                 local tested = 'love.' .. self.module.module .. '.' .. method .. '()' 
                 local matching = string.sub(self.module.spacer, string.len(tested), 40)
                 self.module:log(self.module.colors['FAIL'],

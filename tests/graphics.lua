@@ -3,6 +3,79 @@
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
+------------------------------------OBJECTS-------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+-- Canvas (love.graphics.newCanvas)
+love.test.graphics.Canvas = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Font (love.graphics.newFont)
+love.test.graphics.Font = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Image (love.graphics.newImage)
+love.test.graphics.Image = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Mesh (love.graphics.newMesh)
+love.test.graphics.Mesh = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- ParticleSystem (love.graphics.newParticleSystem)
+love.test.graphics.ParticleSystem = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Quad (love.graphics.newQuad)
+love.test.graphics.Quad = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Shader (love.graphics.newShader)
+love.test.graphics.Shader = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- SpriteBatch (love.graphics.newSpriteBatch)
+love.test.graphics.SpriteBatch = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Text (love.graphics.newTextBatch)
+love.test.graphics.Text = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Texture (love.graphics.newTexture)
+love.test.graphics.Texture = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Video (love.graphics.newVideo)
+love.test.graphics.Video = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 ------------------------------------DRAWING-------------------------------------
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------

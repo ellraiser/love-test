@@ -1,6 +1,74 @@
 -- love.audio
 
 
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+------------------------------------OBJECTS-------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+-- RecordingDevice (love.audio.getRecordingDevices)
+love.test.audio.RecordingDevice = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Source (love.audio.newSource)
+love.test.audio.Source = function(test)
+  test:skipTest('test class needs writing')
+  -- local source1 = love.audio.newSource('resources/click.ogg', 'static')
+  --source1:clone()
+  --source1:getChannelCount()
+  --source1:getDuration()
+  --source1:isRelative()
+  --source1:queue()
+  --source1:getFreeBufferCount()
+  --source1:getType()
+  --source1:isPlaying()
+  --source1:play()
+  --source1:pause()
+  --source1:stop()
+  --source1:seek()
+  --source1:tell()
+  --source1:isLooping()
+  --source1:setLooping()
+  --source1:setAirAbsorption()
+  --source1:getAirAbsorption()
+  --source1:setAttenuationDistances()
+  --source1:getAttenuationDistances()
+  --source1:setCone()
+  --source1:getCone()
+  --source1:setDirection()
+  --source1:getDirection()
+  --source1:setEffect()
+  --source1:getEffect()
+  --source1:getActiveEffects()
+  --source1:setFilter()
+  --source1:getFilter()
+  --source1:setPitch()
+  --source1:getPitch()
+  --source1:setPosition()
+  --source1:getPosition()
+  --source1:setRelative()
+  --source1:setRolloff()
+  --source1:getRolloff()
+  --source1:setVelocity()
+  --source1:getVelocity()
+  --source1:setVolume()
+  --source1:getVolume()
+  --source1:setVolumeLimits()
+  --source1:getVolumeLimits()
+end
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+------------------------------------METHODS-------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
 -- love.audio.getActiveEffects
 love.test.audio.getActiveEffects = function(test)
   -- check we get a value

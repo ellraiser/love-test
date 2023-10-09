@@ -25,7 +25,6 @@ if love.thread ~= nil then require('tests.thread') end
 if love.timer ~= nil then require('tests.timer') end
 if love.video ~= nil then require('tests.video') end
 if love.window ~= nil then require('tests.window') end
-require('tests.objects')
 
 -- love.load
 -- load given arguments and run the test suite
@@ -72,7 +71,7 @@ love.load = function(args)
   local cmderr = 'Invalid flag used'
   local modules = {
     'audio', 'data', 'event', 'filesystem', 'font', 'graphics',
-    'image', 'math', 'objects', 'physics', 'sound', 'system',
+    'image', 'math', 'physics', 'sound', 'system',
     'thread', 'timer', 'video', 'window'
   }
   for a=1,#arglist do

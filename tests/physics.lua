@@ -1,6 +1,56 @@
 -- love.physics
 
 
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+----------------------------------OBJECTS---------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+-- Body (love.physics.newBody)
+love.test.physics.Body = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Contact (love.physics.World:getContacts)
+love.test.physics.Contact = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Fixture (love.physics.newFixture)
+love.test.physics.Fixture = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Joint (love.physics.newDistanceJoint)
+love.test.physics.Joint = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- Shape (love.physics.newCircleShape)
+love.test.physics.Shape = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+-- World (love.physics.newWorld)
+love.test.physics.World = function(test)
+  test:skipTest('test class needs writing')
+end
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+------------------------------------METHODS-------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
 -- love.physics.getDistance
 love.test.physics.getDistance = function(test)
   -- setup two fixtues to check

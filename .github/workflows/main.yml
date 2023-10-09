@@ -55,13 +55,17 @@ jobs:
       run: |
         $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
         echo "Setting Mesa Files"
+        dir "C:/VulkanSDK/$ver/Bin"
         $Env:Path += "C:/VulkanSDK/$ver/Bin"
         $Env:VULKAN_SDK = "C:/VulkanSDK/$ver"
+        dir "mesa/x64/"
         $Env:VK_ICD_FILENAMES = "mesa/x64/lvp_icd.x86_64.json"
+        $Env:VK_DRIVER_FILES = "mesa/x64/lvp_icd.x86_64.json"
         echo "Check Vulkan Envs"
         echo "PATH" $ENV:PATH
         echo "VULKAN_SDK" $ENV:VULKAN_SDK
         echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
+        echo "VK_DRIVER_FILES" $ENV:VK_DRIVER_FILES
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
     - name: Love Test Report (Vulkan)
       uses: ellraiser/love-test-report@main

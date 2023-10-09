@@ -22,6 +22,8 @@ jobs:
   #       path: output/lovetest_runAllTests.md
   windows:
     runs-on: windows-latest
+    env: 
+      VULKAN_SDK: C:\VulkanSDK\
     steps:
     - name: Checkout Repo
       uses: actions/checkout@v4    
@@ -50,16 +52,15 @@ jobs:
         $ProgressPreference = 'SilentlyContinue'
         Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
         echo Downloaded
-        .\VulkanSDK.exe  --accept-licenses --default-answer --confirm-command install
+        .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
     - name: Run Test Suite (Vulkan)
       run: |
         $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
         echo "Setting Vulkan Path"
-        dir "C:/VulkanSDK/$ver"
-        dir "C:/VulkanSDK/$ver/Bin"
-        powershell.exe "C:/VulkanSDK/$ver/maintenancetool.exe"
-        $ENV:Path += ";C:/VulkanSDK/$ver/Bin"
-        $ENV:VULKAN_SDK = "C:/VulkanSDK/$ver"
+        dir "C:/VulkanSDK"
+        dir "C:/VulkanSDK/Bin"
+        powershell.exe "C:/VulkanSDK/maintenancetool.exe"
+        $ENV:Path += ";C:/VulkanSDK/Bin"
         echo "Setting Mesa Files"
         dir "mesa/x64/"
         $ENV:VK_ICD_FILENAMES = "mesa/x64/lvp_icd.x86_64.json"
@@ -71,7 +72,7 @@ jobs:
         echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
         echo "VK_DRIVER_FILES" $ENV:VK_DRIVER_FILES
         echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
-        powershell.exe "C:/VulkanSDK/$ver/Bin/vulkaninfoSDK.exe"
+        powershell.exe "C:/VulkanSDK/Bin/vulkaninfoSDK.exe"
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
     - name: Love Test Report (Vulkan)
       uses: ellraiser/love-test-report@main

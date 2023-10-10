@@ -179,5 +179,7 @@ jobs:
         name: test-output-linux-opengles
         path: test-output-linux-opengles.zip
     - name: Stop xvfb
+      # should always stop xvfb even if other steps failed
+      if: always()
       run: |
         kill $XVFBPID

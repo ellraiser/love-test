@@ -145,6 +145,7 @@ jobs:
         sleep 3
         openbox &
         echo "OPENBOXPID=$!" >> $GITHUB_ENV
+    # linux opengl tests
     - name: Run Test Suite (opengl)
       run: |
         love12/love12.AppImage main.lua 
@@ -162,6 +163,7 @@ jobs:
       with:
         name: test-output-linux-opengl
         path: test-output-linux-opengl.zip
+    # linux opengles tests
     - name: Run Test Suite (opengles)
       run: |
         export LOVE_GRAPHICS_USE_OPENGLES=1
@@ -180,6 +182,24 @@ jobs:
       with:
         name: test-output-linux-opengles
         path: test-output-linux-opengles.zip
+    # linux vulkan tests
+    - name: Run Test Suite (vulkan)
+      run: |
+        love12/love12.AppImage main.lua --renderers vulkan
+    - name: Love Test Report (vulkan)
+      uses: ellraiser/love-test-report@main
+      with:
+        name: Love Testsuite Linux
+        title: linux-test-report-vulkan
+        path: output/lovetest_runAllTests.md
+    - name: Zip Test Output (vulkan)
+      run: |
+        7z a -tzip test-output-linux-vulkan.zip output\
+    - name: Artifact Test Output (vulkan)
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-output-linux-vulkan
+        path: test-output-linux-vulkan.zip
     - name: Stop xvfb and openbox
       # should always stop xvfb and openbox even if other steps failed
       if: always()

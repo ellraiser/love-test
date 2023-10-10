@@ -82,7 +82,6 @@ jobs:
       run: |
         $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
         echo "Setting Vulkan Path"
-        copy "C:/VulkanSDK/1.3.231.1/runtime/vulkan-1.dll" "mesa/x64"
         dir "C:/VulkanSDK/1.3.231.1"
         dir "C:/VulkanSDK/1.3.231.1/Lib"
         dir "C:/VulkanSDK/1.3.231.1/Bin"
@@ -100,6 +99,7 @@ jobs:
     #   with:
     #     name: Love Testsuite Windows (Vulkan)
     #     title: windows-test-report-vulkan
+    #    copy "C:/VulkanSDK/1.3.231.1/runtime/vulkan-1.dll" "mesa/x64"
     #     path: output/lovetest_runAllTests.md
     #    $ENV:VULKAN_INCLUDE_DIR = "C:/VulkanSDK/Include"
     #    $ENV:VULKAN_LIBRARY = "C:/VulkanSDK/Lib/vulkan-1.lib"

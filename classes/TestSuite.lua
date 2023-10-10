@@ -69,8 +69,11 @@ TestSuite = {
 
             -- run method once
             if self.module.called[self.module.index] == nil then
+
               self.module.called[self.module.index] = true
               local method = self.module.running[self.module.index]
+              UtilDebugLog('[SETUP METHOD]', self.module.module, method)
+
               self.test = TestMethod:new(method, self.module)
               TextRun:set('love.' .. self.module.module .. '.' .. method)
 
@@ -95,6 +98,8 @@ TestSuite = {
 
             -- once we've run check delay + eval
             else
+
+              UtilDebugLog('[CHECK DELAY METHOD]', self.module.module, self.delayed)
 
               -- @TODO use coroutines?
               -- if we have a test method that needs a delay
@@ -138,14 +143,17 @@ TestSuite = {
           -- once all tests have run
           else
 
+            UtilDebugLog("[MODULE END]", self.module, '')
+
             -- print module results and add to output
             self.module:printResult()
+            UtilDebugLog("[MODULE RESULT]", self.module, '')
 
-            UtilDebugLog("[MODULE END]", self.module, '')
 
             -- if we have more modules to go run the next one
             self.current = self.current + 1
             if #self.modules >= self.current then
+              UtilDebugLog("[NEW MODULE]", self.module, '')
               self.module = self.modules[self.current]
               self.module:runTests()
 

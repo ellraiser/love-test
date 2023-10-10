@@ -102,6 +102,8 @@ jobs:
   #      powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
   linux-os:
     runs-on: ubuntu-20.04
+    env:
+      ALSOFT_CONF: resources\alsoft.conf
     steps:
     - name: Update APT
       run: sudo apt-get update
@@ -123,12 +125,38 @@ jobs:
         7z x love12.zip -o*
         ls love12
         chmod +x love12/love-90cd0be39298d188f07c0f3da5060cdf892973cb.AppImage
-    - name: Run Test Suite
+    - name: Run Test Suite (opengl)
       run: |
         xvfb-run love12/love-90cd0be39298d188f07c0f3da5060cdf892973cb.AppImage main.lua
-    - name: Love Test Report
+    - name: Love Test Report (opengl)
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Linux
         title: linux-test-report
         path: output/lovetest_runAllTests.md
+    - name: Zip Test Output (opengl)
+      run: |
+        7z a -tzip test-output-windows-opengl.zip output\
+    - name: Artifact Test Output (opengl)
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-output-linux-opengl
+        path: test-output-linux-opengl.zip
+    - name: Run Test Suite (opengles)
+      run: |
+        $ENV:LOVE_GRAPHICS_USE_OPENGLES = 1
+        xvfb-run love12/love-90cd0be39298d188f07c0f3da5060cdf892973cb.AppImage main.lua
+    - name: Love Test Report (opengles)
+      uses: ellraiser/love-test-report@main
+      with:
+        name: Love Testsuite Linux
+        title: linux-test-report
+        path: output/lovetest_runAllTests.md
+    - name: Zip Test Output (opengles)
+      run: |
+        7z a -tzip test-output-windows-opengles.zip output\
+    - name: Artifact Test Output (opengles)
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-output-linux-opengl
+        path: test-output-linux-opengl.zip

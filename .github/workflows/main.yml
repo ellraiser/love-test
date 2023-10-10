@@ -127,7 +127,7 @@ jobs:
       run: |
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/973472507/zip"
         7z x love12.zip -o*
-        mv love12/love-*.AppImage love12.AppImage
+        mv love12/love-*.AppImage love12/love12.AppImage
         ls love12
         chmod +x love12/love.AppImage
     - name: Run Test Suite (opengl)

@@ -90,18 +90,20 @@ jobs:
         install_runtime: true
         cache: true
         stripdown: true
+  # should we be setting the SDL_VULKAN_LIB to the mesa version or the runtime one?
     - name: Run Test Suite (Vulkan)
       run: |
         dir "C:/VulkanSDK/1.3.231.1"
         echo "Copying Vulka DLL to Mesa x64"
         copy "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll" "mesa/x64"
         dir "mesa/x64"
-        $ENV:VULKAN_LIBRARY = "mesa/x64/vulkan-1.dll"
-        $ENV:SDL_VULKAN_LIBRARY = "mesa/x64/vulkan-1.dll"
+        $ENV:VULKAN_LIBRARY = "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll"
+        $ENV:SDL_VULKAN_LIBRARY = "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll"
         $ENV:VK_ICD_FILENAMES = "mesa/x64/lvp_icd.x86_64.json"
         echo "Check Vulkan Envs"
         echo "VULKAN_SDK" $ENV:VULKAN_SDK
         echo "VULKAN_VERSION" $ENV:VULKAN_VERSION
+        echo "VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
         echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
         echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
         echo "run love test with vulkan"

@@ -120,7 +120,7 @@ jobs:
                                           libgl1-mesa-dev libdbus-1-dev libudev-dev libgles2-mesa-dev \
                                           libegl1-mesa-dev libibus-1.0-dev fcitx-libs-dev libsamplerate0-dev \
                                           libsndio-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev \
-                                          libfuse2
+                                          libfuse2 wmctrl
     - name: Checkout Repo
       uses: actions/checkout@v4
     - name: Download Love
@@ -132,7 +132,9 @@ jobs:
         chmod +x love12/love12.AppImage
     - name: Run Test Suite (opengl)
       run: |
+        export DISPLAY=0
         xvfb-run --server-args="-screen 0, 320x240x24" love12/love12.AppImage main.lua 
+        wmctrl -l
     - name: Love Test Report (opengl)
       uses: ellraiser/love-test-report@main
       with:
@@ -150,7 +152,9 @@ jobs:
     - name: Run Test Suite (opengles)
       run: |
         export LOVE_GRAPHICS_USE_OPENGLES=1
+        export DISPLAY=1
         xvfb-run --server-args="-screen 1, 320x240x24" love12/love12.AppImage main.lua 
+        wmctrl -l
     - name: Love Test Report (opengles)
       uses: ellraiser/love-test-report@main
       with:

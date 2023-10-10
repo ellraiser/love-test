@@ -260,12 +260,16 @@ love.test.window.restore = function(test)
   -- TODO: for linux runner
   -- test doesn't pass because the current test delay system can't wait twice 
 
-  -- check minimized to start
-  love.window.minimize()
-  test:assertEquals(true, love.window.isMinimized(), 'check window minimized')
-  -- check restoring the state of the window
-  love.window.restore()
-  test:assertEquals(false, love.window.isMinimized(), 'check window restored')
+  if test:isDelayed() == false then
+    -- check minimized to start
+    love.window.minimize()
+    love.window.restore()
+    test:setDelay(10)
+  else
+    -- check restoring the state of the window
+    test:assertEquals(false, love.window.isMinimized(), 'check window restored')
+  end
+
 end
 
 
@@ -323,11 +327,15 @@ end
 
 -- love.window.setPosition
 love.test.window.setPosition = function(test)
-  -- check position is returned
-  love.window.setPosition(100, 100, 1)
-  local x, y, _ = love.window.getPosition()
-  test:assertEquals(100, x, 'check position x')
-  test:assertEquals(100, y, 'check position y')
+  if test:isDelayed() == false then
+    -- check position is returned
+    love.window.setPosition(100, 100, 1)
+    test:setDelay(10)
+  else
+    local x, y, _ = love.window.getPosition()
+    test:assertEquals(100, x, 'check position x')
+    test:assertEquals(100, y, 'check position y')
+  end
 end
 
 

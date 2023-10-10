@@ -79,7 +79,7 @@ jobs:
         dir "C:/VulkanSDK/Lib"
         dir "C:/VulkanSDK/Bin"
         powershell.exe "C:/VulkanSDK/maintenancetool.exe"
-        $ENV:Path += ";C:/VulkanSDK/Bin";C:/VulkanSDK/"
+        $ENV:Path += ";C:/VulkanSDK/Bin;C:\VulkanSDK\;"
         $ENV:VULKAN_INCLUDE_DIR = "C:/VulkanSDK/Include"
         $ENV:VULKAN_LIBRARY = "C:/VulkanSDK/Lib/vulkan-1.lib"
         $ENV:SDL_VULKAN_LIBRARY = "C:/VulkanSDK/Lib/vulkan-1.lib"

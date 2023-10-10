@@ -75,6 +75,7 @@ jobs:
       run: |
         $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
         echo "Setting Vulkan Path"
+        copy "C:/VulkanSDK/Lib/vulkan-1.lib" "mesa/x64"
         dir "C:/VulkanSDK"
         dir "C:/VulkanSDK/Lib"
         dir "C:/VulkanSDK/Bin"

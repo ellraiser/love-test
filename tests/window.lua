@@ -256,7 +256,10 @@ end
 
 -- love.window.restore
 love.test.window.restore = function(test)
-  -- TODO: need to wait between action and check
+
+  -- TODO: for linux runner
+  -- test doesn't pass because the current test delay system can't wait twice 
+
   -- check minimized to start
   love.window.minimize()
   test:assertEquals(true, love.window.isMinimized(), 'check window minimized')

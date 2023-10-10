@@ -6,12 +6,19 @@
 
 ## GRAPHICS
 Methods that need a actual graphic pixel checks if possible:
-- [ ] make get/set Vsync a notnil check instead as cant garuntee result
 - [ ] setDepthMode
 - [ ] setFrontFaceWinding
 - [ ] setMeshCullMode
 - [ ] present
 - [ ] drawInstanced
+- [ ] flushBatch
+      Here's possible idea for testing love.graphics.flushBatch:
+      Call love.graphics.flushBatch().
+      Query drawcall from love.graphics.getStats
+      Draw something
+      Call love.graphics.flushBatch()
+      Query drawcall again from love.graphics.getStats
+      Compare values between step 2 and 5. It should increase by 1.
 
 ## FUTURE
 - [ ] need a platform: format table somewhere for compressed formats (i.e. DXT not supported)
@@ -19,15 +26,10 @@ Methods that need a actual graphic pixel checks if possible:
 ## GITHUB ACTION CI
 - [x] MacOS OpenGL
 - [ ] MacOS Metal (not currently possible)
-- [x] Windows OpenGL (via Mesa3D)
-- [ ] Windows Vulkan (via Mesa3D)
-- [ ] Linux OpenGL (via xvfb)
+- [x] Windows OpenGL
+- [x] Windows OpenGLES 
+- [x] Windows Vulkan
+- [x] Linux OpenGL
+- [x] Linux OpenGLES
 - [ ] Linux Vulkan
 - [ ] iOS?
-
-## NOTES
-Can't run --renderers metal on github action images:
-Run love-macos/love.app/Contents/MacOS/love testing --renderers metal
-Cannot create Metal renderer: Metal is not supported on this system.
-Cannot create graphics: no supported renderer on this system.
-Error: Cannot create graphics: no supported renderer on this system.

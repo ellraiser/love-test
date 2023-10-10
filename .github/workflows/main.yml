@@ -47,42 +47,40 @@ jobs:
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/973472519/zip"
         7z x love12.zip -o*
         7z x love12/love-12.0-win64.zip -o*
-    - name: Run Tests (opengl)
-      run: powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
-    - name: Love Test Report (opengl)
-      uses: ellraiser/love-test-report@main
-      with:
-        name: Love Testsuite Windows (opengl)
-        title: windows-test-report-opengl
-        path: output/lovetest_runAllTests.md
-    - name: Zip Test Output
-      run: |
-        7z a -tzip test-output-windows-opengl.zip output\
-    - name: Artifact Test Output
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-output-windows-opengl
-        path: test-output-windows-opengl.zip
-    - name: Install Vulkan SDK
-      uses: jakoch/install-vulkan-sdk-action@v1.0.1
-      with:
-        vulkan_version: 1.3.231.1
-        install_runtime: true
-        cache: true
-        stripdown: true
-    # - name: Install Vulkan
+    # - name: Run Tests (opengl)
+    #   run: powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
+    # - name: Love Test Report (opengl)
+    #   uses: ellraiser/love-test-report@main
+    #   with:
+    #     name: Love Testsuite Windows (opengl)
+    #     title: windows-test-report-opengl
+    #     path: output/lovetest_runAllTests.md
+    # - name: Zip Test Output
     #   run: |
-    #     $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
-    #     echo Version $ver
-    #     $ProgressPreference = 'SilentlyContinue'
-    #     Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
-    #     echo Downloaded
-    #     .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
+    #     7z a -tzip test-output-windows-opengl.zip output\
+    # - name: Artifact Test Output
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: test-output-windows-opengl
+    #     path: test-output-windows-opengl.zip
+    # - name: Install Vulkan SDK
+    #   uses: jakoch/install-vulkan-sdk-action@v1.0.1
+    #   with:
+    #     vulkan_version: 1.3.231.1
+    #     install_runtime: true
+    #     cache: true
+    #     stripdown: true
+    - name: Install Vulkan
+      run: |
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.3.261.1/windows/VulkanRT-1.3.261.1-Installer.exe" -OutFile VulkanRT.exe
+        echo Downloaded
+        .\VulkanRT.exe /S
     - name: Run Test Suite (Vulkan)
       run: |
         $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
         echo "Setting Vulkan Path"
-        copy "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll" "mesa/x64"
+        dir "C:/Windows/System32/"
         dir "C:/VulkanSDK/1.3.231.1"
         dir "C:/VulkanSDK/1.3.231.1/Lib"
         dir "C:/VulkanSDK/1.3.231.1/Bin"

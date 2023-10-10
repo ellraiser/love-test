@@ -79,7 +79,7 @@ jobs:
       run: |
         $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
         echo "Copying Vulka DLL to Mesa x64"
-        IF EXIST C:/Windows/System32/vulkan-1.dll (echo C:/Windows/System32/vulkan-1.dll exists)
+        dir "C:/Windows/System32"
         copy "C:/Windows/System32/vulkan-1.dll" "mesa/64x/vulkan-1.dll"
         dir "mesa/x64"
         $ENV:PATH += ";mesa/x64;"

@@ -63,29 +63,26 @@ jobs:
       with:
         name: test-output-windows-opengl
         path: test-output-windows-opengl.zip
-    - name: Install Vulkan
-      run: |
-        $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
-        echo Version $ver
-        $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
-        echo Downloaded
-        .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
+    - name: Install Vulkan SDK
+      uses: jakoch/install-vulkan-sdk-action@v1.0.0
+      with:
+        vulkan_version: 1.3.231.1
+        install_runtime: true
+        cache: true
+        stripdown: true
+    # - name: Install Vulkan
+    #   run: |
+    #     $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
+    #     echo Version $ver
+    #     $ProgressPreference = 'SilentlyContinue'
+    #     Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
+    #     echo Downloaded
+    #     .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
     - name: Run Test Suite (Vulkan)
       run: |
-        $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
-        echo "Setting Vulkan Path"
-        copy "C:/VulkanSDK/Lib/vulkan-1.lib" "mesa/x64"
-        dir "C:/VulkanSDK"
-        dir "C:/VulkanSDK/Lib"
-        dir "C:/VulkanSDK/Bin"
-        dir "mesa/x64"
-        $ENV:PATH += ";C:/VulkanSDK/Bin;C:/VulkanSDK;C:/VulkanSDK/Lib;mesa/x64;"
-        echo "Check Vulkan Envs"
         echo "PATH" $ENV:PATH
         echo "VULKAN_SDK" $ENV:VULKAN_SDK
         echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
-        "C:/VulkanSDK/maintenancetool.exe"
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
     # - name: Love Test Report (Vulkan)
     #   uses: ellraiser/love-test-report@main

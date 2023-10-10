@@ -143,6 +143,8 @@ jobs:
       run: |
         Xvfb :0 -screen 0, 360x240x24 &
         echo "XVFBPID=$!" >> $GITHUB_ENV
+        # wait for xvfb to startup (3s is the same amount xvfb-run waits by default)
+        sleep 3
         openbox &
         echo "OPENBOXPID=$!" >> $GITHUB_ENV
     - name: Run Test Suite (opengl)

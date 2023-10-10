@@ -74,6 +74,7 @@ love.load = function(args)
     'image', 'math', 'physics', 'sound', 'system',
     'thread', 'timer', 'video', 'window'
   }
+  GITHUB_RUNNER = false
   for a=1,#arglist do
     if testcmd == '--runSpecificMethod' then
       if module == '' and love[ arglist[a] ] ~= nil then 
@@ -85,7 +86,7 @@ love.load = function(args)
       end
     end
     if testcmd == '--runSpecificModules' then
-      if love[ arglist[a] ] ~= nil or arglist[a] == 'objects' then 
+      if love[ arglist[a] ] ~= nil and arglist[a] ~= '--isRunner' then 
         table.insert(modules, arglist[a]) 
       end
     end
@@ -96,6 +97,9 @@ love.load = function(args)
     if arglist[a] == '--runSpecificModules' then
       testcmd = arglist[a]
       modules = {}
+    end
+    if arglist[a] == '--isRunner' then
+      GITHUB_RUNNER = true
     end
   end
 
@@ -139,6 +143,10 @@ love.load = function(args)
     love.test.module = love.test.modules[1]
     love.test.module:log('grey', '--runAllTests')
     love.test.output = 'lovetest_runAllTests'
+  end
+
+  if GITHUB_RUNNER then
+    love.test.module:log('grey', '--isRunner')
   end
 
   -- invalid command
@@ -195,4 +203,9 @@ end
 -- string time formatter
 function UtilTimeFormat(seconds)
   return string.format("%.3f", tostring(seconds))
+end
+
+
+function UtilDebugLog(a, b, c)
+  if GITHUB_RUNNER == true then print("DEBUG ==> ", a, b, c) end
 end

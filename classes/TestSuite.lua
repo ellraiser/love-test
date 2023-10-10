@@ -84,9 +84,11 @@ TestSuite = {
                 )
               -- otherwise run the test method
               else
+                UtilDebugLog("[CALL METHOD]", self.module.module, method)
                 local ok, chunk, err = pcall(self[self.module.module][method], self.test)
+                UtilDebugLog("[CALL METHOD END]", self.module.module, method)
                 if ok == false then
-                  print("FATAL", chunk, err)
+                  UtilDebugLog("[CALL FAILED]", chunk, err)
                   self.test.fatal = tostring(chunk) .. tostring(err)
                 end
               end
@@ -102,9 +104,11 @@ TestSuite = {
                 -- re-run the test method again when delay ends
                 -- its up to the test to handle the :isDelayed() property
                 if self.delayed.delay <= 0 then
+                  UtilDebugLog("[RECALL METHOD START]", self.module.module, self.delayed.method)
                   local ok, chunk, err = pcall(self[self.module.module][self.delayed.method], self.test)
+                  UtilDebugLog("[RECALL METHOD END]", self.module.module, self.delayed.method)
                   if ok == false then
-                    print("FATAL", chunk, err)
+                    UtilDebugLog("[RECALL FAILED]", chunk, err)
                     self.test.fatal = tostring(chunk) .. tostring(err)
                   end
                   self.delayed = nil
@@ -112,14 +116,18 @@ TestSuite = {
               else
 
                 -- now we're all done evaluate the test 
+                UtilDebugLog("[EVAL TEST START]", self.module.module, self.method)
                 local ok, chunk, err = pcall(self.test.evaluateTest, self.test)
+                UtilDebugLog("[EVAL TEST END]", self.module.module, self.method)
                 if ok == false then
-                  print("FATAL", chunk, err)
+                  UtilDebugLog("[EVAL FAILED]", chunk, err)
                   self.test.fatal = tostring(chunk) .. tostring(err)
                 end
                 -- save having to :release() anything we made in the last test
                 -- 7251ms > 7543ms
+                UtilDebugLog("[GARBAGE COLLECT START]", '', '')
                 collectgarbage("collect")
+                UtilDebugLog("[GARBAGE COLLECT END]", '', '')
                 -- move onto the next test
                 self.module.index = self.module.index + 1
 
@@ -132,6 +140,8 @@ TestSuite = {
 
             -- print module results and add to output
             self.module:printResult()
+
+            UtilDebugLog("[MODULE END]", self.module, '')
 
             -- if we have more modules to go run the next one
             self.current = self.current + 1

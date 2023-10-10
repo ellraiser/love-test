@@ -121,14 +121,11 @@ jobs:
       run: |
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/973472507/zip"
         7z x love12.zip -o*
-        ls
-        chmod +x love12.AppImage
+        ls love12
+        chmod +x love12/love12.AppImage
     - name: Run Test Suite
       run: |
-        chmod +x love12.AppImage
-        ./love12.AppImage --appimage-extract
-        ls
-        xvfb-run ./squashfs-root/bin/love main.lua
+        xvfb-run love12/love12.AppImage main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:

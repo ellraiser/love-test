@@ -2,7 +2,7 @@ name: report-test
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  macos:
+  macos-latest:
     runs-on: macos-latest
     steps:
     - name: Checkout Repo
@@ -28,7 +28,7 @@ jobs:
       with:
         name: test-output-macos-opengl
         path: test-output-macos-opengl.zip
-  windows:
+  windows-latest:
     runs-on: windows-latest
     env: 
       ALSOFT_CONF: resources/alsoft.conf
@@ -109,7 +109,7 @@ jobs:
       with:
         name: test-output-windows-vulkan
         path: test-output-windows-vulkan.zip
-  linux-os:
+  linux-ubuntu:
     runs-on: ubuntu-20.04
     env:
       ALSOFT_CONF: resources/alsoft.conf
@@ -188,7 +188,7 @@ jobs:
       run: |
         kill $XVFBPID
         kill $OPENBOXPID
-  ubuntu-22:
+  linux-vulkan:
     runs-on: ubuntu-22.04
     env:
       ALSOFT_CONF: resources/alsoft.conf

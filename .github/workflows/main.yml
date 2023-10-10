@@ -141,7 +141,7 @@ jobs:
         chmod +x love12/love12.AppImage
     - name: Start xvfb and openbox
       run: |
-        Xvfb :99 -screen 0, 360x240x24 &
+        Xvfb :0 -screen 0, 360x240x24 &
         echo "XVFBPID=$!" >> $GITHUB_ENV
         openbox &
         echo "OPENBOXPID=$!" >> $GITHUB_ENV

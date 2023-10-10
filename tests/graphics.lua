@@ -903,8 +903,9 @@ end
 -- love.graphics.isActive
 love.test.graphics.isActive = function(test)
   local name, version, vendor, device = love.graphics.getRendererInfo()
-  print(name, version, vendor, device)
-  if string.match(name, 'Vulkan') then
+  print(name)
+  if string.find(name, 'Vulkan') ~= nil then
+    print('skip test')
     test:skipTest('love.graphics.isActive() crashes on Vulkan')
   else 
     test:assertEquals(true, love.graphics.isActive(), 'check graphics is active') -- i mean if you got this far

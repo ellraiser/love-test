@@ -78,21 +78,21 @@ jobs:
         dir "C:/VulkanSDK"
         dir "C:/VulkanSDK/Lib"
         dir "C:/VulkanSDK/Bin"
-        powershell.exe "C:/VulkanSDK/maintenancetool.exe"
-        $ENV:Path += ";C:/VulkanSDK/Bin;C:\VulkanSDK\;"
-        $ENV:VULKAN_INCLUDE_DIR = "C:/VulkanSDK/Include"
-        $ENV:VULKAN_LIBRARY = "C:/VulkanSDK/Lib/vulkan-1.lib"
-        $ENV:SDL_VULKAN_LIBRARY = "C:/VulkanSDK/Lib/vulkan-1.lib"
+        $ENV:PATH += ";C:/VulkanSDK/Bin;C:\VulkanSDK;C:\VulkanSDK\Lib;mesa\x64;"
+    #    $ENV:VULKAN_INCLUDE_DIR = "C:/VulkanSDK/Include"
+    #    $ENV:VULKAN_LIBRARY = "C:/VulkanSDK/Lib/vulkan-1.lib"
+    #    $ENV:SDL_VULKAN_LIBRARY = "C:/VulkanSDK/Lib/vulkan-1.lib"
         echo "Setting Mesa Files"
         dir "mesa/x64/"
         echo "Check Vulkan Envs"
         echo "PATH" $ENV:PATH
         echo "VULKAN_SDK" $ENV:VULKAN_SDK
         echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
-        echo "VULKAN_LIBRARY" $ENV:VULKAN_LIBRARY
-        echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
-        echo "VULKAN_INCLUDE_DIR" $ENV:VULKAN_INCLUDE_DIR
-        powershell.exe C:/VulkanSDK/Bin/vulkaninfoSDK.exe
+    #    echo "VULKAN_LIBRARY" $ENV:VULKAN_LIBRARY
+    #    echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
+    #    echo "VULKAN_INCLUDE_DIR" $ENV:VULKAN_INCLUDE_DIR
+        powershell.exe "C:/VulkanSDK/maintenancetool.exe"
+    #    powershell.exe C:/VulkanSDK/Bin/vulkaninfoSDK.exe
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
     # - name: Love Test Report (Vulkan)
     #   uses: ellraiser/love-test-report@main

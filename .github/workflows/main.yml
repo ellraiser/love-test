@@ -105,7 +105,7 @@ jobs:
   linux-os:
     runs-on: ubuntu-20.04
     env:
-      ALSOFT_CONF: resources\alsoft.conf
+      ALSOFT_CONF: resources/alsoft.conf
     steps:
     - name: Update APT
       run: sudo apt-get update

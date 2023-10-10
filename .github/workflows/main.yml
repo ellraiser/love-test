@@ -22,32 +22,23 @@ jobs:
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output
       run: |
-        7z a -tzip test-output-macos.zip output\
+        7z a -tzip test-output-macos-opengl.zip output\
     - name: Artifact Test Output
       uses: actions/upload-artifact@v3
       with:
-        name: test-output-macos
-        path: test-output-macos.zip
+        name: test-output-macos-opengl
+        path: test-output-macos-opengl.zip
   windows:
     runs-on: windows-latest
     env: 
       VULKAN_SDK: C:\VulkanSDK\
+      ALSOFT_CONF: resources\alsoft.conf
+      VK_ICD_FILENAMES: mesa\x64\lvp_icd.x86_64.json
+      VK_DRIVER_FILES: mesa\x64\lvp_icd.x86_64.json
+      SDL_VULKAN_LIBRARY: mesa\x64\vulkan_lvp.dll
     steps:
     - name: Checkout Repo
-      uses: actions/checkout@v4       
-    # - name: Install Audio
-    #  shell: powershell
-    #  run: |
-      #  Start-Service audio*
-      #  Invoke-WebRequest https://github.com/duncanthrax/scream/releases/download/3.6/Scream3.6.zip -OutFile C:\Scream3.6.zip
-      #  Extract-7Zip -Path C:\Scream3.6.zip -DestinationPath C:\Scream
-      #  $cert = (Get-AuthenticodeSignature C:\Scream\Install\driver\Scream.sys).SignerCertificate
-      #  $store = [System.Security.Cryptography.X509Certificates.X509Store]::new("TrustedPublisher", "LocalMachine")
-      #  $store.Open("ReadWrite")
-      #  $store.Add($cert)
-      #  $store.Close()
-      #  cd C:\Scream\Install\driver
-      #  C:\Scream\Install\helpers\devcon install Scream.inf *Scream 
+      uses: actions/checkout@v4
     - name: Install Mesa 
       run: |
         curl -L --output mesa.7z --url https://github.com/pal1000/mesa-dist-win/releases/download/23.2.1/mesa3d-23.2.1-release-msvc.7z
@@ -59,9 +50,7 @@ jobs:
         7z x love12.zip -o*
         7z x love12/love-12.0-win64.zip -o*
     - name: Run Tests (opengl)
-      run: |
-        $ENV:ALSOFT_CONF = "./resources/alsoft.conf"
-        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
+      run: powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
     - name: Love Test Report (opengl)
       uses: ellraiser/love-test-report@main
       with:
@@ -70,41 +59,37 @@ jobs:
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output
       run: |
-        7z a -tzip test-output-windows.zip output\
+        7z a -tzip test-output-windows-opengl.zip output\
     - name: Artifact Test Output
       uses: actions/upload-artifact@v3
       with:
-        name: test-output-windows
-        path: test-output-windows.zip
-    # - name: Install Vulkan
-    #   run: |
-    #     $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
-    #     echo Version $ver
-    #     $ProgressPreference = 'SilentlyContinue'
-    #     Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
-    #     echo Downloaded
-    #     .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
-    # - name: Run Test Suite (Vulkan)
-    #   run: |
-    #     $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
-    #     echo "Setting Vulkan Path"
-    #     dir "C:/VulkanSDK"
-    #     dir "C:/VulkanSDK/Bin"
-    #     powershell.exe "C:/VulkanSDK/maintenancetool.exe"
-    #     $ENV:Path += ";C:/VulkanSDK/Bin"
-    #     echo "Setting Mesa Files"
-    #     dir "mesa/x64/"
-    #     $ENV:VK_ICD_FILENAMES = "mesa/x64/lvp_icd.x86_64.json"
-    #     $ENV:VK_DRIVER_FILES = "mesa/x64/lvp_icd.x86_64.json"
-    #     $ENV:SDL_VULKAN_LIBRARY = "mesa/x64/vulkan_lvp.dll"
-    #     echo "Check Vulkan Envs"
-    #     echo "PATH" $ENV:PATH
-    #     echo "VULKAN_SDK" $ENV:VULKAN_SDK
-    #     echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
-    #     echo "VK_DRIVER_FILES" $ENV:VK_DRIVER_FILES
-    #     echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
-    #     powershell.exe "C:/VulkanSDK/Bin/vulkaninfoSDK.exe"
-    #     powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
+        name: test-output-windows-opengl
+        path: test-output-windows-opengl.zip
+    - name: Install Vulkan
+      run: |
+        $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
+        echo Version $ver
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/$ver/windows/VulkanSDK-$ver-Installer.exe" -OutFile VulkanSDK.exe
+        echo Downloaded
+        .\VulkanSDK.exe --root C:\VulkanSDK  --accept-licenses --default-answer --confirm-command install
+    - name: Run Test Suite (Vulkan)
+      run: |
+        $ver = (Invoke-WebRequest -Uri "https://vulkan.lunarg.com/sdk/latest.json" | ConvertFrom-Json).windows
+        echo "Setting Vulkan Path"
+        dir "C:/VulkanSDK"
+        dir "C:/VulkanSDK/Bin"
+        powershell.exe "C:/VulkanSDK/maintenancetool.exe"
+        $ENV:Path += ";C:/VulkanSDK/Bin"
+        echo "Setting Mesa Files"
+        dir "mesa/x64/"
+        echo "Check Vulkan Envs"
+        echo "PATH" $ENV:PATH
+        echo "VULKAN_SDK" $ENV:VULKAN_SDK
+        echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
+        echo "VK_DRIVER_FILES" $ENV:VK_DRIVER_FILES
+        echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
+        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
     # - name: Love Test Report (Vulkan)
     #   uses: ellraiser/love-test-report@main
     #   with:

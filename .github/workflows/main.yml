@@ -133,7 +133,6 @@ jobs:
     - name: Run Test Suite (opengl)
       run: |
         xvfb-run --server-args="-screen 0, 320x240x24" love12/love12.AppImage main.lua 
-        wmctrl -l
     - name: Love Test Report (opengl)
       uses: ellraiser/love-test-report@main
       with:
@@ -151,7 +150,7 @@ jobs:
     - name: Run Test Suite (opengles)
       run: |
         export LOVE_GRAPHICS_USE_OPENGLES=1
-        xvfb-run love12/love12.AppImage main.lua
+        xvfb-run --server-args="-screen 1, 320x240x24" love12/love12.AppImage main.lua 
     - name: Love Test Report (opengles)
       uses: ellraiser/love-test-report@main
       with:

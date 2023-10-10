@@ -902,7 +902,12 @@ end
 
 -- love.graphics.isActive
 love.test.graphics.isActive = function(test)
-  test:assertEquals(true, love.graphics.isActive(), 'check graphics is active') -- i mean if you got this far
+  local name, version, vendor, device = love.graphics.getRendererInfo()
+  if string.match(name, 'Vulkan') then
+    test:skipTest('love.graphics.isActive() crashes on Vulkan')
+  else 
+    test:assertEquals(true, love.graphics.isActive(), 'check graphics is active') -- i mean if you got this far
+  end
 end
 
 

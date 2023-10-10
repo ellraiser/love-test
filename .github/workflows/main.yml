@@ -92,10 +92,11 @@ jobs:
     #      stripdown: true
     - name: Install Vulkan
       run: |
-        curl -L --silent --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/VulkanSDK-1.3.231.1-Installer.exe
-        VulkanSDK.exe in com.lunarg.vulkan.core com.lunarg.vulkan.vma --accept-licenses --default-answer --confirm-command --root C:\VulkanSDK\1.3.231.1
+        curl -L --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/VulkanSDK-1.3.231.1-Installer.exe
+        dir
+        powershell ./VulkanSDK.exe --install com.lunarg.vulkan.core com.lunarg.vulkan.vma --accept-licenses --default-answer --confirm-command --root C:\VulkanSDK\1.3.231.1
         dir C:\VulkanSDK\1.3.231.1
-        curl -L --silent --show-error --output vulkan-runtime.zip https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/vulkan-runtime-components.zip
+        curl -L --show-error --output vulkan-runtime.zip https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/vulkan-runtime-components.zip
         7z e vulkan-runtime.zip -o"C:\VulkanSDK\1.3.231.1\runtime\x64" */x64
         dir C:\VulkanSDK\1.3.231.1\x64
     # should we be setting the SDL_VULKAN_LIB to the mesa version or the runtime one?

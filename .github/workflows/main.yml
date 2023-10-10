@@ -116,7 +116,7 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       ALSOFT_CONF: resources/alsoft.conf
-      DISPLAY: 0
+      DISPLAY: :99
     steps:
     - name: Update APT
       run: sudo apt-get update
@@ -141,7 +141,8 @@ jobs:
         chmod +x love12/love12.AppImage
     - name: Start xvfb and openbox
       run: |
-        Xvfb :0 -screen 0, 360x240x24 &
+        echo "Starting XVFB on $DISPLAY"
+        Xvfb $DISPLAY -screen 0, 360x240x24 &
         echo "XVFBPID=$!" >> $GITHUB_ENV
         # wait for xvfb to startup (3s is the same amount xvfb-run waits by default)
         sleep 3

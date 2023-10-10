@@ -2,7 +2,7 @@ name: report-test
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  macOS:
+  macos:
     runs-on: macos-latest
     steps:
     - name: Checkout Repo
@@ -182,6 +182,49 @@ jobs:
       with:
         name: test-output-linux-opengles
         path: test-output-linux-opengles.zip
+    - name: Stop xvfb and openbox
+      # should always stop xvfb and openbox even if other steps failed
+      if: always()
+      run: |
+        kill $XVFBPID
+        kill $OPENBOXPID
+  ubuntu-22:
+    runs-on: ubuntu-22.04
+    env:
+      ALSOFT_CONF: resources/alsoft.conf
+      DISPLAY: :99
+    steps:
+    - name: Update APT
+      run: sudo apt-get update
+    - name: Install Dependencies
+      run: |
+        sudo apt-get install --assume-yes build-essential git make cmake autoconf automake \
+                                          libtool pkg-config libasound2-dev libpulse-dev libaudio-dev \
+                                          libjack-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
+                                          libxfixes-dev libxi-dev libxinerama-dev libxxf86vm-dev libxss-dev \
+                                          libgl1-mesa-dev libdbus-1-dev libudev-dev libgles2-mesa-dev \
+                                          libegl1-mesa-dev libibus-1.0-dev fcitx-libs-dev libsamplerate0-dev \
+                                          libsndio-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev \
+                                          libfuse2 wmctrl openbox mesa-vulkan-drivers libvulkan1 vulkan-tools \
+                                          vulkan-validationlayers
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+    - name: Download Love
+      run: |
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/973472507/zip"
+        7z x love12.zip -o*
+        mv love12/love-*.AppImage love12/love12.AppImage
+        ls love12
+        chmod +x love12/love12.AppImage
+    - name: Start xvfb and openbox
+      run: |
+        echo "Starting XVFB on $DISPLAY"
+        Xvfb $DISPLAY -screen 0, 360x240x24 &
+        echo "XVFBPID=$!" >> $GITHUB_ENV
+        # wait for xvfb to startup (3s is the same amount xvfb-run waits by default)
+        sleep 3
+        openbox &
+        echo "OPENBOXPID=$!" >> $GITHUB_ENV
     # linux vulkan tests
     - name: Run Test Suite (vulkan)
       run: |

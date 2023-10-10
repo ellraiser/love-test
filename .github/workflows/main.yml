@@ -156,9 +156,9 @@ jobs:
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output (opengles)
       run: |
-        7z a -tzip test-output-windows-opengles.zip output\
+        7z a -tzip test-output-linux-opengles.zip output\
     - name: Artifact Test Output (opengles)
       uses: actions/upload-artifact@v3
       with:
-        name: test-output-linux-opengl
-        path: test-output-linux-opengl.zip
+        name: test-output-linux-opengles
+        path: test-output-linux-opengles.zip

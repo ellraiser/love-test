@@ -6,6 +6,7 @@
 
 ## GRAPHICS
 Methods that need a actual graphic pixel checks if possible:
+- [ ] make get/set Vsync a notnil check instead as cant garuntee result
 - [ ] setDepthMode
 - [ ] setFrontFaceWinding
 - [ ] setMeshCullMode

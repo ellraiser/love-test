@@ -915,12 +915,17 @@ end
 
 -- love.graphics.isWireframe
 love.test.graphics.isWireframe = function(test)
-  -- check off by default
-  test:assertEquals(false, love.graphics.isWireframe(), 'check no wireframe by default')
-  -- check on when enabled
-  love.graphics.setWireframe(true)
-  test:assertEquals(true, love.graphics.isWireframe(), 'check wireframe is set')
-  love.graphics.setWireframe(false) -- reset
+  local name, version, vendor, device = love.graphics.getRendererInfo()
+  if string.match(name, 'OpenGL ES') then
+    test:skipTest('Wireframe not supported on OpenGL ES')
+  else
+    -- check off by default
+    test:assertEquals(false, love.graphics.isWireframe(), 'check no wireframe by default')
+    -- check on when enabled
+    love.graphics.setWireframe(true)
+    test:assertEquals(true, love.graphics.isWireframe(), 'check wireframe is set')
+    love.graphics.setWireframe(false) -- reset
+  end
 end
 
 
@@ -1311,22 +1316,27 @@ end
 
 -- love.graphics.setWireframe
 love.test.graphics.setWireframe = function(test)
-  -- check wireframe outlines
-  love.graphics.setWireframe(true)
-  local canvas = love.graphics.newCanvas(16, 16)
-  love.graphics.setCanvas(canvas)
-    love.graphics.clear(0, 0, 0, 1)
-    love.graphics.setColor(1, 1, 0, 1)
-    love.graphics.rectangle('fill', 2, 2, 13, 13)
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.setWireframe(false)
-  love.graphics.setCanvas()
-  local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
-  test:assertPixels(imgdata, { 
-    yellow = {{1,14},{14,1},{14,14},{2,2},{13,13}},
-    black = {{2,13},{13,2}}
-  }, 'set wireframe')
-  test:exportImg(imgdata)
+  local name, version, vendor, device = love.graphics.getRendererInfo()
+  if string.match(name, 'OpenGL ES') then
+    test:skipTest('Wireframe not supported on OpenGL ES')
+  else
+    -- check wireframe outlines
+    love.graphics.setWireframe(true)
+    local canvas = love.graphics.newCanvas(16, 16)
+    love.graphics.setCanvas(canvas)
+      love.graphics.clear(0, 0, 0, 1)
+      love.graphics.setColor(1, 1, 0, 1)
+      love.graphics.rectangle('fill', 2, 2, 13, 13)
+      love.graphics.setColor(1, 1, 1, 1)
+      love.graphics.setWireframe(false)
+    love.graphics.setCanvas()
+    local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+    test:assertPixels(imgdata, { 
+      yellow = {{1,14},{14,1},{14,14},{2,2},{13,13}},
+      black = {{2,13},{13,2}}
+    }, 'set wireframe')
+    test:exportImg(imgdata)
+  end
 end
 
 

@@ -96,9 +96,11 @@ jobs:
   #      echo "Copying Vulka DLL to Mesa x64"
   #      copy "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll" "mesa/x64"
   #      dir "mesa/x64"
+  #      $ENV:SDL_VULKAN_LIBRARY = "mesa/x64/vulkan-1.dll"
   #      echo "Check Vulkan Envs"
   #      echo "VULKAN_SDK" $ENV:VULKAN_SDK
   #      echo "VULKAN_VERSION" $ENV:VULKAN_VERSION
+  #      echo "SDL_VULKAN_LIBRARY" $ENV:SDL_VULKAN_LIBRARY
   #      echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
   #      echo "run love test with vulkan"
   #      powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
@@ -125,11 +127,12 @@ jobs:
       run: |
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/973472507/zip"
         7z x love12.zip -o*
+        mv love12/love-*.AppImage love12.AppImage
         ls love12
-        chmod +x love12/love-90cd0be39298d188f07c0f3da5060cdf892973cb.AppImage
+        chmod +x love12/love.AppImage
     - name: Run Test Suite (opengl)
       run: |
-        xvfb-run love12/love-90cd0be39298d188f07c0f3da5060cdf892973cb.AppImage main.lua
+        xvfb-run love12/love12.AppImage main.lua
     - name: Love Test Report (opengl)
       uses: ellraiser/love-test-report@main
       with:
@@ -147,7 +150,7 @@ jobs:
     - name: Run Test Suite (opengles)
       run: |
         export LOVE_GRAPHICS_USE_OPENGLES=1
-        xvfb-run love12/love-90cd0be39298d188f07c0f3da5060cdf892973cb.AppImage main.lua
+        xvfb-run love12/love12.AppImage main.lua
     - name: Love Test Report (opengles)
       uses: ellraiser/love-test-report@main
       with:

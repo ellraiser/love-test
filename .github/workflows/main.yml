@@ -132,7 +132,8 @@ jobs:
         chmod +x love12/love12.AppImage
     - name: Run Test Suite (opengl)
       run: |
-        xvfb-run love12/love12.AppImage main.lua
+        xvfb-run --server-args="-screen 0, 320x240x24" love12/love12.AppImage main.lua 
+        wmctrl -l
     - name: Love Test Report (opengl)
       uses: ellraiser/love-test-report@main
       with:

@@ -94,7 +94,7 @@ jobs:
         powershell.exe C:/VulkanSDK/1.3.231.1/runtime/x64/vulkaninfo.exe --summary
     - name: Run Tests (vulkan)
       run: |
-        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan --isRunner
+        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --renderers vulkan --isRunner
     - name: Love Test Report (vulkan)
       uses: ellraiser/love-test-report@main
       with:
@@ -228,7 +228,7 @@ jobs:
     # linux vulkan tests
     - name: Run Test Suite (vulkan)
       run: |
-        love12/love12.AppImage main.lua --renderers vulkan  --isRunner
+        love12/love12.AppImage main.lua --runAllTests --renderers vulkan --isRunner
     - name: Love Test Report (vulkan)
       uses: ellraiser/love-test-report@main
       with:

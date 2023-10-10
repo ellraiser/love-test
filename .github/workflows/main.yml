@@ -18,7 +18,7 @@ jobs:
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite MacOS
-        title: macos-test-report
+        title: test-report-macos
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output
       run: |
@@ -53,7 +53,7 @@ jobs:
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Windows (opengl)
-        title: windows-test-report-opengl
+        title: test-report-windows-opengl
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output (opengl)
       run: |
@@ -71,7 +71,7 @@ jobs:
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Windows (opengles)
-        title: windows-test-report-opengles
+        title: test-report-windows-opengles
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output (opengles)
       run: |
@@ -99,7 +99,7 @@ jobs:
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Windows (vulkan)
-        title: windows-test-report-vulkan
+        title: test-report-windows-vulkan
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output (vulkan)
       run: |
@@ -153,7 +153,7 @@ jobs:
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Linux
-        title: linux-test-report-opengl
+        title: test-report-linux-opengl
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output (opengl)
       run: |
@@ -172,7 +172,7 @@ jobs:
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Linux
-        title: linux-test-report-opengles
+        title: test-report-linux-opengles
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output (opengles)
       run: |
@@ -233,7 +233,7 @@ jobs:
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Linux
-        title: linux-test-report-vulkan
+        title: test-report-linux-vulkan
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output (vulkan)
       run: |

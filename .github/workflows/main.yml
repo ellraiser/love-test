@@ -81,6 +81,8 @@ jobs:
       with:
         name: test-output-windows-opengles
         path: test-output-windows-opengles.zip
+  #  Setting up Vulkan to use with Mesa
+  #  https://github.com/pal1000/mesa-dist-win/issues/63
   #  - name: Install Vulkan SDK
   #    uses: jakoch/install-vulkan-sdk-action@v1.0.1
   #    with:
@@ -132,7 +134,7 @@ jobs:
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Linux
-        title: linux-test-report
+        title: linux-test-report-opengl
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output (opengl)
       run: |
@@ -144,13 +146,13 @@ jobs:
         path: test-output-linux-opengl.zip
     - name: Run Test Suite (opengles)
       run: |
-        LOVE_GRAPHICS_USE_OPENGLES = 1
+        export LOVE_GRAPHICS_USE_OPENGLES=1
         xvfb-run love12/love-90cd0be39298d188f07c0f3da5060cdf892973cb.AppImage main.lua
     - name: Love Test Report (opengles)
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Linux
-        title: linux-test-report
+        title: linux-test-report-opengles
         path: output/lovetest_runAllTests.md
     - name: Zip Test Output (opengles)
       run: |

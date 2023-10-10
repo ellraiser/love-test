@@ -122,9 +122,9 @@ jobs:
         chmod +x love12.AppImage
     - name: Run Test Suite
       run: |
-        --appimage-extract ./love12.AppImage
+        ./love12.AppImage --appimage-extract
         ls
-        xvfb-run ./love12/squashfs-root/bin/love main.lua
+        xvfb-run ./squashfs-root/bin/love main.lua
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:

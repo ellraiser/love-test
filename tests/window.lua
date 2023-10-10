@@ -187,9 +187,9 @@ love.test.window.isMinimized = function(test)
     test:assertEquals(false, love.window.isMinimized(), 'check window not minimized')
     -- try to minimize
     love.window.minimize()
-    test:setDelay(1)
+    test:setDelay(10)
   else
-    -- on linux minimize only gets recognised in the next frame
+    -- on linux minimize won't get recognized immediately, so wait a few frames
     test:assertEquals(true, love.window.isMinimized(), 'check window minimized')
     love.window.restore()
   end

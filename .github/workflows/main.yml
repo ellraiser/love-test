@@ -95,7 +95,7 @@ jobs:
     - name: Run Tests (vulkan)
       run: |
         $ENV:LOVE_GRAPHICS_DEBUG=1
-        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --renderers vulkan --isRunner
+        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --renderers vulkan
     - name: Love Test Report (vulkan)
       uses: ellraiser/love-test-report@main
       with:
@@ -230,7 +230,7 @@ jobs:
     - name: Run Test Suite (vulkan)
       run: |
         export LOVE_GRAPHICS_DEBUG=1
-        love12/love12.AppImage main.lua --runAllTests --renderers vulkan --isRunner
+        love12/love12.AppImage main.lua --runAllTests --renderers vulkan
     - name: Love Test Report (vulkan)
       uses: ellraiser/love-test-report@main
       with:

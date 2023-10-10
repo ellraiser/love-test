@@ -129,7 +129,7 @@ jobs:
                                           libgl1-mesa-dev libdbus-1-dev libudev-dev libgles2-mesa-dev \
                                           libegl1-mesa-dev libibus-1.0-dev fcitx-libs-dev libsamplerate0-dev \
                                           libsndio-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev \
-                                          libfuse2 wmctrl
+                                          libfuse2 wmctrl openbox
     - name: Checkout Repo
       uses: actions/checkout@v4
     - name: Download Love
@@ -139,10 +139,12 @@ jobs:
         mv love12/love-*.AppImage love12/love12.AppImage
         ls love12
         chmod +x love12/love12.AppImage
-    - name: Start xvfb
+    - name: Start xvfb and openbox
       run: |
         Xvfb :99 -screen 0, 360x240x24 &
         echo "XVFBPID=$!" >> $GITHUB_ENV
+        openbox &
+        echo "OPENBOXPID=$!" >> $GITHUB_ENV
     - name: Run Test Suite (opengl)
       run: |
         love12/love12.AppImage main.lua 
@@ -178,8 +180,9 @@ jobs:
       with:
         name: test-output-linux-opengles
         path: test-output-linux-opengles.zip
-    - name: Stop xvfb
-      # should always stop xvfb even if other steps failed
+    - name: Stop xvfb and openbox
+      # should always stop xvfb and openbox even if other steps failed
       if: always()
       run: |
         kill $XVFBPID
+        kill $OPENBOXPID

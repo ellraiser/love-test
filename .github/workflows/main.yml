@@ -75,11 +75,11 @@ jobs:
         Invoke-WebRequest -Uri "https://sdk.lunarg.com/sdk/download/1.3.261.1/windows/VulkanRT-1.3.261.1-Components.zip" -OutFile VulkanRT.zip
         echo Downloaded VulkanRT
         7z x VulkanRT.zip -o*
-        dir
+        dir VulkanRT
     - name: Run Test Suite (Vulkan)
       run: |
         echo "Copying Vulka DLL to Mesa x64"
-        copy "64/vulka-1.dll" "mesa/64x"
+        copy "VulkanRT/64x/vulkan-1.dll" "mesa/64x"
         dir "mesa/x64"
         $ENV:PATH += ";mesa/x64;"
         echo "Check Vulkan Envs"

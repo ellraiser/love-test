@@ -169,6 +169,7 @@ end
 -- love.window.isMaximized
 love.test.window.isMaximized = function(test)
   if test:isDelayed() == false then
+    test:assertEquals(false, love.window.isMaximized(), 'check window not maximized')
     love.window.maximize()
     test:setDelay(10)
   else
@@ -181,12 +182,17 @@ end
 
 -- love.window.isMinimized
 love.test.window.isMinimized = function(test)
-  -- check not minimized to start
-  test:assertEquals(false, love.window.isMinimized(), 'check window not minimized')
-  -- try to minimize
-  love.window.minimize()
-  test:assertEquals(true, love.window.isMinimized(), 'check window minimized')
-  love.window.restore()
+  if test:isDelayed() == false then
+    -- check not minimized to start
+    test:assertEquals(false, love.window.isMinimized(), 'check window not minimized')
+    -- try to minimize
+    love.window.minimize()
+    test:setDelay(1)
+  else
+    -- on linux minimize only gets recognised in the next frame
+    test:assertEquals(true, love.window.isMinimized(), 'check window minimized')
+    love.window.restore()
+  end
 end
 
 

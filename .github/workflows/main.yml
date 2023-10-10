@@ -31,7 +31,7 @@ jobs:
   windows:
     runs-on: windows-latest
     env: 
-      VULKAN_SDK: C:\VulkanSDK\
+      VULKAN_SDK: C:\VulkanSDK
       ALSOFT_CONF: resources\alsoft.conf
       VK_ICD_FILENAMES: mesa\x64\lvp_icd.x86_64.json
     steps:
@@ -78,14 +78,13 @@ jobs:
         dir "C:/VulkanSDK"
         dir "C:/VulkanSDK/Lib"
         dir "C:/VulkanSDK/Bin"
-        $ENV:PATH += ";C:/VulkanSDK/Bin;C:\VulkanSDK;C:\VulkanSDK\Lib;mesa\x64;"
-        echo "Setting Mesa Files"
-        dir "mesa/x64/"
+        dir "mesa/x64"
+        $ENV:PATH += ";C:/VulkanSDK/Bin;C:/VulkanSDK;C:/VulkanSDK/Lib;mesa/x64;"
         echo "Check Vulkan Envs"
         echo "PATH" $ENV:PATH
         echo "VULKAN_SDK" $ENV:VULKAN_SDK
         echo "VK_ICD_FILENAMES" $ENV:VK_ICD_FILENAMES
-        powershell.exe "C:/VulkanSDK/maintenancetool.exe"
+        "C:/VulkanSDK/maintenancetool.exe"
         powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --renderers vulkan
     # - name: Love Test Report (Vulkan)
     #   uses: ellraiser/love-test-report@main

@@ -116,6 +116,7 @@ jobs:
     runs-on: ubuntu-20.04
     env:
       ALSOFT_CONF: resources/alsoft.conf
+      DISPLAY: 0
     steps:
     - name: Update APT
       run: sudo apt-get update
@@ -138,10 +139,13 @@ jobs:
         mv love12/love-*.AppImage love12/love12.AppImage
         ls love12
         chmod +x love12/love12.AppImage
+    - name: Start xvfb
+      run: |
+        Xvfb :99 -screen 0, 360x240x24 &
+        echo "XVFBPID=$!" >> $GITHUB_ENV
     - name: Run Test Suite (opengl)
       run: |
-        export DISPLAY=0
-        xvfb-run --server-args="-screen 0, 360x240x24" love12/love12.AppImage main.lua 
+        love12/love12.AppImage main.lua 
     - name: Love Test Report (opengl)
       uses: ellraiser/love-test-report@main
       with:
@@ -159,8 +163,7 @@ jobs:
     - name: Run Test Suite (opengles)
       run: |
         export LOVE_GRAPHICS_USE_OPENGLES=1
-        export DISPLAY=1
-        xvfb-run --server-args="-screen 1, 360x240x24" love12/love12.AppImage main.lua 
+        love12/love12.AppImage main.lua 
     - name: Love Test Report (opengles)
       uses: ellraiser/love-test-report@main
       with:
@@ -175,3 +178,6 @@ jobs:
       with:
         name: test-output-linux-opengles
         path: test-output-linux-opengles.zip
+    - name: Stop xvfb
+      run: |
+        kill $XVFBPID

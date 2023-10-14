@@ -86,7 +86,7 @@ TestSuite = {
               else
                 local ok, chunk, err = pcall(self[self.module.module][method], self.test)
                 if ok == false then
-                  print("FATAL", chunk, err)
+                  self.test.passed = false
                   self.test.fatal = tostring(chunk) .. tostring(err)
                 end
               end
@@ -104,7 +104,7 @@ TestSuite = {
                 if self.delayed.delay <= 0 then
                   local ok, chunk, err = pcall(self[self.module.module][self.delayed.method], self.test)
                   if ok == false then
-                    print("FATAL", chunk, err)
+                    self.test.passed = false
                     self.test.fatal = tostring(chunk) .. tostring(err)
                   end
                   self.delayed = nil
@@ -114,7 +114,7 @@ TestSuite = {
                 -- now we're all done evaluate the test 
                 local ok, chunk, err = pcall(self.test.evaluateTest, self.test)
                 if ok == false then
-                  print("FATAL", chunk, err)
+                  self.test.passed = false
                   self.test.fatal = tostring(chunk) .. tostring(err)
                 end
                 -- save having to :release() anything we made in the last test

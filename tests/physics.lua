@@ -74,7 +74,7 @@ end
 
 
 -- love.physics.newBody
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newBody = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body = love.physics.newBody(world, 10, 10, 'static')
@@ -83,21 +83,21 @@ end
 
 
 -- love.physics.newChainShape
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newChainShape = function(test)
   test:assertObject(love.physics.newChainShape(true, 0, 0, 1, 0, 1, 1, 0, 1))
 end
 
 
 -- love.physics.newCircleShape
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newCircleShape = function(test)
   test:assertObject(love.physics.newCircleShape(10))
 end
 
 
 -- love.physics.newDistanceJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newDistanceJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'static')
@@ -108,7 +108,7 @@ end
 
 
 -- love.physics.newEdgeShape
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newEdgeShape = function(test)
   local obj = love.physics.newEdgeShape(0, 0, 10, 10)
   test:assertObject(obj)
@@ -116,7 +116,7 @@ end
 
 
 -- love.physics.newFixture
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newFixture = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body = love.physics.newBody(world, 10, 10, 'static')
@@ -127,7 +127,7 @@ end
 
 
 -- love.physics.newFrictionJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newFrictionJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'static')
@@ -138,7 +138,7 @@ end
 
 
 -- love.physics.newGearJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newGearJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'dynamic')
@@ -153,7 +153,7 @@ end
 
 
 -- love.physics.newMotorJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newMotorJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'static')
@@ -164,7 +164,7 @@ end
 
 
 -- love.physics.newMouseJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newMouseJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body = love.physics.newBody(world, 10, 10, 'static')
@@ -174,7 +174,7 @@ end
 
 
 -- love.physics.newPolygonShape
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newPolygonShape = function(test)
   local obj = love.physics.newPolygonShape({0, 0, 2, 3, 2, 1, 3, 1, 5, 1})
   test:assertObject(obj)
@@ -182,7 +182,7 @@ end
 
 
 -- love.physics.newPrismaticJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newPrismaticJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'static')
@@ -193,7 +193,7 @@ end
 
 
 -- love.physics.newPulleyJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newPulleyJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'static')
@@ -204,7 +204,7 @@ end
 
 
 -- love.physics.newRectangleShape
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newRectangleShape = function(test)
   local shape1 = love.physics.newRectangleShape(10, 20)
   local shape2 = love.physics.newRectangleShape(10, 10, 40, 30, 10)
@@ -214,7 +214,7 @@ end
 
 
 -- love.physics.newRevoluteJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newRevoluteJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'static')
@@ -225,7 +225,7 @@ end
 
 
 -- love.physics.newRopeJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newRopeJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'static')
@@ -236,7 +236,7 @@ end
 
 
 -- love.physics.newWeldJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newWeldJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'static')
@@ -247,7 +247,7 @@ end
 
 
 -- love.physics.newWheelJoint
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newWheelJoint = function(test)
   local world = love.physics.newWorld(1, 1, true)
   local body1 = love.physics.newBody(world, 10, 10, 'static')
@@ -258,7 +258,7 @@ end
 
 
 -- love.physics.newWorld
--- @NOTE this is just basic nil checking, full obj test are in objects.lua
+-- @NOTE this is just basic nil checking, objs have their own test method
 love.test.physics.newWorld = function(test)
   local world = love.physics.newWorld(1, 1, true)
   test:assertObject(world)

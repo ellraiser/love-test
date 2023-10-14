@@ -1,5 +1,5 @@
 -- & 'c:\Program Files\LOVE\love.exe' ./ --console 
--- /Applications/love.app/Contents/MacOS/love ./
+-- /Applications/love_12.app/Contents/MacOS/love ./testing
 
 -- load test objs
 require('classes.TestSuite')
@@ -80,9 +80,8 @@ love.load = function(args)
       if module == '' and love[ arglist[a] ] ~= nil then 
         module = arglist[a] 
         table.insert(modules, module)
-      end
-      if module ~= '' and love[module][ arglist[a] ] ~= nil and method == '' then 
-        method = arglist[a] 
+      elseif module ~= '' and love[module] ~= nil and method == '' then
+        if love.test[module][arglist[a]] ~= nil then method = arglist[a] end
       end
     end
     if testcmd == '--runSpecificModules' then
@@ -188,6 +187,10 @@ love.quit = function()
     return false
   end
 end
+
+
+-- added so bad threads dont fail
+function love.threaderror(thread, errorstr) end
 
 
 -- string split helper

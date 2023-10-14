@@ -42,7 +42,7 @@ end
 -- love.event.pump
 -- @NOTE dont think can really test as internally used
 love.test.event.pump = function(test)
-  test:skipTest('not sure can be tested as used internally')
+  test:skipTest('used internally')
 end
 
 

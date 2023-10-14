@@ -205,7 +205,6 @@ function UtilTimeFormat(seconds)
   return string.format("%.3f", tostring(seconds))
 end
 
-
 function UtilDebugLog(a, b, c)
   if GITHUB_RUNNER == true then print("DEBUG ==> ", a, b, c) end
 end

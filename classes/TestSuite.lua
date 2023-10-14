@@ -69,11 +69,8 @@ TestSuite = {
 
             -- run method once
             if self.module.called[self.module.index] == nil then
-
               self.module.called[self.module.index] = true
               local method = self.module.running[self.module.index]
-              UtilDebugLog('[SETUP METHOD]', self.module.module, method)
-
               self.test = TestMethod:new(method, self.module)
               TextRun:set('love.' .. self.module.module .. '.' .. method)
 
@@ -87,19 +84,15 @@ TestSuite = {
                 )
               -- otherwise run the test method
               else
-                UtilDebugLog("[CALL METHOD]", self.module.module, method)
                 local ok, chunk, err = pcall(self[self.module.module][method], self.test)
-                UtilDebugLog("[CALL METHOD END]", self.module.module, method)
                 if ok == false then
-                  UtilDebugLog("[CALL FAILED]", chunk, err)
+                  print("FATAL", chunk, err)
                   self.test.fatal = tostring(chunk) .. tostring(err)
                 end
               end
 
             -- once we've run check delay + eval
             else
-
-              UtilDebugLog('[CHECK DELAY METHOD]', self.module.module, self.delayed)
 
               -- @TODO use coroutines?
               -- if we have a test method that needs a delay
@@ -109,11 +102,9 @@ TestSuite = {
                 -- re-run the test method again when delay ends
                 -- its up to the test to handle the :isDelayed() property
                 if self.delayed.delay <= 0 then
-                  UtilDebugLog("[RECALL METHOD START]", self.module.module, self.delayed.method)
                   local ok, chunk, err = pcall(self[self.module.module][self.delayed.method], self.test)
-                  UtilDebugLog("[RECALL METHOD END]", self.module.module, self.delayed.method)
                   if ok == false then
-                    UtilDebugLog("[RECALL FAILED]", chunk, err)
+                    print("FATAL", chunk, err)
                     self.test.fatal = tostring(chunk) .. tostring(err)
                   end
                   self.delayed = nil
@@ -121,18 +112,14 @@ TestSuite = {
               else
 
                 -- now we're all done evaluate the test 
-                UtilDebugLog("[EVAL TEST START]", self.module.module, self.method)
                 local ok, chunk, err = pcall(self.test.evaluateTest, self.test)
-                UtilDebugLog("[EVAL TEST END]", self.module.module, self.method)
                 if ok == false then
-                  UtilDebugLog("[EVAL FAILED]", chunk, err)
+                  print("FATAL", chunk, err)
                   self.test.fatal = tostring(chunk) .. tostring(err)
                 end
                 -- save having to :release() anything we made in the last test
                 -- 7251ms > 7543ms
-                UtilDebugLog("[GARBAGE COLLECT START]", '', '')
                 collectgarbage("collect")
-                UtilDebugLog("[GARBAGE COLLECT END]", '', '')
                 -- move onto the next test
                 self.module.index = self.module.index + 1
 
@@ -143,17 +130,12 @@ TestSuite = {
           -- once all tests have run
           else
 
-            UtilDebugLog("[MODULE END]", self.module, '')
-
             -- print module results and add to output
             self.module:printResult()
-            UtilDebugLog("[MODULE RESULT]", self.module, '')
-
 
             -- if we have more modules to go run the next one
             self.current = self.current + 1
             if #self.modules >= self.current then
-              UtilDebugLog("[NEW MODULE]", self.module, '')
               self.module = self.modules[self.current]
               self.module:runTests()
 

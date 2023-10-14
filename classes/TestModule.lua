@@ -74,7 +74,6 @@ TestModule = {
     end
     self.index = 1
     self.start = true
-    UtilDebugLog("[MODULE START]", self.module, '')
     self:log('yellow', '\nlove.' .. self.module .. '.testmodule.start')
   end,
 

@@ -17,6 +17,31 @@ Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-develo
 
 ---
 
+## Coverage
+This is the status of all module tests currently.  
+| Module            | Done | Todo | Skip |
+| ----------------- | ---- | ---- | ---- |
+| 🟢 audio          |  28  |   0  |   0  |
+| 🟢 data           |  12  |   0  |   0  |
+| 🟡 event          |   4  |   1  |   1  |
+| 🟢 filesystem     |  28  |   0  |   2  |
+| 🟢 font           |   7  |   0  |   0  |
+| 🟡 graphics       |  93  |  14  |   1  |
+| 🟢 image          |   5  |   0  |   0  |
+| 🟢 math           |  20  |   0  |   0  |
+| 🟡 physics        |  22  |   6  |   0  |
+| 🟢 sound          |   4  |   0  |   0  |
+| 🟢 system         |   6  |   0  |   2  |
+| 🟢 thread         |   5  |   0  |   0  |
+| 🟢 timer          |   6  |   0  |   0  |
+| 🟢 video          |   2  |   0  |   0  |
+| 🟢 window         |  34  |   0  |   2  |
+
+> The following modules are not covered as we can't really emulate input nicely:  
+> `joystick`, `keyboard`, `mouse`, and `touch`
+
+---
+
 ## Running Tests
 The testsuite aims to keep things as simple as possible, and just runs all the tests inside Löve to match how they'd be used by developers in-engine.
 To run the tests, download the repo and then run the main.lua as you would a Löve game, i.e:
@@ -56,6 +81,7 @@ Each module has a TestModule object created, and each test method has a TestMeth
 - **assertLessEqual**(expected, actual, label)
 - **assertObject**(table)
 - **assertPixels**(imgdata, pixeltable, label)
+- **assertCoords**(expected, actual, label)
 
 Example test method:
 ```lua
@@ -75,45 +101,20 @@ love.test.filesystem.read = function(test)
 end
 ```
 
+Each test is run inside it's own coroutine, meaning you can use `coroutine.yield(frames)` to pause the test for a small period if you need to check things that won't happen for a few seconds
+
 After each test method is ran, the assertions are totalled up, printed, and we move onto the next method! Once all methods in the suite are run a total pass/fail/skip is given for that module and we move onto the next module (if any)
 
 For sanity-checking, if it's currently not covered or it's not possible to test the method we can set the test to be skipped with `test:skipTest(reason)` - this way we still see the method listed in the test output without it affected the pass/fail totals
 
 ---
 
-## Coverage
-This is the status of all module tests currently.  
-| Module                | Written | Todo | Skipped |
-| --------------------- | ------ | ------ | ------- |
-| 🟡 audio | 26 | 2 | 0 |
-| 🟡 data | 7 | 5 | 0 |
-| 🟡 event | 4 | 1 | 1 |
-| 🟡 filesystem | 28 | 1 | 2 |
-| 🟡 font | 4 | 3 | 0 |
-| 🟡 graphics | 92 | 13 | 2 |
-| 🟡 image | 3 | 2 | 0 |
-| 🟡 math | 17 | 3 | 0 |
-| 🟡 physics | 22 | 6 | 0 |
-| 🟡 sound | 2 | 2 | 0 |
-| 🟢 system | 6 | 0 | 2 |
-| 🟡 thread | 3 | 2 | 0 |
-| 🟢 timer | 6 | 0 | 0 |
-| 🟡 video | 1 | 1 | 0 |
-| 🟢 window | 34 | 0 | 2 |
-
-> The following modules are not covered as we can't really emulate input nicely:  
-> `joystick`, `keyboard`, `mouse`, and `touch`
-
----
-
 ## Todo 
 Modules with some small bits needed or needing sense checking:
-- **love.data** - packing methods need writing cos i dont really get what they are
 - **love.event** - love.event.wait or love.event.pump need writing if possible I dunno how to check
 - **love.font** - newBMFontRasterizer() wiki entry is wrong so not sure whats expected
 - **love.graphics** - still need to do tests for the main drawing methods
 - **love.image** - ideally isCompressed should have an example of all compressed files love can take
-- **love.math** - linearToGamma + gammaToLinear using direct formulas don't get same value back
 - **love.*.objects** - all objects tests still to be done
 - **love.graphics.setStencilTest** - deprecated, replaced by setStencilMode()
 

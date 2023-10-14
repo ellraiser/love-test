@@ -101,7 +101,7 @@ love.test.filesystem.read = function(test)
 end
 ```
 
-Each test is run inside it's own coroutine, meaning you can use `coroutine.yield(frames)` to pause the test for a small period if you need to check things that won't happen for a few seconds
+Each test is run inside it's own coroutine - you can use `test:waitFrames(frames)` to pause the test for a small period if you need to check things that won't happen for a few seconds
 
 After each test method is ran, the assertions are totalled up, printed, and we move onto the next method! Once all methods in the suite are run a total pass/fail/skip is given for that module and we move onto the next module (if any)
 

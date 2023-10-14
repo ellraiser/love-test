@@ -489,14 +489,11 @@ end
 
 -- love.graphics.captureScreenshot
 love.test.graphics.captureScreenshot = function(test)
-  if test:isDelayed() == false then
-    love.graphics.captureScreenshot('example-screenshot.png')
-    test:setDelay(10)
+  love.graphics.captureScreenshot('example-screenshot.png')
+  test:waitFrames(10)
   -- need to wait until end of the frame for the screenshot
-  else
-    test:assertNotNil(love.filesystem.openFile('example-screenshot.png', 'r'))
-    love.filesystem.remove('example-screenshot.png')
-  end
+  test:assertNotNil(love.filesystem.openFile('example-screenshot.png', 'r'))
+  love.filesystem.remove('example-screenshot.png')
 end
 
 

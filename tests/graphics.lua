@@ -59,10 +59,14 @@ love.test.graphics.Canvas = function(test)
   local mode, sharpness = canvas:getMipmapFilter()
   test:assertEquals('linear', mode, 'check def minmap filter  mode')
   test:assertEquals(0, sharpness, 'check def minmap filter sharpness')
+  local name, version, vendor, device = love.graphics.getRendererInfo()
   canvas:setMipmapFilter('nearest', 1)
   mode, sharpness = canvas:getMipmapFilter()
   test:assertEquals('nearest', mode, 'check changed minmap filter  mode')
-  test:assertEquals(1, sharpness, 'check changed minmap filter sharpness')
+  -- mipmap sharpness wont work on opengl/metal
+  if string.match(name, 'OpenGL ES') == nil and string.match(name, 'Metal') == nil then
+    test:assertEquals(1, sharpness, 'check changed minmap filter sharpness')
+  end
   test:assertGreaterEqual(2, canvas:getMipmapCount()) -- docs say no mipmaps should return 1
   test:assertEquals('auto', canvas:getMipmapMode())
   -- check rendering
@@ -91,7 +95,8 @@ love.test.graphics.Canvas = function(test)
   -- check depth samples
   local dcanvas = love.graphics.newCanvas(100, 100, {
     type = '2d',
-    format = 'depth16'
+    format = 'depth16',
+    readable = true
   })
   test:assertEquals(nil, dcanvas:getDepthSampleMode(), 'check depth sample mode nil by def')
   dcanvas:setDepthSampleMode('equal')
@@ -203,10 +208,15 @@ love.test.graphics.Image = function(test)
   local mode, sharpness = image:getMipmapFilter()
   test:assertEquals('linear', mode, 'check def minmap filter  mode')
   test:assertEquals(0, sharpness, 'check def minmap filter sharpness')
+  
+  local name, version, vendor, device = love.graphics.getRendererInfo()
+  -- mipmap sharpness wont work on opengl/metal
   image:setMipmapFilter('nearest', 1)
   mode, sharpness = image:getMipmapFilter()
   test:assertEquals('nearest', mode, 'check changed minmap filter  mode')
-  test:assertEquals(1, sharpness, 'check changed minmap filter sharpness')
+  if string.match(name, 'OpenGL ES') == nil and string.match(name, 'Metal') == nil then
+    test:assertEquals(1, sharpness, 'check changed minmap filter sharpness')
+  end
   test:assertGreaterEqual(2, image:getMipmapCount()) -- docs say no mipmaps should return 1
   -- check image properties
   test:assertEquals(false, image:isCompressed(), 'check not compressed')
@@ -307,7 +317,7 @@ love.test.graphics.Shader = function(test)
     extern float overwrite;
     vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) { 
       vec4 texcol = Texel(tex, texture_coords); 
-      if (overwrite == 1) {
+      if (overwrite == 1.0) {
         return col;
       } else {
         return texcol * color;
@@ -1277,6 +1287,10 @@ love.test.graphics.reset = function(test)
   r, g, b, a = love.graphics.getColor()
   test:assertEquals(4, r+g+b+a, 'check color reset')
   test:assertEquals(nil, love.graphics.getCanvas(), 'check canvas reset')
+  love.graphics.setDefaultFilter("nearest", "nearest")
+  love.graphics.setLineStyle('rough')
+  love.graphics.setPointSize(1)
+  love.graphics.setLineWidth(1)
 end
 
 

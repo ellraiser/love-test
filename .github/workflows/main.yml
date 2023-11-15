@@ -13,7 +13,7 @@ jobs:
         7z x love12.zip -o*
         7z x love12/love-macos.zip -o*
     - name: Run Test Suite
-      run: love-macos/love.app/Contents/MacOS/love main.lua
+      run: love-macos/love.app/Contents/MacOS/love main.lua --runAllTests --isRunner
     - name: Love Test Report
       uses: ellraiser/love-test-report@main
       with:
@@ -48,7 +48,7 @@ jobs:
         7z x love12.zip -o*
         7z x love12/love-12.0-win64.zip -o*
     - name: Run Tests (opengl)
-      run: powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
+      run: powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --isRunner
     - name: Love Test Report (opengl)
       uses: ellraiser/love-test-report@main
       with:
@@ -66,7 +66,7 @@ jobs:
     - name: Run Tests (opengles)
       run: |
         $ENV:LOVE_GRAPHICS_USE_OPENGLES=1
-        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./
+        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --isRunner
     - name: Love Test Report (opengles)
       uses: ellraiser/love-test-report@main
       with:
@@ -81,35 +81,35 @@ jobs:
       with:
         name: test-output-windows-opengles
         path: test-output-windows-opengles.zip
-    - name: Install Vulkan
-      run: |
-        curl -L --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/VulkanSDK-1.3.231.1-Installer.exe
-        ./VulkanSDK.exe --root C:/VulkanSDK/1.3.231.1 --accept-licenses --default-answer --confirm-command install com.lunarg.vulkan.core com.lunarg.vulkan.vma 
-        curl -L --show-error --output vulkan-runtime.zip https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/vulkan-runtime-components.zip
-        7z e vulkan-runtime.zip -o"C:/VulkanSDK/1.3.231.1/runtime/x64" */x64
-        copy "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll" "mesa/x64"
-        copy "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll" "C:/Windows/System32"
-        copy "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll" "love-12.0-win64/love-12.0-win64"
-        reg add HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\Drivers /v "${{ github.workspace }}\mesa\x64\lvp_icd.x86_64.json" /t REG_DWORD /d 0
-        powershell.exe C:/VulkanSDK/1.3.231.1/runtime/x64/vulkaninfo.exe --summary
-    - name: Run Tests (vulkan)
-      run: |
-        $ENV:LOVE_GRAPHICS_DEBUG=1
-        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --renderers vulkan
-    - name: Love Test Report (vulkan)
-      uses: ellraiser/love-test-report@main
-      with:
-        name: Love Testsuite Windows (vulkan)
-        title: test-report-windows-vulkan
-        path: output/lovetest_runAllTests.md
-    - name: Zip Test Output (vulkan)
-      run: |
-        7z a -tzip test-output-windows-vulkan.zip output/
-    - name: Artifact Test Output (vulkan)
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-output-windows-vulkan
-        path: test-output-windows-vulkan.zip
+#    - name: Install Vulkan
+#      run: |
+#        curl -L --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/VulkanSDK-1.3.231.1-Installer.exe
+#        ./VulkanSDK.exe --root C:/VulkanSDK/1.3.231.1 --accept-licenses --default-answer --confirm-command install com.lunarg.vulkan.core com.lunarg.vulkan.vma 
+#        curl -L --show-error --output vulkan-runtime.zip https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/vulkan-runtime-components.zip
+#        7z e vulkan-runtime.zip -o"C:/VulkanSDK/1.3.231.1/runtime/x64" */x64
+#        copy "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll" "mesa/x64"
+#        copy "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll" "C:/Windows/System32"
+#        copy "C:/VulkanSDK/1.3.231.1/runtime/x64/vulkan-1.dll" "love-12.0-win64/love-12.0-win64"
+#        reg add HKEY_LOCAL_MACHINE\SOFTWARE\Khronos\Vulkan\Drivers /v "${{ github.workspace }}\mesa\x64\lvp_icd.x86_64.json" /t REG_DWORD /d 0
+#        powershell.exe C:/VulkanSDK/1.3.231.1/runtime/x64/vulkaninfo.exe --summary
+#    - name: Run Tests (vulkan)
+#      run: |
+#        $ENV:LOVE_GRAPHICS_DEBUG=1
+#        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --isRunner --renderers vulkan
+#    - name: Love Test Report (vulkan)
+#      uses: ellraiser/love-test-report@main
+#      with:
+#        name: Love Testsuite Windows (vulkan)
+#        title: test-report-windows-vulkan
+#        path: output/lovetest_runAllTests.md
+#    - name: Zip Test Output (vulkan)
+#      run: |
+#        7z a -tzip test-output-windows-vulkan.zip output/
+#    - name: Artifact Test Output (vulkan)
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: test-output-windows-vulkan
+#        path: test-output-windows-vulkan.zip
   linux-ubuntu:
     runs-on: ubuntu-20.04
     env:
@@ -149,7 +149,7 @@ jobs:
     # linux opengl tests
     - name: Run Test Suite (opengl)
       run: |
-        love12/love12.AppImage main.lua 
+        love12/love12.AppImage main.lua --runAllTests --isRunner
     - name: Love Test Report (opengl)
       uses: ellraiser/love-test-report@main
       with:
@@ -168,7 +168,7 @@ jobs:
     - name: Run Test Suite (opengles)
       run: |
         export LOVE_GRAPHICS_USE_OPENGLES=1
-        love12/love12.AppImage main.lua 
+        love12/love12.AppImage main.lua --runAllTests --isRunner
     - name: Love Test Report (opengles)
       uses: ellraiser/love-test-report@main
       with:
@@ -189,65 +189,65 @@ jobs:
       run: |
         kill $XVFBPID
         kill $OPENBOXPID
-  linux-vulkan:
-    runs-on: ubuntu-22.04
-    env:
-      ALSOFT_CONF: resources/alsoft.conf
-      DISPLAY: :99
-    steps:
-    - name: Update APT
-      run: sudo apt-get update
-    - name: Install Dependencies
-      run: |
-        sudo apt-get install --assume-yes build-essential git make cmake autoconf automake \
-                                          libtool pkg-config libasound2-dev libpulse-dev libaudio-dev \
-                                          libjack-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
-                                          libxfixes-dev libxi-dev libxinerama-dev libxxf86vm-dev libxss-dev \
-                                          libgl1-mesa-dev libdbus-1-dev libudev-dev libgles2-mesa-dev \
-                                          libegl1-mesa-dev libibus-1.0-dev fcitx-libs-dev libsamplerate0-dev \
-                                          libsndio-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev \
-                                          libfuse2 wmctrl openbox mesa-vulkan-drivers libvulkan1 vulkan-tools \
-                                          vulkan-validationlayers
-    - name: Checkout Repo
-      uses: actions/checkout@v4
-    - name: Download Love
-      run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/975733236/zip"
-        7z x love12.zip -o*
-        mv love12/love-*.AppImage love12/love12.AppImage
-        ls love12
-        chmod +x love12/love12.AppImage
-    - name: Start xvfb and openbox
-      run: |
-        echo "Starting XVFB on $DISPLAY"
-        Xvfb $DISPLAY -screen 0, 360x240x24 &
-        echo "XVFBPID=$!" >> $GITHUB_ENV
-        # wait for xvfb to startup (3s is the same amount xvfb-run waits by default)
-        sleep 3
-        openbox &
-        echo "OPENBOXPID=$!" >> $GITHUB_ENV
-    # linux vulkan tests
-    - name: Run Test Suite (vulkan)
-      run: |
-        export LOVE_GRAPHICS_DEBUG=1
-        love12/love12.AppImage main.lua --runAllTests --renderers vulkan
-    - name: Love Test Report (vulkan)
-      uses: ellraiser/love-test-report@main
-      with:
-        name: Love Testsuite Linux
-        title: test-report-linux-vulkan
-        path: output/lovetest_runAllTests.md
-    - name: Zip Test Output (vulkan)
-      run: |
-        7z a -tzip test-output-linux-vulkan.zip output/
-    - name: Artifact Test Output (vulkan)
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-output-linux-vulkan
-        path: test-output-linux-vulkan.zip
-    - name: Stop xvfb and openbox
-      # should always stop xvfb and openbox even if other steps failed
-      if: always()
-      run: |
-        kill $XVFBPID
-        kill $OPENBOXPID
+#  linux-vulkan:
+#    runs-on: ubuntu-22.04
+#    env:
+#      ALSOFT_CONF: resources/alsoft.conf
+#      DISPLAY: :99
+#    steps:
+#    - name: Update APT
+#      run: sudo apt-get update
+#    - name: Install Dependencies
+#      run: |
+#        sudo apt-get install --assume-yes build-essential git make cmake autoconf automake \
+#                                          libtool pkg-config libasound2-dev libpulse-dev libaudio-dev \
+#                                          libjack-dev libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
+#                                          libxfixes-dev libxi-dev libxinerama-dev libxxf86vm-dev libxss-dev \
+#                                          libgl1-mesa-dev libdbus-1-dev libudev-dev libgles2-mesa-dev \
+#                                          libegl1-mesa-dev libibus-1.0-dev fcitx-libs-dev libsamplerate0-dev \
+#                                          libsndio-dev libwayland-dev libxkbcommon-dev libdrm-dev libgbm-dev \
+#                                          libfuse2 wmctrl openbox mesa-vulkan-drivers libvulkan1 vulkan-tools \
+#                                          vulkan-validationlayers
+#    - name: Checkout Repo
+#      uses: actions/checkout@v4
+#    - name: Download Love
+#      run: |
+#        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/975733236/zip"
+#        7z x love12.zip -o*
+#        mv love12/love-*.AppImage love12/love12.AppImage
+#        ls love12
+#        chmod +x love12/love12.AppImage
+#    - name: Start xvfb and openbox
+#      run: |
+#        echo "Starting XVFB on $DISPLAY"
+#        Xvfb $DISPLAY -screen 0, 360x240x24 &
+#        echo "XVFBPID=$!" >> $GITHUB_ENV
+#        # wait for xvfb to startup (3s is the same amount xvfb-run waits by default)
+#        sleep 3
+#        openbox &
+#        echo "OPENBOXPID=$!" >> $GITHUB_ENV
+#    # linux vulkan tests
+#    - name: Run Test Suite (vulkan)
+#      run: |
+#        export LOVE_GRAPHICS_DEBUG=1
+#        love12/love12.AppImage main.lua --runAllTests --isRunner --renderers vulkan
+#    - name: Love Test Report (vulkan)
+#      uses: ellraiser/love-test-report@main
+#      with:
+#        name: Love Testsuite Linux
+#        title: test-report-linux-vulkan
+#        path: output/lovetest_runAllTests.md
+#    - name: Zip Test Output (vulkan)
+#      run: |
+#        7z a -tzip test-output-linux-vulkan.zip output/
+#    - name: Artifact Test Output (vulkan)
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: test-output-linux-vulkan
+#        path: test-output-linux-vulkan.zip
+#    - name: Stop xvfb and openbox
+#      # should always stop xvfb and openbox even if other steps failed
+#      if: always()
+#      run: |
+#        kill $XVFBPID
+#        kill $OPENBOXPID

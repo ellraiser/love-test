@@ -1,109 +1,132 @@
-LÖVE is an *awesome* framework you can use to make 2D games in Lua. It's free, open-source, and works on Windows, macOS, Linux, Android, and iOS.
+# Lövetest
+Basic testing suite for the [Löve](https://github.com/love2d/love) APIs, based off of [this issue](https://github.com/love2d/love/issues/1745).
 
-[![Build Status: Github CI](https://github.com/love2d/love/workflows/continuous-integration/badge.svg)](https://github.com/love2d/love/actions?query=workflow%3Acontinuous-integration)
+Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-development), which is still in development.
 
-Documentation
--------------
+---
 
-We use our [wiki][wiki] for documentation.
-If you need further help, feel free to ask on our [forums][forums], our [Discord server][discord], or our [subreddit][subreddit].
+## Features
+- [x] Simple pass/fail tests in Lua with minimal setup 
+- [x] Ability to run all tests with a simple command
+- [x] Ability to see how many tests are passing/failing
+- [x] Ability to run a subset of tests
+- [x] Ability to easily run an individual test
+- [x] Ability to see all visual results at a glance
+- [x] Automatic testing that happens after every commit
+- [x] No platform-specific dependencies / scripts
 
-Repository
-----------
+---
 
-We use the 'main' branch for patch development of the current major release, and therefore it should not be considered stable.
-There may also be a branch for the next major version in development, which is named after that version.
+## Coverage
+This is the status of all module tests currently.  
+| Module            | Done | Todo | Skip |
+| ----------------- | ---- | ---- | ---- |
+| 🟢 audio          |  28  |   0  |   0  |
+| 🟢 data           |  12  |   0  |   0  |
+| 🟢 event          |   4  |   0  |   2  |
+| 🟢 filesystem     |  29  |   0  |   2  |
+| 🟢 font           |   7  |   0  |   0  |
+| 🟡 graphics       |  99  |   5  |   1  |
+| 🟢 image          |   5  |   0  |   0  |
+| 🟢 math           |  20  |   0  |   0  |
+| 🟡 physics        |  22  |   6  |   0  |
+| 🟢 sound          |   4  |   0  |   0  |
+| 🟢 system         |   6  |   0  |   2  |
+| 🟢 thread         |   5  |   0  |   0  |
+| 🟢 timer          |   6  |   0  |   0  |
+| 🟢 video          |   2  |   0  |   0  |
+| 🟢 window         |  34  |   0  |   2  |
 
-We tag all our releases (since we started using mercurial and git), and have binary downloads available for them.
+> The following modules are not covered as we can't really emulate input nicely:  
+> `joystick`, `keyboard`, `mouse`, and `touch`
 
-Experimental changes are developed in a separate [love-experiments][love-experiments] repository.
+---
 
-Builds
-------
+## Running Tests
+The testsuite aims to keep things as simple as possible, and just runs all the tests inside Löve to match how they'd be used by developers in-engine.
+To run the tests, download the repo and then run the main.lua as you would a Löve game, i.e:
 
-Files for releases are in the [releases][releases] section on GitHub. [The site][site] has links to files and additional platform content for the latest release.
+WINDOWS: `& 'c:\Program Files\LOVE\love.exe' PATH_TO_TESTING_FOLDER --console`  
+MACOS: `/Applications/love.app/Contents/MacOS/love PATH_TO_TESTING_FOLDER`  
+LINUX: `./love.AppImage PATH_TO_TESTING_FOLDER`
 
-There are also unstable/nightly builds:
+By default all tests will be run for all modules.  
+If you want to specify a module/s you can use:  
+`--runSpecificModules filesystem,audio`  
+If you want to specify only 1 specific method only you can use:  
+`--runSpecificMethod filesystem write`
 
-- Builds for some platforms are automatically created after each commit and are available through GitHub's CI interfaces.
-- For ubuntu linux they are in [ppa:bartbes/love-unstable][unstableppa]
-- For arch linux there's [love-git][aur] in the AUR.
+All results will be printed in the console per method as PASS, FAIL, or SKIP with total assertions met on a module level and overall level.  
 
-Contributing
-------------
+When finished, the following files will be generated in the `/output` directory with a summary of the test results:
+- an `XML` file in the style of [JUnit XML](https://www.ibm.com/docs/en/developer-for-zos/14.1?topic=formats-junit-xml-format)
+- a `HTML` file that shows any visual test results
+- a `Markdown` file you can use with [this github action](https://github.com/ellraiser/love-test-report)
+> An example of all types of output can be found in the `/examples`  
+> The visual results of any graphic tests can be found in `/output/actual`
 
-The best places to contribute are through the issue tracker and the official Discord server or IRC channel.
+---
 
-For code contributions, pull requests and patches are welcome. Be sure to read the [source code style guide][codestyle].
-Changes and new features typically get discussed in the issue tracker or on Discord or the forums before a pull request is made.
+## Architecture
+Each method and object has it's own test method written in `/tests` under the matching module name.
 
-Compilation
------------
+When you run the tests, a single TestSuite object is created which handles the progress + totals for all the tests.  
+Each module has a TestModule object created, and each test method has a TestMethod object created which keeps track of assertions for that method. You can currently do the following assertions:
+- **assertNotNil**(value)
+- **assertEquals**(expected, actual, label)
+- **assertNotEquals**(expected, actual, label)
+- **assertRange**(actual, min, max, label)
+- **assertMatch**({option1, option2, option3 ...}, actual, label) 
+- **assertGreaterEqual**(expected, actual, label)
+- **assertLessEqual**(expected, actual, label)
+- **assertObject**(table)
+- **assertPixels**(imgdata, pixeltable, label)
+- **assertCoords**(expected, actual, label)
 
-### Windows
-Follow the instructions at the [megasource][megasource] repository page.
+Example test method:
+```lua
+-- love.filesystem.read test method
+-- all methods should be put under love.test.MODULE.METHOD, matching the API
+love.test.filesystem.read = function(test)
+  -- setup any data needed then run any asserts using the passed test object
+  local content, size = love.filesystem.read('resources/test.txt')
+  test:assertNotNil(content)
+  test:assertEquals('helloworld', content, 'check content match')
+  test:assertEquals(10, size, 'check size match')
+  content, size = love.filesystem.read('resources/test.txt', 5)
+  test:assertNotNil(content)
+  test:assertEquals('hello', content, 'check content match')
+  test:assertEquals(5, size, 'check size match')
+  -- no need to return anything or cleanup, GCC is called after each method
+end
+```
 
-### *nix
-Run `platform/unix/automagic` from the repository root, then run ./configure and make.
+Each test is run inside it's own coroutine - you can use `test:waitFrames(frames)` to pause the test for a small period if you need to check things that won't happen for a few seconds.
 
-	$ platform/unix/automagic
-	$ ./configure
-	$ make
+After each test method is ran, the assertions are totalled up, printed, and we move onto the next method! Once all methods in the suite are run a total pass/fail/skip is given for that module and we move onto the next module (if any)
 
-When using a source release, automagic has already been run, and the first step can be skipped.
+For sanity-checking, if it's currently not covered or it's not possible to test the method we can set the test to be skipped with `test:skipTest(reason)` - this way we still see the method listed in the test output without it affected the pass/fail totals
 
-### macOS
-Download or clone [this repository][dependencies-apple] and copy, move, or symlink the `macOS/Frameworks` subfolder into love's `platform/xcode/macosx` folder.
+---
 
-Then use the Xcode project found at `platform/xcode/love.xcodeproj` to build the `love-macosx` target.
+## Todo 
+Things still left to do:
+- [ ] physics.Body, physics.Contact, physics.Fixture,
+      physics.Joint, physics.Shape, physics.World
+- [ ] @deprecated physics methods (sasha changes)
+- [ ] graphics.Mesh, graphics.ParticleSystem
+      graphics.SpriteBatch, graphics.Video
+- [ ] graphics.drawInstanced
+- [ ] @deprecated love.graphics.stencil (replaced by love.graphics.setStencilMode)
+- [ ] @deprecated love.graphics.setStencilTest (replaced by love.graphics.setStencilMode)
 
-### iOS
-Building for iOS requires macOS and Xcode.
+---
 
-#### LÖVE 11.4 and newer
-Download the `love-apple-dependencies` zip file corresponding to the LÖVE version being used from the [Releases page][dependencies-ios],
-unzip it, and place the `iOS/libraries` subfolder into love's `platform/xcode/ios` folder.
-
-Or, download or clone [this repository][dependencies-apple] and copy, move, or symlink the `iOS/libraries` subfolder into love's `platform/xcode/ios` folder.
-
-Then use the Xcode project found at `platform/xcode/love.xcodeproj` to build the `love-ios` target.
-
-See `readme-iOS.rtf` for more information.
-
-#### LÖVE 11.3 and older
-Download the `ios-libraries` zip file corresponding to the LÖVE version being used from the [Releases page][dependencies-ios],
-unzip it, and place the `include` and `libraries` subfolders into love's `platform/xcode/ios` folder.
-
-Then use the Xcode project found at `platform/xcode/love.xcodeproj` to build the `love-ios` target.
-
-See `readme-iOS.rtf` for more information.
-
-### Android
-Visit the [Android build repository][android-repository] for build instructions.
-
-Dependencies
-------------
-
-- SDL2
-- OpenGL 2.1+ / OpenGL ES 2+
-- OpenAL
-- Lua / LuaJIT / LLVM-lua
-- FreeType
-- ModPlug
-- Vorbisfile
-- Theora
-
-[site]: https://love2d.org
-[wiki]: https://love2d.org/wiki
-[forums]: https://love2d.org/forums
-[discord]: https://discord.gg/rhUets9
-[subreddit]: https://www.reddit.com/r/love2d
-[dependencies-apple]: https://github.com/love2d/love-apple-dependencies
-[dependencies-ios]: https://github.com/love2d/love/releases
-[megasource]: https://github.com/love2d/megasource
-[unstableppa]: https://launchpad.net/~bartbes/+archive/love-unstable
-[aur]: https://aur.archlinux.org/packages/love-git
-[love-experiments]: https://github.com/slime73/love-experiments
-[codestyle]: https://love2d.org/wiki/Code_Style
-[android-repository]: https://github.com/love2d/love-android
-[releases]: https://github.com/love2d/love/releases
+## Future Goals
+- [ ] graphics.isCompressed should have an example of all compressed files love can take
+- [ ] Tests can compare visual results to a reference image  
+      This is partially done as we already save actual images for graphics tests to
+      use in the report output comparisons, so we just need to add a helper method
+      to the test class to let you just do assertMatching on the imgdata
+- [ ] Ability to test loading different combinations of modules
+- [ ] Performance tests

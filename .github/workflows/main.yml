@@ -111,7 +111,7 @@ jobs:
 #        name: test-output-windows-vulkan
 #        path: test-output-windows-vulkan.zip
   linux-ubuntu:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       ALSOFT_CONF: resources/alsoft.conf
       DISPLAY: :99

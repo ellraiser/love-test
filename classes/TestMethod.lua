@@ -260,11 +260,28 @@ TestMethod = {
   end,
 
 
-  -- @method - TestMethod:exportImg()
-  -- @desc - used to export actual test img results to compare to the expected
+  -- @method - TestMethod:compareImg()
+  -- @desc - compares a given image to the 'expected' version, and also 
+  --         saves it as the 'actual' version for report viewing
   -- @param {table} imgdata - imgdata to save as a png
   -- @return {nil}
-  exportImg = function(self, imgdata)
+  compareImg = function(self, imgdata)
+    local expected = love.image.newImageData(
+      'tempoutput/expected/love.test.graphics.' .. self.method .. '-' .. 
+      tostring(self.imgs) .. '.png'
+    )
+    local iw = imgdata:getWidth()-1
+    local ih = imgdata:getHeight()-1
+    for ix=1,iw do
+      for iy=1,ih do
+        local ir, ig, ib, ia = imgdata:getPixel(ix, iy)
+        local er, eg, eb, ea = expected:getPixel(ix, iy)
+        self:assertEquals(er, ir, 'check image r (' .. self.method .. ')')
+        self:assertEquals(eg, ig, 'check image g (' .. self.method .. ')')
+        self:assertEquals(eb, ib, 'check image b (' .. self.method .. ')')
+        self:assertEquals(ea, ia, 'check image a (' .. self.method .. ')')
+      end
+    end
     local path = 'tempoutput/actual/love.test.graphics.' .. 
       self.method .. '-' .. tostring(self.imgs) .. '.png'
     imgdata:encode('png', path)

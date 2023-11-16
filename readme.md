@@ -1,4 +1,7 @@
 # Lövetest
+
+[![Test Coverage](https://github.com/ellraiser/love-test/workflows/love-test/badge.svg)](https://github.com/ellraiser/love-test/actions?query=workflow%3Alove-test)
+
 Basic testing suite for the [Löve](https://github.com/love2d/love) APIs, based off of [this issue](https://github.com/love2d/love/issues/1745).
 
 Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-development), which is still in development.

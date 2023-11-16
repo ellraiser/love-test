@@ -12,7 +12,6 @@ Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-develo
 - [x] Ability to run a subset of tests
 - [x] Ability to easily run an individual test
 - [x] Ability to see all visual results at a glance
-- [x] Visual tests compare to a reference image
 - [x] Automatic testing that happens after every commit
 - [x] No platform-specific dependencies / scripts
 
@@ -123,5 +122,8 @@ Test classes that still need to be written:
 ## Future
 - [ ] font class tests (Rasterizer + GlyphData) with BMfonts
 - [ ] graphics.isCompressed should have an example of all compressed files love can take
+- [ ] Ability to use ref image for visual tests  
+      Exists in the TestMethod:exportImg method but gives some random failures 
+      on runners so leaving for the moment
 - [ ] Ability to test loading different combinations of modules
 - [ ] Performance tests

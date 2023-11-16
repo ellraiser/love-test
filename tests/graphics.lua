@@ -858,10 +858,6 @@ love.test.graphics.points = function(test)
     love.graphics.setColor(1, 1, 1, 1)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
-  test:assertPixels(imgdata, {
-    yellow = {{1,1},{14,1},{1,14},{14,14},{7,7},{8,7},{8,7},{8,8}},
-    red = {{0,0},{15,0},{15,15},{0,15}}
-  }, 'points')
   test:compareImg(imgdata)
 end
 
@@ -1885,10 +1881,6 @@ love.test.graphics.setWireframe = function(test)
     love.graphics.setCanvas()
     love.graphics.setWireframe(false)
     local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
-    test:assertPixels(imgdata, { 
-      yellow = {{1,14},{14,1},{14,14},{2,2},{13,13}},
-      black = {{2,13},{13,2}}
-    }, 'set wireframe')
     test:compareImg(imgdata)
   end
 end

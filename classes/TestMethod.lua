@@ -298,7 +298,16 @@ TestMethod = {
           if ia == tolerance[t][4] then has_match_a = true; end
         end
         local matching = has_match_r and has_match_g and has_match_b and has_match_a
-        self:assertEquals(true, matching, 'check image pixel match at ' .. tostring(ix) .. ',' .. tostring(iy) .. ' (' .. self.method .. ')')
+        local ymatch = ''
+        local nmatch = ''
+        if has_match_r then ymatch = ymatch .. 'r' else nmatch = nmatch .. 'r' end
+        if has_match_g then ymatch = ymatch .. 'g' else nmatch = nmatch .. 'g' end
+        if has_match_b then ymatch = ymatch .. 'b' else nmatch = nmatch .. 'b' end
+        if has_match_a then ymatch = ymatch .. 'a' else nmatch = nmatch .. 'a' end
+        self:assertEquals(true, matching, 'compare image pixel at ' .. 
+          tostring(ix) .. ',' .. tostring(iy) .. ', matching = ' .. ymatch .. 
+          ', not matching = ' .. nmatch .. ' (' .. self.method .. ')'
+        )
       end
     end
     local path = 'tempoutput/actual/love.test.graphics.' .. 

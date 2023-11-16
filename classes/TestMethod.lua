@@ -260,28 +260,47 @@ TestMethod = {
   end,
 
 
-  -- @method - TestMethod:exportImg()
-  -- @desc - compares a given image to the 'expected' version, and also 
-  --         saves it as the 'actual' version for report viewing
+  -- @method - TestMethod:compareImg()
+  -- @desc - compares a given image to the 'expected' version, with a tolerance of 
+  --         1px in any direction, and then saves it as the 'actual' version for 
+  --         report viewing
   -- @param {table} imgdata - imgdata to save as a png
   -- @return {nil}
-  exportImg = function(self, imgdata)
-    --local expected = love.image.newImageData(
-    --  'tempoutput/expected/love.test.graphics.' .. self.method .. '-' .. 
-    --  tostring(self.imgs) .. '.png'
-    --)
-    --local iw = imgdata:getWidth()-1
-    --local ih = imgdata:getHeight()-1
-    --for ix=1,iw do
-    --  for iy=1,ih do
-    --    local ir, ig, ib, ia = imgdata:getPixel(ix, iy)
-    --    local er, eg, eb, ea = expected:getPixel(ix, iy)
-    --    self:assertEquals(er, ir, 'check image r (' .. self.method .. ')')
-    --    self:assertEquals(eg, ig, 'check image g (' .. self.method .. ')')
-    --    self:assertEquals(eb, ib, 'check image b (' .. self.method .. ')')
-    --    self:assertEquals(ea, ia, 'check image a (' .. self.method .. ')')
-    --  end
-    --end
+  compareImg = function(self, imgdata)
+    local expected = love.image.newImageData(
+      'tempoutput/expected/love.test.graphics.' .. self.method .. '-' .. 
+      tostring(self.imgs) .. '.png'
+    )
+    local iw = imgdata:getWidth()-2
+    local ih = imgdata:getHeight()-2
+    for ix=2,iw do
+      for iy=2,ih do
+        local ir, ig, ib, ia = imgdata:getPixel(ix, iy)
+        local tolerance = {
+          {expected:getPixel(ix, iy)},
+          {expected:getPixel(ix+1, iy+1)},
+          {expected:getPixel(ix+1, iy)},
+          {expected:getPixel(ix+1, iy-1)},
+          {expected:getPixel(ix, iy+1)},
+          {expected:getPixel(ix, iy-1)},
+          {expected:getPixel(ix-1, iy+1)},
+          {expected:getPixel(ix-1, iy)},
+          {expected:getPixel(ix-1, iy-1)}
+        }
+        local has_match_r = false
+        local has_match_g = false
+        local has_match_b = false
+        local has_match_a = false
+        for t=1,9 do
+          if ir == tolerance[t][1] then has_match_r = true; end
+          if ig == tolerance[t][2] then has_match_g = true; end
+          if ib == tolerance[t][3] then has_match_b = true; end
+          if ia == tolerance[t][4] then has_match_a = true; end
+        end
+        local matching = has_match_r and has_match_g and has_match_b and has_match_a
+        self:assertEquals(true, matching, 'check image pixel match at ' .. tostring(ix) .. ',' .. tostring(iy) .. ' (' .. self.method .. ')')
+      end
+    end
     local path = 'tempoutput/actual/love.test.graphics.' .. 
       self.method .. '-' .. tostring(self.imgs) .. '.png'
     imgdata:encode('png', path)

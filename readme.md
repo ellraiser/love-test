@@ -126,8 +126,8 @@ The automated tests through Github work for the most part however there are a fe
 These exceptions are either skipped, or handled by using a 1px or 1/255rgba tolerance - when run locally on real hardware, these tests pass fine at the default 0 tolerance.
 - love.graphics.points - on MacOSX runners, points are offset by 1,1 when drawn
 - love.graphics.setWireframe - on MacOSX runners, wireframes are offset by 1,1 when drawn
-- love.graphica.arc - on MacOSX runners, some open fill arcs are drawn differently at low scale
-- love.audio.RecordingDevice - these can't be emulated on runners
+- love.graphica.arc - on MacOSX runners, some arc curves are drawn slightly off at low scale
+- love.audio.RecordingDevice - this can't be emulated on runners
 
 ---
 

@@ -123,8 +123,9 @@ Test classes that still need to be written:
 
 ## Runner Exceptions
 The automated tests through Github work for the most part however there are a few exceptions that have to be accounted for due to limitations of the VMs and the graphics emulation used.  
+
 These exceptions are either skipped, or handled by using a 1px or 1/255rgba tolerance - when run locally on real hardware, these tests pass fine at the default 0 tolerance.
-| Test                       | Runner OS | Exception Used      | Reason |
+| Test                       |    OS     |      Exception      | Reason |
 | -------------------------- | --------- | ------------------- | ------ |
 | love.graphics.points       |   MacOS   |    1px tolerance    | Points are offset by 1,1 when drawn |
 | love.graphics.setWireframe |   MacOS   |    1px tolerance    | Wireframes are offset by 1,1 when drawn |

@@ -298,7 +298,7 @@ TestMethod = {
         local pixel = tostring(ir)..','..tostring(ig)..','..tostring(ib)..','..tostring(ia)
         self:assertEquals(true, matching, 'compare image pixel (' .. pixel .. ') at ' ..
           tostring(ix) .. ',' .. tostring(iy) .. ', matching = ' .. ymatch ..
-          ', not matching = ' .. nmatch .. ' (' .. self.method .. ')'
+          ', not matching = ' .. nmatch .. ' (' .. self.method .. '-' .. tostring(self.imgs) .. ')'
         )
       end
     end

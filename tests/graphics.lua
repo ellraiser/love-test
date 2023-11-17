@@ -596,12 +596,6 @@ love.test.graphics.arc = function(test)
     love.graphics.setColor(1, 1, 1, 1)
   love.graphics.setCanvas()
   local imgdata1 = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
-  test:assertPixels(imgdata1, {
-    white = {{11,0},{20,0},{0,13},{0,14},{31,13},{31,14},{15,14}},
-    black = {{16,14},{16,16},{30,14},{30,16}},
-    yellow = {{15,15},{15,16},{16,15},{0,15},{4,27},{5,26},{14,17}},
-    red = {{15,17},{15,31},{17,15},{31,15},{28,26},{27,27}}
-  }, 'arc pi')
   -- draw some arcs with open format
   love.graphics.setCanvas(canvas)
     love.graphics.clear(0, 0, 0, 1)
@@ -610,16 +604,10 @@ love.test.graphics.arc = function(test)
     love.graphics.setColor(1, 0, 0, 1)
     love.graphics.arc('fill', "open", 16, 16, 16, 0 * (math.pi/180), 180 * (math.pi/180), 10)
     love.graphics.setColor(1, 1, 0, 1)
-    love.graphics.arc('fill', "open", 16, 16, 16, 180 * (math.pi/180), 90 * (math.pi/180), 10)
+    love.graphics.arc('fill', "open", 16, 16, 16, 180 * (math.pi/180), 270 * (math.pi/180), 10)
     love.graphics.setColor(1, 1, 1, 1)
   love.graphics.setCanvas()
   local imgdata2 = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
-  test:assertPixels(imgdata2, {
-    white = {{11,0},{20,0},{26,4},{5,4},{0,15},{19,31},{31,19}},
-    black = {{27,5},{27,4},{26,5},{1,15},{31,15}},
-    yellow = {{0,17},{0,19},{12,31},{14,31},{6,23},{7,24}},
-    red = {{0,16},{31,16},{31,18},{30,21},{18,31},{15,16},{16,16}}
-  }, 'arc open')
   -- draw some arcs with closed format
   love.graphics.setCanvas(canvas)
     love.graphics.clear(0, 0, 0, 1)
@@ -632,11 +620,6 @@ love.test.graphics.arc = function(test)
     love.graphics.setColor(1, 1, 1, 1)
   love.graphics.setCanvas()
   local imgdata3 = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
-  test:assertPixels(imgdata3, {
-    white = {{11,0},{20,0},{26,4},{5,4},{0,15},{19,31},{31,19}},
-    yellow = {{0,17},{0,19},{12,31},{14,31}},
-    red = {{31,16},{31,18},{30,21},{18,31},{15,16},{16,16}}
-  }, 'arc open')
   test:compareImg(imgdata1)
   test:compareImg(imgdata2)
   test:compareImg(imgdata3)

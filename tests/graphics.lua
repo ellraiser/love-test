@@ -550,7 +550,7 @@ love.test.graphics.Video = function(test)
   test:assertObject(stream)
   -- check playing / pausing / seeking
   video:play()
-  test:waitFrames(61)
+  test:waitFrames(90) -- 1.5s ish
   video:pause()
   test:assertEquals(1, math.floor(video:tell()), 'check video playing for 1s')
   video:seek(0.2)

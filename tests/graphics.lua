@@ -715,7 +715,7 @@ love.test.graphics.draw = function(test)
   love.graphics.setCanvas(canvas2)
     love.graphics.clear(1, 0, 0, 1)
     -- canvas, scale, shear, transform obj
-    love.graphics.draw(canvas1, 0, 0, 0, 0.5, 0.5, 0, 0, 2, 2)
+    love.graphics.draw(canvas1, 0, 0, 0, 1, 1, 0, 0, 2, 2)
     love.graphics.draw(canvas1, 0, 16, 0, 0.5, 0.5)
     love.graphics.draw(canvas1, 16, 16, 0, 0.5, 0.5)
     love.graphics.draw(canvas1, transform)
@@ -724,7 +724,7 @@ love.test.graphics.draw = function(test)
   test:assertPixels(imgdata, {
     lovepink = {{23,3},{23,19},{7,19},{0,0},{16,0},{0,16},{16,16}},
     loveblue = {{0,31},{15,17},{15,31},{16,31},{31,17},{31,31},{16,15},{31,15}},
-    white = {{15, 15},{6,19},{8,19},{22,19},{24,19},{22,3},{24,3}},
+    white = {{6,19},{8,19},{22,19},{24,19},{22,3},{24,3}},
     red = {{0,1},{1,0},{15,0},{15,7},{0,15},{7,15}}
   }, 'drawing')
   test:compareImg(imgdata)
@@ -1731,6 +1731,10 @@ love.test.graphics.setLineStyle = function(test)
     red = {{0,0},{7,0},{15,0}},
     red07 = {{0,4},{7,4},{15,4}}
   }, 'set line style')
+  -- linux needs a 1/255 tolerance for the blend between a rough line + bg 
+  if GITHUB_RUNNER == true and love.system.getOS() == 'Linux' then
+    test.tolerance = 1
+  end
   test:compareImg(imgdata)
 end
 

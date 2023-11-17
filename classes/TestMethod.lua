@@ -20,6 +20,7 @@ TestMethod = {
       passed = false,
       skipped = false,
       skipreason = '',
+      tolerance = 0,
       fatal = '',
       message = nil,
       result = {},
@@ -92,7 +93,6 @@ TestMethod = {
         col[2] = math.floor((col[2]*10)+0.5)/10
         col[3] = math.floor((col[3]*10)+0.5)/10
         col[4] = math.floor((col[4]*10)+0.5)/10
-        -- @TODO add some sort pixel tolerance to the coords
         self:assertEquals(col[1], tr, 'check pixel r for ' .. i .. ' at ' .. compare_id .. '(' .. label .. ')')
         self:assertEquals(col[2], tg, 'check pixel g for ' .. i .. ' at ' .. compare_id .. '(' .. label .. ')')
         self:assertEquals(col[3], tb, 'check pixel b for ' .. i .. ' at ' .. compare_id .. '(' .. label .. ')')
@@ -273,7 +273,7 @@ TestMethod = {
     )
     local iw = imgdata:getWidth()-2
     local ih = imgdata:getHeight()-2
-    local tolerance = 0--1/255
+    local tolerance = self.tolerance * (1/255)
     for ix=2,iw do
       for iy=2,ih do
         local ir, ig, ib, ia = imgdata:getPixel(ix, iy)

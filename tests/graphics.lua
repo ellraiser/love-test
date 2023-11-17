@@ -1735,7 +1735,7 @@ love.test.graphics.setLineStyle = function(test)
     red = {{0,0},{7,0},{15,0}},
     red07 = {{0,4},{7,4},{15,4}}
   }, 'set line style')
-  -- linux needs a 1/255 tolerance for the blend between a rough line + bg 
+  -- linux runner needs a 1/255 tolerance for the blend between a rough line + bg 
   if GITHUB_RUNNER == true and love.system.getOS() == 'Linux' then
     test.rgba_tolerance = 1
   end

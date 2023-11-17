@@ -853,6 +853,10 @@ love.test.graphics.points = function(test)
     love.graphics.setColor(1, 1, 1, 1)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+  -- on macOS runners points are drawn 1px off from the target
+  if GITHUB_RUNNER == true and love.system.getOS() == 'OS X' then
+    test.pixel_tolerance = 1
+  end
   test:compareImg(imgdata)
 end
 
@@ -1733,7 +1737,7 @@ love.test.graphics.setLineStyle = function(test)
   }, 'set line style')
   -- linux needs a 1/255 tolerance for the blend between a rough line + bg 
   if GITHUB_RUNNER == true and love.system.getOS() == 'Linux' then
-    test.tolerance = 1
+    test.rgba_tolerance = 1
   end
   test:compareImg(imgdata)
 end
@@ -1880,6 +1884,10 @@ love.test.graphics.setWireframe = function(test)
     love.graphics.setCanvas()
     love.graphics.setWireframe(false)
     local imgdata = love.graphics.readbackTexture(canvas, {16, 0, 0, 0, 16, 16})
+    -- on macOS runners wireframes are drawn 1px off from the target
+    if GITHUB_RUNNER == true and love.system.getOS() == 'OS X' then
+      test.pixel_tolerance = 1
+    end
     test:compareImg(imgdata)
   end
 end

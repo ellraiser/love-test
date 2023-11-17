@@ -20,7 +20,8 @@ TestMethod = {
       passed = false,
       skipped = false,
       skipreason = '',
-      tolerance = 0,
+      rgba_tolerance = 0,
+      pixel_tolerance = 0,
       fatal = '',
       message = nil,
       result = {},
@@ -273,20 +274,33 @@ TestMethod = {
     )
     local iw = imgdata:getWidth()-2
     local ih = imgdata:getHeight()-2
-    local tolerance = self.tolerance * (1/255)
+    local rgba_tolerance = self.rgba_tolerance * (1/255)
     for ix=2,iw do
       for iy=2,ih do
         local ir, ig, ib, ia = imgdata:getPixel(ix, iy)
-        local er, eg, eb, ea = expected:getPixel(ix, iy)
+        local points = {
+          {expected:getPixel(ix, iy)}
+        }
+        if self.pixel_tolerance > 0 then
+          table.insert(points, {expected:getPixel(ix-1, iy+1)})
+          table.insert(points, {expected:getPixel(ix-1, iy)})
+          table.insert(points, {expected:getPixel(ix-1, iy-1)})
+          table.insert(points, {expected:getPixel(ix, iy+1)})
+          table.insert(points, {expected:getPixel(ix, iy-1)})
+          table.insert(points, {expected:getPixel(ix+1, iy+1)})
+          table.insert(points, {expected:getPixel(ix+1, iy)})
+          table.insert(points, {expected:getPixel(ix+1, iy-1)})
+        end
         local has_match_r = false
         local has_match_g = false
         local has_match_b = false
         local has_match_a = false
-        for t=1,9 do
-          if ir >= er - tolerance and ir <= er + tolerance then has_match_r = true; end
-          if ig >= eg - tolerance and ig <= eg + tolerance then has_match_g = true; end
-          if ib >= eb - tolerance and ib <= eb + tolerance then has_match_b = true; end
-          if ia >= ea - tolerance and ia <= ea + tolerance then has_match_a = true; end
+        for t=1,#points do
+          local epoint = points[t]
+          if ir >= epoint[1] - rgba_tolerance and ir <= epoint[1] + rgba_tolerance then has_match_r = true; end
+          if ig >= epoint[2] - rgba_tolerance and ig <= epoint[2] + rgba_tolerance then has_match_g = true; end
+          if ib >= epoint[3] - rgba_tolerance and ib <= epoint[3] + rgba_tolerance then has_match_b = true; end
+          if ia >= epoint[4] - rgba_tolerance and ia <= epoint[4] + rgba_tolerance then has_match_a = true; end
         end
         local matching = has_match_r and has_match_g and has_match_b and has_match_a
         local ymatch = ''

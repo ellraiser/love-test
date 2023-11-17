@@ -273,7 +273,7 @@ TestMethod = {
     )
     local iw = imgdata:getWidth()-2
     local ih = imgdata:getHeight()-2
-    local tolerance = 1/255
+    local tolerance = 0--1/255
     for ix=2,iw do
       for iy=2,ih do
         local ir, ig, ib, ia = imgdata:getPixel(ix, iy)

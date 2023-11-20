@@ -1,8 +1,9 @@
 # Lövetest
 Test suite for the [Löve](https://github.com/love2d/love) APIs, based off of [this issue](https://github.com/love2d/love/issues/1745).
 
-Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-development), which is still in development.  
-The standalone repo for this test suite can be found [here](https://github.com/ellraiser/love-test).
+Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-development), which is still in development. As such the test suite may fail if you try to run it with an older version of Löve due to it trying to call methods that don't exist.
+
+While the test suite is part of the main Löve repo, the test suite has it's own repo here so that it can be used with other builds like [love-potion](https://github.com/lovebrew/lovepotion). If you would like to contribute to the test suite please raise a PR on this repo.
 
 ---
 
@@ -20,7 +21,7 @@ The standalone repo for this test suite can be found [here](https://github.com/e
 ---
 
 ## Coverage
-This is the status of all module tests currently.  
+This is the status of all module tests.  
 See the **Todo** section for outstanding tasks if you want to contribute!
 | Module            | Done | Todo | Skip |
 | ----------------- | ---- | ---- | ---- |
@@ -29,10 +30,10 @@ See the **Todo** section for outstanding tasks if you want to contribute!
 | 🟢 event          |   4  |   0  |   2  |
 | 🟢 filesystem     |  29  |   0  |   2  |
 | 🟢 font           |   7  |   0  |   0  |
-| 🟡 graphics       | 103  |   1  |   1  |
+| 🟢 graphics       | 104  |   0  |   1  |
 | 🟢 image          |   5  |   0  |   0  |
 | 🟢 math           |  20  |   0  |   0  |
-| 🟡 physics        |  25  |   1  |   0  |
+| 🟢 physics        |  26  |   0  |   0  |
 | 🟢 sound          |   4  |   0  |   0  |
 | 🟢 system         |   6  |   0  |   2  |
 | 🟢 thread         |   5  |   0  |   0  |
@@ -112,16 +113,14 @@ For sanity-checking, if it's currently not covered or it's not possible to test 
 
 ---
 
-## Todo 
-Test classes that still need to be written:
-- [ ] physics.Body
-
-General tests or features to be done in future:
+## Todo
+The following items are all the things still outstanding, expanding on any existing tests is also very welcome!
 - [ ] check for any 12.0 methods in the changelog not yet covered in the test suite
 - [ ] add BMfont alt. tests for font class tests (Rasterizer + GlyphData)
 - [ ] graphics.isCompressed() should have an example of all compressed files
 - [ ] graphics.Mesh should have some graphical tests ideally to check vertex settings w/ shaders
 - [ ] ability to test loading different combinations of modules if needed
+- [ ] more scenario based tests similar to some of the obj class tests
 - [ ] performance tests? need to discuss what + how
 
 ---

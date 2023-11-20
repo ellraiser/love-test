@@ -10,13 +10,63 @@
 
 -- Body (love.physics.newBody)
 love.test.physics.Body = function(test)
-  test:skipTest('test class needs writing')
+  test:skipTest('@TODO test class needs writing')
 end
 
 
 -- Contact (love.physics.World:getContacts)
 love.test.physics.Contact = function(test)
-  test:skipTest('test class needs writing')
+  local world = love.physics.newWorld(1, 1, true)
+  local body1 = love.physics.newBody(world, 0, 0, 'dynamic')
+  local body2 = love.physics.newBody(world, 10, 10, 'dynamic')
+  local rectangle1 = love.physics.newRectangleShape(body1, 0, 0, 10, 10)
+  local rectangle2 = love.physics.newRectangleShape(body2, 0, 0, 10, 10)
+  rectangle1:setUserData('rec1')
+  rectangle2:setUserData('rec2')
+  local collided = false
+  local pass = 1
+  world:setCallbacks(
+    function(shape_a, shape_b, contact)
+      collided = true
+      test:assertObject(contact)
+      local indexA, indexB = contact:getChildren()
+      test:assertEquals(1, indexA, 'check child indice a')
+      test:assertEquals(1, indexB, 'check child indice b')
+      local shapeA, shapeB = contact:getShapes()
+      test:assertEquals(shape_a:getUserData(), shapeA:getUserData(), 'check shape a matches')
+      test:assertEquals(shape_b:getUserData(), shapeB:getUserData(), 'check shape b matches')
+      local nx, ny = contact:getNormal()
+      test:assertEquals(1, nx, 'check normal x')
+      test:assertEquals(0, ny, 'check normal y')
+      local px1, py1, px2, py2 = contact:getPositions()
+      test:assertEquals(5, math.floor(px1), 'check collide x 1')
+      test:assertEquals(5, math.floor(py1), 'check collide y 1')
+      test:assertEquals(5, math.floor(px2), 'check collide x 2')
+      test:assertEquals(5, math.floor(py2), 'check collide y 2')
+      test:assertEquals(true, contact:isTouching(), 'check touching')
+      test:assertEquals(pass == 1, contact:isEnabled(), 'check enabled for pass ' .. tostring(pass))
+      test:assertEquals(2, math.floor(contact:getFriction()*10), 'check def friction')
+      contact:setFriction(0.1)
+      test:assertEquals(1, math.floor(contact:getFriction()*10), 'check set friction')
+      contact:resetFriction()
+      test:assertEquals(2, math.floor(contact:getFriction()*10), 'check reset friction')
+      test:assertEquals(0, contact:getRestitution(), 'check def restitution')
+      contact:setRestitution(1)
+      test:assertEquals(1, contact:getRestitution(), 'check set restitution')
+      contact:resetRestitution()
+      test:assertEquals(0, contact:getRestitution(), 'check reset restitution')
+      pass = pass + 1
+    end, function() end, function(shape_a, shape_b, contact) 
+      if pass > 2 then
+        contact:setEnabled(false)
+      end
+    end, function() end
+  )
+  world:update(1)
+  test:assertEquals(true, collided, 'check bodies collided')
+  -- update again for enabled check
+  world:update(1)
+  test:assertEquals(2, pass, 'check ran twice')
 end
 
 
@@ -52,10 +102,131 @@ love.test.physics.Joint = function(test)
 end
 
 
+--love.test.physics.Test1 = function(test)
+--  local world = love.physics.newWorld(0, 0, false)
+--  local body1 = love.physics.newBody(world, 0, 0, 'dynamic')
+--  local shape1 = love.physics.newRectangleShape(body1, 5, 5, 10, 10)
+--  local tlx, tly, brx, bry = shape1:getBoundingBox(1)
+--  print('position:', tlx, tly, brx, bry) -- (-0.3, -0.3, 10.3, 10.3)
+--  test:assertEquals(true, shape1:testPoint(5, 5), 'check point 1') -- returns false
+--end
+
+
 -- Shape (love.physics.newCircleShape)
--- @NOTE includes Fixture methods too now so enjoy
+-- @NOTE in 12.0 fixtures have been merged into shapes
 love.test.physics.Shape = function(test)
-  test:skipTest('test class needs writing')
+  -- create shape
+  local world = love.physics.newWorld(0, 0, false)
+  local body1 = love.physics.newBody(world, 0, 0, 'dynamic')
+  local shape1 = love.physics.newRectangleShape(body1, 5, 5, 10, 10)
+  test:assertObject(shape1)
+  -- check base properties
+  test:assertEquals(1, shape1:getChildCount(), 'check child count')
+  test:assertEquals(0, math.floor(shape1:getRadius()), 'check radius')
+  test:assertEquals('polygon', shape1:getType(), 'check rectangle type')
+  test:assertEquals(0, shape1:getBody():getX(), 'check body link')
+  test:assertEquals(1, shape1:getCategory(), 'check def category')
+  shape1:setCategory(3, 5, 6)
+  local categories = {shape1:getCategory()}
+  test:assertEquals(14, categories[1] + categories[2] + categories[3], 'check set category')
+  test:assertEquals(false, shape1:isSensor(), 'check sensor def')
+  shape1:setSensor(true)
+  test:assertEquals(true, shape1:isSensor(), 'check set sensor')
+  shape1:setSensor(false)
+  test:assertEquals(false, shape1:isDestroyed(), 'check not destroyed')
+  test:assertEquals(nil, shape1:getUserData(), 'check no user data')
+  shape1:setUserData({ test = 14 })
+  test:assertEquals(14, shape1:getUserData().test, 'check user data set')
+  -- check bounding box
+  -- polygons have an additional skin radius to help with collisions
+  -- so this wont be 0, 0, 10, 10 as you'd think but has an additional 0.3 padding
+  local topLeftX, topLeftY, bottomRightX, bottomRightY = shape1:computeAABB(0, 0, 0, 1)
+  local tlx, tly, brx, bry = shape1:getBoundingBox(1)
+  test:assertEquals(topLeftX, tlx, 'check bbox methods match tlx')
+  test:assertEquals(topLeftY, tly, 'check bbox methods match tly')
+  test:assertEquals(bottomRightX, brx, 'check bbox methods match brx')
+  test:assertEquals(bottomRightY, bry, 'check bbox methods match bry')
+  test:assertEquals(topLeftX, topLeftY, 'check bbox tl 1')
+  test:assertEquals(-3, math.floor(topLeftY*10), 'check bbox tl 2')
+  test:assertEquals(bottomRightX, bottomRightY, 'check bbox br 1')
+  test:assertEquals(10, math.floor(bottomRightX), 'check bbox br 2')
+  -- check physics props
+  test:assertEquals(1, shape1:getDensity(), 'check def density')
+  shape1:setDensity(5)
+  test:assertEquals(5, shape1:getDensity(), 'check set density')
+  local x, y, mass, inertia = shape1:getMassData()
+  test:assertEquals(5, math.floor(x), 'check shape mass pos x')
+  test:assertEquals(5, math.floor(y), 'check shape mass pos y')
+  test:assertEquals(5, math.floor(mass*10), 'check mass at 1 density')
+  test:assertEquals(0, math.floor(inertia*10), 'check intertia at 1 density')
+  x, y, mass, inertia = shape1:computeMass(1000)
+  test:assertEquals(111, math.floor(mass), 'check mass at 1000 density')
+  test:assertEquals(7407, math.floor(inertia), 'check intertia at 1000 density')
+  test:assertEquals(2, math.floor(shape1:getFriction()*10), 'check def friction')
+  shape1:setFriction(1)
+  test:assertEquals(1, shape1:getFriction(), 'check set friction')
+  test:assertEquals(0, shape1:getRestitution(), 'check def restitution')
+  shape1:setRestitution(0.5)
+  test:assertEquals(5, math.floor(shape1:getRestitution()*10), 'check set restitution')
+  -- check points
+  local shape2 = love.physics.newRectangleShape(body1, 5, 5, 10, 10)
+  tlx, tly, brx, bry = shape2:getBoundingBox(1)
+  test:assertEquals(true, shape2:testPoint(5, 5), 'check point 5,5')
+  test:assertEquals(true, shape2:testPoint(15, 15, 10, 10, 0), 'check point 15,15 after translate 10,10')
+  test:assertEquals(true, shape2:testPoint(15, 15, 10, 10, 90), 'check point 15,15 after translate 10,10,90')
+  test:assertEquals(false, shape2:testPoint(5, 5, 10, 10, 90), 'check point 5,5 after translate 10,10,90')
+  test:assertEquals(false, shape2:testPoint(15, 15), 'check point 15,15')
+  local xn, yn, fraction = shape2:rayCast(-20, -20, 20, 20, 100, 0, 0, 0, 1)
+  test:assertNotEquals(nil, xn, 'check ray 1 x')
+  test:assertNotEquals(nil, xn, 'check ray 1 y')
+  xn, yn, fraction = shape2:rayCast(10, 10, -150, -150, 100, 0, 0, 0, 1)
+  test:assertEquals(nil, xn, 'check ray 2 x')
+  test:assertEquals(nil, xn, 'check ray 2 y')
+  -- check filtering
+  test:assertEquals(nil, shape2:getMask(), 'check no mask')
+  shape2:setMask(1, 2, 3)
+  test:assertEquals(3, #{shape2:getMask()}, 'check set mask')
+  test:assertEquals(0, shape2:getGroupIndex(), 'check no index')
+  shape2:setGroupIndex(-1)
+  test:assertEquals(-1, shape2:getGroupIndex(), 'check set index')
+  local cat, mask, group = shape2:getFilterData()
+  test:assertEquals(1, cat, 'check filter cat')
+  test:assertEquals(65528, mask, 'check filter mask')
+  test:assertEquals(-1, group, 'check filter group')
+  -- run some collision checks using filters
+  shape1:destroy()
+  test:assertEquals(true, shape1:isDestroyed(), 'check destroyed')
+  shape2:destroy()
+  local body2 = love.physics.newBody(world, 5, 5, 'dynamic')
+  local shape3 = love.physics.newRectangleShape(body1, 0, 0, 10, 10)
+  local shape4 = love.physics.newRectangleShape(body2, 0, 0, 10, 10)
+  local collisions = 0
+  world:setCallbacks(
+    function() collisions = collisions + 1 end,
+    function() end,
+    function() end,
+    function() end
+  )
+  -- same group will always collide if the group is positive or never collide if it's negative
+  shape3:setGroupIndex(1)
+  shape4:setGroupIndex(1)
+  world:update(1)
+  test:assertEquals(1, collisions, 'check positive group collide')
+  shape3:setGroupIndex(-1)
+  shape4:setGroupIndex(-1)
+  body2:setPosition(20, 20); world:update(1); body2:setPosition(0, 0); world:update(1)
+  test:assertEquals(1, collisions, 'check negative group collide')
+  -- mask sets which categories this fixture should NOT collide with.
+  shape3:setGroupIndex(0)
+  shape4:setGroupIndex(0)
+  shape3:setCategory(2)
+  shape4:setMask(3)
+  body2:setPosition(20, 20); world:update(1); body2:setPosition(0, 0); world:update(1)
+  test:assertEquals(2, collisions, 'check mask collide')
+  shape3:setCategory(2)
+  shape4:setMask(2, 4, 6)
+  body2:setPosition(20, 20); world:update(1); body2:setPosition(0, 0); world:update(1)
+  test:assertEquals(2, collisions, 'check mask not collide')
 end
 
 

@@ -1,12 +1,13 @@
 # Lövetest
 Test suite for the [Löve](https://github.com/love2d/love) APIs, based off of [this issue](https://github.com/love2d/love/issues/1745).
 
-Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-development), which is still in development.
+Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-development), which is still in development.  
+The standalone repo for this test suite can be found [here](https://github.com/ellraiser/love-test).
 
 ---
 
 ## Features
-- [x] Simple pass/fail tests in Lua with minimal setup 
+- [x] Simple pass/fail tests written in Lua with minimal setup 
 - [x] Ability to run all tests with a simple command
 - [x] Ability to see how many tests are passing/failing
 - [x] Ability to run a subset of tests
@@ -20,7 +21,7 @@ Currently written for [Löve 12](https://github.com/love2d/love/tree/12.0-develo
 
 ## Coverage
 This is the status of all module tests currently.  
-See the **Todo** section for outstanding tests that need writing.
+See the **Todo** section for outstanding tasks if you want to contribute!
 | Module            | Done | Todo | Skip |
 | ----------------- | ---- | ---- | ---- |
 | 🟢 audio          |  28  |   0  |   0  |
@@ -28,10 +29,10 @@ See the **Todo** section for outstanding tests that need writing.
 | 🟢 event          |   4  |   0  |   2  |
 | 🟢 filesystem     |  29  |   0  |   2  |
 | 🟢 font           |   7  |   0  |   0  |
-| 🟡 graphics       | 102  |   2  |   1  |
+| 🟡 graphics       | 103  |   1  |   1  |
 | 🟢 image          |   5  |   0  |   0  |
 | 🟢 math           |  20  |   0  |   0  |
-| 🟡 physics        |  22  |   4  |   0  |
+| 🟡 physics        |  25  |   1  |   0  |
 | 🟢 sound          |   4  |   0  |   0  |
 | 🟢 system         |   6  |   0  |   2  |
 | 🟢 thread         |   5  |   0  |   0  |
@@ -48,9 +49,9 @@ See the **Todo** section for outstanding tests that need writing.
 The testsuite aims to keep things as simple as possible, and just runs all the tests inside Löve to match how they'd be used by developers in-engine.
 To run the tests, download the repo and then run the main.lua as you would a Löve game, i.e:
 
-WINDOWS: `& 'c:\Program Files\LOVE\love.exe' PATH_TO_TESTING_FOLDER --console`  
-MACOS: `/Applications/love.app/Contents/MacOS/love PATH_TO_TESTING_FOLDER`  
-LINUX: `./love.AppImage PATH_TO_TESTING_FOLDER`
+WINDOWS: `& 'c:\Program Files\LOVE\love.exe' PATH_TO_TESTING_FOLDER/main.lua --console`  
+MACOS: `/Applications/love.app/Contents/MacOS/love PATH_TO_TESTING_FOLDER/main.lua`  
+LINUX: `./love.AppImage PATH_TO_TESTING_FOLDER/main.lua`
 
 By default all tests will be run for all modules.  
 If you want to specify a module/s you can use:  
@@ -113,30 +114,39 @@ For sanity-checking, if it's currently not covered or it's not possible to test 
 
 ## Todo 
 Test classes that still need to be written:
-- [ ] graphics.Mesh
-- [ ] graphics.ParticleSystem
 - [ ] physics.Body
-- [ ] physics.Contact
-- [ ] physics.Shape (this will include physics.Fixture properties)
+
+General tests or features to be done in future:
+- [ ] check for any 12.0 methods in the changelog not yet covered in the test suite
+- [ ] add BMfont alt. tests for font class tests (Rasterizer + GlyphData)
+- [ ] graphics.isCompressed() should have an example of all compressed files
+- [ ] graphics.Mesh should have some graphical tests ideally to check vertex settings w/ shaders
+- [ ] ability to test loading different combinations of modules if needed
+- [ ] performance tests? need to discuss what + how
+
+---
+
+## Graphics Tolerance
+By default all graphic tests are run with pixel precision and 0 rgba tolerance.  
+
+However there are a couple of methods that on some platforms require some slight tolerance to allow for tiny differences in rendering.
+| Test                        |    OS     |      Exception      | Reason |
+| --------------------------  | --------- | ------------------- | ------ |
+| love.graphics.drawInstanced |  Windows  |   1rgba tolerance   | On Windows there's a couple pixels a tiny bit off, most likely due to complexity of the mesh drawn |
+| love.graphics.setBlendMode  |  Win/Lin  |   1rgba tolerance   | Blendmodes have some small varience on some machines |
 
 ---
 
 ## Runner Exceptions
 The automated tests through Github work for the most part however there are a few exceptions that have to be accounted for due to limitations of the VMs and the graphics emulation used.  
 
-These exceptions are either skipped, or handled by using a 1px or 1/255rgba tolerance - when run locally on real hardware, these tests pass fine at the default 0 tolerance.
+These exceptions are either skipped, or handled by using a 1px or 1/255rgba tolerance - when run locally on real hardware, these tests pass fine at the default 0 tolerance.  
+You can specify the test suite is being run on a runner by adding the `--isRunner` flag in your workflow file, i.e.:  
+`& 'c:\Program Files\LOVE\love.exe' PATH_TO_TESTING_FOLDER/main.lua --console --runAllTests --isRunner`
 | Test                       |    OS     |      Exception      | Reason |
 | -------------------------- | --------- | ------------------- | ------ |
 | love.graphics.points       |   MacOS   |    1px tolerance    | Points are offset by 1,1 when drawn |
 | love.graphics.setWireframe |   MacOS   |    1px tolerance    | Wireframes are offset by 1,1 when drawn |
 | love.graphica.arc          |   MacOS   |       Skipped       | Arc curves are drawn slightly off at really low scale  |
-| love.graphics.setLineStyle |   Linux   |   1rgba tolerance   | Rough lines blend differently with the background rgba |
-| love.audio.RecordingDevice |    All    |       Skipped       | Recording devices can't be emulated on runners  |
-
----
-
-## Future
-- [ ] add BMfont alts for font class tests (Rasterizer + GlyphData)
-- [ ] graphics.isCompressed() should have an example of all compressed files
-- [ ] ability to test loading different combinations of modules
-- [ ] performance tests?
+| love.graphics.setLineStyle |   Linux   |   1rgba tolerance   | 'Rough' lines blend differently with the background rgba |
+| love.audio.RecordingDevice |    All    |       Skipped       | Recording devices can't be emulated on runners |

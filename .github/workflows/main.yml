@@ -29,9 +29,11 @@ jobs:
       with:
         name: test-output-macos-opengl-${{ steps.report1.outputs.conclusion }}
         path: test-output-macos-opengl.zip
-    - name: Check report output
+    - name: Check Report Output
       if: steps.report1.outputs.conclusion == 'failure'
-      run: exit 1
+      run: |
+        echo "${{ steps.report1.outputs.failures }} tests failed!"
+        exit 1
   windows-latest:
     runs-on: windows-latest
     env: 
@@ -87,9 +89,12 @@ jobs:
       with:
         name: test-output-windows-opengles-${{ steps.report2.outputs.conclusion }}
         path: test-output-windows-opengles.zip
-    - name: Check report output
+    - name: Check Report Output
       if: steps.report1.outputs.conclusion == 'failure' || steps.report2.outputs.conclusion == 'failure'
-      run: exit 1
+      run: |
+        echo "${{ steps.report1.outputs.failures }} opengl tests failed!"
+        echo "${{ steps.report2.outputs.failures }} opengles tests failed!"
+        exit 1
 #    - name: Install Vulkan
 #      run: |
 #        curl -L --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/1.3.231.1/windows/VulkanSDK-1.3.231.1-Installer.exe
@@ -200,9 +205,12 @@ jobs:
       run: |
         kill $XVFBPID
         kill $OPENBOXPID
-    - name: Check report output
+    - name: Check Report Output
       if: steps.report1.outputs.conclusion == 'failure' || steps.report2.outputs.conclusion == 'failure'
-      run: exit 1
+      run: |
+        echo "${{ steps.report1.outputs.failures }} opengl tests failed!"
+        echo "${{ steps.report2.outputs.failures }} opengles tests failed!"
+        exit 1
 #  linux-vulkan:
 #    runs-on: ubuntu-22.04
 #    env:

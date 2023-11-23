@@ -32,7 +32,7 @@ jobs:
     - name: Check Report Output
       if: steps.report1.outputs.conclusion == 'failure'
       run: |
-        echo "${{ steps.report1.outputs.failed }} tests failed!"
+        echo "${{ steps.report1.outputs.failed }} tests failed"
         exit 1
   windows-latest:
     runs-on: windows-latest
@@ -92,8 +92,8 @@ jobs:
     - name: Check Report Output
       if: steps.report1.outputs.conclusion == 'failure' || steps.report2.outputs.conclusion == 'failure'
       run: |
-        echo "${{ steps.report1.outputs.failed }} opengl tests failed!"
-        echo "${{ steps.report2.outputs.failed }} opengles tests failed!"
+        echo "${{ steps.report1.outputs.failed }} opengl tests failed"
+        echo "${{ steps.report2.outputs.failed }} opengles tests failed"
         exit 1
 #    - name: Install Vulkan
 #      run: |
@@ -208,8 +208,8 @@ jobs:
     - name: Check Report Output
       if: steps.report1.outputs.conclusion == 'failure' || steps.report2.outputs.conclusion == 'failure'
       run: |
-        echo "${{ steps.report1.outputs.failed }} opengl tests failed!"
-        echo "${{ steps.report2.outputs.failed }} opengles tests failed!"
+        echo "${{ steps.report1.outputs.failed }} opengl tests failed"
+        echo "${{ steps.report2.outputs.failed }} opengles tests failed"
         exit 1
 #  linux-vulkan:
 #    runs-on: ubuntu-22.04

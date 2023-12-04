@@ -122,6 +122,7 @@ end
 
 -- love.mouse.setPosition
 love.test.mouse.setPosition = function(test)
+  love.mouse.setPosition(10, 10)
   local x, y = love.mouse.getPosition()
   test:assertEquals(10, x, 'check x position')
   test:assertEquals(10, y, 'check y position')

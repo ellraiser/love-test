@@ -22,6 +22,7 @@ end
 
 -- love.mouse.getPosition
 love.test.mouse.getPosition = function(test)
+  love.mouse.setPosition(0, 0) -- cant predict
   local x, y = love.mouse.getPosition()
   test:assertEquals(0, x, 'check x pos')
   test:assertEquals(0, y, 'check y pos')
@@ -48,6 +49,7 @@ end
 
 -- love.mouse.getX
 love.test.mouse.getX = function(test)
+  love.mouse.setPosition(0, 0) -- cant predict
   local x = love.mouse.getX()
   test:assertEquals(0, x, 'check x pos')
   love.mouse.setX(10)
@@ -57,6 +59,7 @@ end
 
 -- love.mouse.getY
 love.test.mouse.getY = function(test)
+  love.mouse.setPosition(0, 0) -- cant predict
   local y = love.mouse.getY()
   test:assertEquals(0, y, 'check x pos')
   love.mouse.setY(10)

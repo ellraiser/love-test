@@ -1,6 +1,3 @@
--- & 'c:\Program Files\LOVE\love.exe' ./ --console 
--- /Applications/love_12.app/Contents/MacOS/love ./testing
-
 -- load test objs
 require('classes.TestSuite')
 require('classes.TestModule')
@@ -10,6 +7,7 @@ require('classes.TestMethod')
 love.test = TestSuite:new()
 
 -- load test scripts if module is active
+-- this is so in future if we have per-module disabling it'll still run
 if love.audio ~= nil then require('tests.audio') end
 if love.data ~= nil then require('tests.data') end
 if love.event ~= nil then require('tests.event') end
@@ -17,8 +15,10 @@ if love.filesystem ~= nil then require('tests.filesystem') end
 if love.font ~= nil then require('tests.font') end
 if love.graphics ~= nil then require('tests.graphics') end
 if love.image ~= nil then require('tests.image') end
+if love.keyboard ~= nil then require('tests.keyboard') end
 if love.math ~= nil then require('tests.math') end
 if love.physics ~= nil then require('tests.physics') end
+if love.sensor ~= nil then require('tests.sensor') end
 if love.sound ~= nil then require('tests.sound') end
 if love.system ~= nil then require('tests.system') end
 if love.thread ~= nil then require('tests.thread') end
@@ -47,9 +47,8 @@ love.load = function(args)
       }
       Logo.img = love.graphics.newQuad(0, 0, 64, 64, Logo.texture)
       Font = love.graphics.newFont('resources/font.ttf', 8, 'normal')
-      local txtobj = love.graphics.newTextBatch or love.graphics.newText
-      TextCommand = txtobj(Font, 'Loading...')
-      TextRun = txtobj(Font, '')
+      TextCommand = 'Loading...'
+      TextRun = ''
     end
   end
 
@@ -157,7 +156,7 @@ love.load = function(args)
     love.event.quit(0)
   else 
     -- start first module
-    TextCommand:set(testcmd)
+    TextCommand = testcmd
     love.test.module:runTests()
   end
 
@@ -173,18 +172,19 @@ end
 -- love.draw
 -- draw a little logo to the screen
 love.draw = function()
-  local lw = (love.graphics.getPixelWidth() - 128) / 2
-  local lh = (love.graphics.getPixelHeight() - 128) / 2
+  local lw = (love.graphics.getWidth() - 128) / 2
+  local lh = (love.graphics.getHeight() - 128) / 2
   love.graphics.draw(Logo.texture, Logo.img, lw, lh, 0, 2, 2)
-  love.graphics.draw(TextCommand, 4, 12, 0, 2, 2)
-  love.graphics.draw(TextRun, 4, 32, 0, 2, 2)
+  love.graphics.setFont(Font)
+  love.graphics.print(TextCommand, 4, 12, 0, 2, 2)
+  love.graphics.print(TextRun, 4, 32, 0, 2, 2)
 end
 
 
 -- love.quit
 -- add a hook to allow test modules to fake quit
 love.quit = function()
-  if love.test.module ~= nil and love.test.module.fakequit == true then
+  if love.test.module ~= nil and love.test.module.fakequit then
     return true
   else
     return false
@@ -209,8 +209,4 @@ end
 -- string time formatter
 function UtilTimeFormat(seconds)
   return string.format("%.3f", tostring(seconds))
-end
-
-function UtilDebugLog(a, b, c)
-  if GITHUB_RUNNER == true then print("DEBUG ==> ", a, b, c) end
 end

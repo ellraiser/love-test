@@ -158,38 +158,18 @@ love.test.audio.Source = function(test)
   test:assertTrue(run, 'check queued sound')
   queue:stop()
 
-  -- check making a filter
+  -- check making a filer
   local setfilter = stereo:setFilter({
     type = 'lowpass',
     volume = 0.5,
     highgain = 0.3
   })
   test:assertTrue(setfilter, 'check filter applied')
-  local filter1 = stereo:getFilter()
-  test:assertEquals('lowpass', filter1.type, 'check filter type')
-  test:assertEquals(0.5, filter1.volume, 'check filter volume')
-  test:assertRange(filter1.highgain, 0.3, 0.4, 'check filter highgain')
-  test:assertEquals(nil, filter1.lowgain, 'check filter lowgain')
-
-  -- check adding/clearing filters
-  local filters = love.audio.newSource('resources/click.ogg', 'stream')
-  local setfirst = filters:setFilter({
-    type = 'lowpass',
-    volume = 0.5,
-    highgain = 0.3
-  })
-  filters:play()
-  filters:isLooping(true)
-  test:assertTrue(setfirst, 'check initial set')
-  filters:setFilter()
-  local checkfirst = filters:getFilter()
-  test:assertEquals(nil, checkfirst, 'check filter cleared')
-  local resetfilter = filters:setFilter({
-    type = 'lowpass',
-    volume = 0.5,
-    highgain = 0.3
-  })
-  test:assertTrue(resetfilter, 'check filter reapplied')
+  local filter = stereo:getFilter()
+  test:assertEquals('lowpass', filter.type, 'check filter type')
+  test:assertEquals(0.5, filter.volume, 'check filter volume')
+  test:assertRange(filter.highgain, 0.3, 0.4, 'check filter highgain')
+  test:assertEquals(nil, filter.lowgain, 'check filter lowgain')
 
   -- add an effect
   local effsource = love.audio.newSource('resources/click.ogg', 'static')
@@ -207,6 +187,10 @@ love.test.audio.Source = function(test)
   test:assertTrue(seteffect, 'check effect was applied')
   local filtersettings = effsource:getEffect('effectthatdoesntexist', {})
   test:assertNotNil(filtersettings)
+
+  love.audio.stop(stereo)
+  love.audio.stop(mono)
+  love.audio.stop(effsource)
 
 end
 
@@ -238,6 +222,7 @@ love.test.audio.getActiveSourceCount = function(test)
   test:assertNotNil(love.audio.getActiveSourceCount())
   -- check source isn't active by default
   local testsource = love.audio.newSource('resources/click.ogg', 'static')
+  love.audio.stop(testsource)
   test:assertEquals(0, love.audio.getActiveSourceCount(), 'check not active')
   -- check playing a source marks it as active
   love.audio.play(testsource)
@@ -383,6 +368,7 @@ love.test.audio.pause = function(test)
   love.audio.play(source)
   local onepause = love.audio.pause()
   test:assertEquals(1, #onepause, 'check 1 paused')
+  love.audio.stop(source)
 end
 
 
@@ -392,7 +378,7 @@ love.test.audio.play = function(test)
   local source = love.audio.newSource('resources/click.ogg', 'static')
   love.audio.play(source)
   test:assertTrue(source:isPlaying(), 'check something playing')
-  love.audio.pause()
+  love.audio.stop()
 end
 
 

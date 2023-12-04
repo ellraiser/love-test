@@ -73,7 +73,7 @@ love.load = function(args)
   local cmderr = 'Invalid flag used'
   local modules = {
     'audio', 'data', 'event', 'filesystem', 'font', 'graphics',
-    'image', 'math', 'physics', 'sound', 'system',
+    'image', 'keyboard', 'math', 'physics', 'sensor', 'sound', 'system',
     'thread', 'timer', 'video', 'window'
   }
   GITHUB_RUNNER = false

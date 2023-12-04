@@ -15,6 +15,7 @@ if love.filesystem ~= nil then require('tests.filesystem') end
 if love.font ~= nil then require('tests.font') end
 if love.graphics ~= nil then require('tests.graphics') end
 if love.image ~= nil then require('tests.image') end
+if love.joystick ~= nil then require('tests.joystick') end
 if love.keyboard ~= nil then require('tests.keyboard') end
 if love.math ~= nil then require('tests.math') end
 if love.physics ~= nil then require('tests.physics') end
@@ -23,6 +24,7 @@ if love.sound ~= nil then require('tests.sound') end
 if love.system ~= nil then require('tests.system') end
 if love.thread ~= nil then require('tests.thread') end
 if love.timer ~= nil then require('tests.timer') end
+if love.touch ~= nil then require('tests.touch') end
 if love.video ~= nil then require('tests.video') end
 if love.window ~= nil then require('tests.window') end
 
@@ -72,9 +74,9 @@ love.load = function(args)
   local method = ''
   local cmderr = 'Invalid flag used'
   local modules = {
-    'audio', 'data', 'event', 'filesystem', 'font', 'graphics',
-    'image', 'keyboard', 'math', 'physics', 'sensor', 'sound', 'system',
-    'thread', 'timer', 'video', 'window'
+    'audio', 'data', 'event', 'filesystem', 'font', 'graphics', 'image',
+    'joystick', 'keyboard', 'math', 'physics', 'sensor', 'sound', 'system',
+    'thread', 'timer', 'touch', 'video', 'window'
   }
   GITHUB_RUNNER = false
   for a=1,#arglist do

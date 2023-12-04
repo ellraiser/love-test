@@ -33,6 +33,7 @@ TestSuite = {
       graphics = {},
       image = {},
       joystick = {},
+      love = {},
       keyboard = {},
       math = {},
       mouse = {},

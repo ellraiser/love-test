@@ -8,6 +8,7 @@ love.test = TestSuite:new()
 
 -- load test scripts if module is active
 -- this is so in future if we have per-module disabling it'll still run
+if love ~= nil then require('tests.love') end
 if love.audio ~= nil then require('tests.audio') end
 if love.data ~= nil then require('tests.data') end
 if love.event ~= nil then require('tests.event') end
@@ -18,6 +19,7 @@ if love.image ~= nil then require('tests.image') end
 if love.joystick ~= nil then require('tests.joystick') end
 if love.keyboard ~= nil then require('tests.keyboard') end
 if love.math ~= nil then require('tests.math') end
+if love.mouse ~= nil then require('tests.mouse') end
 if love.physics ~= nil then require('tests.physics') end
 if love.sensor ~= nil then require('tests.sensor') end
 if love.sound ~= nil then require('tests.sound') end
@@ -75,13 +77,13 @@ love.load = function(args)
   local cmderr = 'Invalid flag used'
   local modules = {
     'audio', 'data', 'event', 'filesystem', 'font', 'graphics', 'image',
-    'joystick', 'keyboard', 'math', 'physics', 'sensor', 'sound', 'system',
-    'thread', 'timer', 'touch', 'video', 'window'
+    'joystick', 'keyboard', 'love', 'math', 'mouse', 'physics', 'sensor',
+    'sound', 'system', 'thread', 'timer', 'touch', 'video', 'window'
   }
   GITHUB_RUNNER = false
   for a=1,#arglist do
     if testcmd == '--runSpecificMethod' then
-      if module == '' and love[ arglist[a] ] ~= nil then 
+      if module == '' and (arglist[a] == 'love' or love[ arglist[a] ] ~= nil) then 
         module = arglist[a] 
         table.insert(modules, module)
       elseif module ~= '' and love[module] ~= nil and method == '' then
@@ -89,7 +91,7 @@ love.load = function(args)
       end
     end
     if testcmd == '--runSpecificModules' then
-      if love[ arglist[a] ] ~= nil and arglist[a] ~= '--isRunner' then 
+      if (arglist[a] == 'love' or love[ arglist[a] ] ~= nil) and arglist[a] ~= '--isRunner' then 
         table.insert(modules, arglist[a]) 
       end
     end

@@ -158,18 +158,38 @@ love.test.audio.Source = function(test)
   test:assertTrue(run, 'check queued sound')
   queue:stop()
 
-  -- check making a filer
+  -- check making a filter
   local setfilter = stereo:setFilter({
     type = 'lowpass',
     volume = 0.5,
     highgain = 0.3
   })
   test:assertTrue(setfilter, 'check filter applied')
-  local filter = stereo:getFilter()
-  test:assertEquals('lowpass', filter.type, 'check filter type')
-  test:assertEquals(0.5, filter.volume, 'check filter volume')
-  test:assertRange(filter.highgain, 0.3, 0.4, 'check filter highgain')
-  test:assertEquals(nil, filter.lowgain, 'check filter lowgain')
+  local filter1 = stereo:getFilter()
+  test:assertEquals('lowpass', filter1.type, 'check filter type')
+  test:assertEquals(0.5, filter1.volume, 'check filter volume')
+  test:assertRange(filter1.highgain, 0.3, 0.4, 'check filter highgain')
+  test:assertEquals(nil, filter1.lowgain, 'check filter lowgain')
+
+  -- check adding/clearing filters
+  local filters = love.audio.newSource('resources/click.ogg', 'stream')
+  local setfirst = filters:setFilter({
+    type = 'lowpass',
+    volume = 0.5,
+    highgain = 0.3
+  })
+  filters:play()
+  filters:isLooping(true)
+  test:assertTrue(setfirst, 'check initial set')
+  filters:setFilter()
+  local checkfirst = filters:getFilter()
+  test:assertEquals(nil, checkfirst, 'check filter cleared')
+  local resetfilter = filters:setFilter({
+    type = 'lowpass',
+    volume = 0.5,
+    highgain = 0.3
+  })
+  test:assertTrue(resetfilter, 'check filter reapplied')
 
   -- add an effect
   local effsource = love.audio.newSource('resources/click.ogg', 'static')

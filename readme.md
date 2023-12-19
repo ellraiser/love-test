@@ -113,7 +113,6 @@ For sanity-checking, if it's currently not covered or it's not possible to test 
 
 ## Todo
 The following items are all the things still outstanding, expanding on any existing tests is also very welcome!
-- [ ] check for any 12.0 methods in the changelog not yet covered in the test suite
 - [ ] add BMfont alt. tests for font class tests (Rasterizer + GlyphData)
 - [ ] graphics.isCompressed() should have an example of all compressed files
 - [ ] graphics.Mesh should have some graphical tests ideally to check vertex settings w/ shaders

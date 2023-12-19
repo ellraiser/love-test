@@ -8,6 +8,13 @@
 --------------------------------------------------------------------------------
 
 
+-- love.window.focus
+love.test.window.focus = function(test)
+  -- cant test as doesnt return anything
+  test:assertEquals('function', type(love.window.focus), 'check method exists')
+end
+
+
 -- love.window.fromPixels
 love.test.window.fromPixels = function(test)
   -- check dpi/pixel ratio as expected

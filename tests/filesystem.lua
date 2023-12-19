@@ -187,6 +187,27 @@ love.test.filesystem.getDirectoryItems = function(test)
 end
 
 
+-- love.filesystem.getFullCommonPath
+love.test.filesystem.getFullCommonPath = function(test)
+  -- check standard paths
+  local appsavedir = love.filesystem.getFullCommonPath('appsavedir')
+  local appdocuments = love.filesystem.getFullCommonPath('appdocuments')
+  local userhome = love.filesystem.getFullCommonPath('userhome')
+  local userappdata = love.filesystem.getFullCommonPath('userappdata')
+  local userdesktop = love.filesystem.getFullCommonPath('userdesktop')
+  local userdocuments = love.filesystem.getFullCommonPath('userdocuments')
+  test:assertNotNil(appsavedir)
+  test:assertNotNil(appdocuments)
+  test:assertNotNil(userhome)
+  test:assertNotNil(userappdata)
+  test:assertNotNil(userdesktop)
+  test:assertNotNil(userdocuments)
+  -- check invalid path
+  local ok = pcall(love.filesystem.getFullCommonPath, 'fakepath')
+  test:assertFalse(ok, 'check invalid common path')
+end
+
+
 -- love.filesystem.getIdentity
 love.test.filesystem.getIdentity = function(test)
   -- check setting identity matches
@@ -263,6 +284,7 @@ love.test.filesystem.getInfo = function(test)
   test:assertEquals(nil, love.filesystem.getInfo('foo/bar/file2.txt', 'directory'), 'check not directory')
   test:assertNotEquals(nil, love.filesystem.getInfo('foo/bar/file2.txt'), 'check info not nil')
   test:assertEquals(love.filesystem.getInfo('foo/bar/file2.txt').size, 5, 'check info size match')
+  test:assertFalse(love.filesystem.getInfo('foo/bar/file2.txt').readonly, 'check readonly')
   -- @TODO test modified timestamp from info.modtime?
   -- cleanup
   love.filesystem.remove('foo/bar/file2.txt')
@@ -331,6 +353,84 @@ love.test.filesystem.mount = function(test)
   love.filesystem.remove('test/test.txt')
   love.filesystem.remove('test')
   love.filesystem.remove('test.zip')
+end
+
+
+-- love.filesystem.mountFullPath
+love.test.filesystem.mountFullPath = function(test)
+  -- mount something in the working directory
+  local mount = love.filesystem.mountFullPath(love.filesystem.getSource() .. '/tests', 'tests', 'read')
+  test:assertTrue(mount, 'check can mount')
+  -- check reading file through mounted path label
+  local contents, _ = love.filesystem.read('tests/audio.lua')
+  test:assertNotEquals(nil, contents)
+  local unmount = love.filesystem.unmountFullPath(love.filesystem.getSource() .. '/tests')
+  test:assertTrue(unmount, 'reset mount')
+end
+
+
+-- love.filesystem.unmountFullPath
+love.test.filesystem.unmountFullPath = function(test)
+  -- try unmounting something we never mounted
+  local unmount1 = love.filesystem.unmountFullPath(love.filesystem.getSource() .. '/faker')
+  test:assertFalse(unmount1, 'check not mounted to start with')
+  -- mount something to unmount after
+  love.filesystem.mountFullPath(love.filesystem.getSource() .. '/tests', 'tests', 'read')
+  local unmount2 = love.filesystem.unmountFullPath(love.filesystem.getSource() .. '/tests')
+  test:assertTrue(unmount2, 'check unmounted')
+end
+
+
+-- love.filesystem.mountCommonPath
+love.test.filesystem.mountCommonPath = function(test)
+  -- check if we can mount all the expected paths
+  local mount1 = love.filesystem.mountCommonPath('appsavedir', 'appsavedir', 'read')
+  local mount2 = love.filesystem.mountCommonPath('appdocuments', 'appdocuments', 'read')
+  local mount3 = love.filesystem.mountCommonPath('userhome', 'userhome', 'read')
+  local mount4 = love.filesystem.mountCommonPath('userappdata', 'userappdata', 'read')
+  local mount5 = love.filesystem.mountCommonPath('userdesktop', 'userdesktop', 'read')
+  local mount6 = love.filesystem.mountCommonPath('userdocuments', 'userdocuments', 'read')
+  local ok = pcall(love.filesystem.mountCommonPath, 'fakepath', 'fake', 'read')
+  test:assertTrue(mount1, 'check mount appsavedir')
+  test:assertTrue(mount2, 'check mount appdocuments')
+  test:assertTrue(mount3, 'check mount userhome')
+  test:assertTrue(mount4, 'check mount userappdata')
+  test:assertTrue(mount5, 'check mount userdesktop')
+  test:assertTrue(mount6, 'check mount userdocuments')
+  test:assertFalse(ok, 'check mount invalid common path fails')
+  love.filesystem.unmountCommonPath('appsavedir')
+  love.filesystem.unmountCommonPath('appdocuments')
+  love.filesystem.unmountCommonPath('userhome')
+  love.filesystem.unmountCommonPath('userappdata')
+  love.filesystem.unmountCommonPath('userdesktop')
+  love.filesystem.unmountCommonPath('userdocuments')
+end
+
+
+-- love.filesystem.unmountCommonPath
+love.test.filesystem.unmountCommonPath = function(test)
+  -- check unmounting invalid 
+  local ok = pcall(love.filesystem.unmountCommonPath, 'fakepath')
+  test:assertFalse(ok, 'check unmount invalid common path')
+  -- check mounting valid paths
+  love.filesystem.mountCommonPath('appsavedir', 'appsavedir', 'read')
+  love.filesystem.mountCommonPath('appdocuments', 'appdocuments', 'read')
+  love.filesystem.mountCommonPath('userhome', 'userhome', 'read')
+  love.filesystem.mountCommonPath('userappdata', 'userappdata', 'read')
+  love.filesystem.mountCommonPath('userdesktop', 'userdesktop', 'read')
+  love.filesystem.mountCommonPath('userdocuments', 'userdocuments', 'read')
+  local unmount1 = love.filesystem.unmountCommonPath('appsavedir')
+  local unmount2 = love.filesystem.unmountCommonPath('appdocuments')
+  local unmount3 = love.filesystem.unmountCommonPath('userhome')
+  local unmount4 = love.filesystem.unmountCommonPath('userappdata')
+  local unmount5 = love.filesystem.unmountCommonPath('userdesktop')
+  local unmount6 = love.filesystem.unmountCommonPath('userdocuments')
+  test:assertTrue(unmount1, 'check unmount appsavedir')
+  test:assertTrue(unmount2, 'check unmount appdocuments')
+  test:assertTrue(unmount3, 'check unmount userhome')
+  test:assertTrue(unmount4, 'check unmount userappdata')
+  test:assertTrue(unmount5, 'check unmount userdesktop')
+  test:assertTrue(unmount6, 'check unmount userdocuments')
 end
 
 

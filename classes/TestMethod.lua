@@ -372,7 +372,7 @@ TestMethod = {
   -- @param {number} frames - no. frames to wait
   -- @return {nil}
   waitFrames = function(self, frames)
-    for i=1,frames do coroutine.yield() end
+    for _=1,frames do coroutine.yield() end
   end,
 
 

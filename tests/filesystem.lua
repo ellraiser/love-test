@@ -388,6 +388,7 @@ love.test.filesystem.mountCommonPath = function(test)
   local mount2 = love.filesystem.mountCommonPath('appdocuments', 'appdocuments', 'readwrite')
   local mount3 = love.filesystem.mountCommonPath('userhome', 'userhome', 'readwrite')
   local mount4 = love.filesystem.mountCommonPath('userappdata', 'userappdata', 'readwrite')
+  -- need to check mount5+mount6 on linux, mount5 fails
   local mount5 = love.filesystem.mountCommonPath('userdesktop', 'userdesktop', 'readwrite')
   local mount6 = love.filesystem.mountCommonPath('userdocuments', 'userdocuments', 'readwrite')
   local ok = pcall(love.filesystem.mountCommonPath, 'fakepath', 'fake', 'readwrite')

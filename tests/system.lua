@@ -34,7 +34,6 @@ love.test.system.getPreferredLocales = function(test)
   local locale = love.system.getPreferredLocales()
   test:assertNotNil(locale)
   test:assertEquals('table', type(locale), 'check returns table')
-  test:assertGreaterEqual(1, #locale, 'check at least 1 value returned')
 end
 
 

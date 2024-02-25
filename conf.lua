@@ -6,3 +6,10 @@ function love.conf(t)
   t.window.resizable = true
   t.renderers = {"opengl"}
 end
+
+function love.errorhandler(msg)
+  msg = tostring(msg)
+  print('love crashed!')
+  print(msg)
+  os.exit(1)
+end

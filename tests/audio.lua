@@ -461,14 +461,16 @@ love.test.audio.setPlaybackDevice = function(test)
   -- check method
   test:assertNotNil(love.audio.setPlaybackDevice)
   -- check blank string name
-  -- local success1, msg1 = love.audio.setPlaybackDevice('')
-  -- test:assertFalse(success1, 'check blank device fails')
+  local success1, msg1 = love.audio.setPlaybackDevice('')
+  test:assertFalse(success1, 'check blank device fails')
   -- check invalid name
   local success2, msg2 = love.audio.setPlaybackDevice('loveFM')
   test:assertFalse(success2, 'check invalid device fails')
   -- check setting already set
   local success3, msg3 = love.audio.setPlaybackDevice(love.audio.getPlaybackDevice()) -- current name
   test:assertFalse(success3, 'check existing device fails')
+  print("love.test.audio.setPlaybackDevice")
+  print(success1, msg1, success2, msg2, success3, msg3)
   -- if other devices to play with lets set a different one
   local devices = love.audio.getPlaybackDevices()
   if #devices > 1 then

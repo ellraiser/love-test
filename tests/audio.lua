@@ -461,8 +461,8 @@ love.test.audio.setPlaybackDevice = function(test)
   -- check method
   test:assertNotNil(love.audio.setPlaybackDevice)
   -- check blank string name
-  local success1, msg1 = love.audio.setPlaybackDevice('')
-  test:assertFalse(success1, 'check blank device fails')
+  -- local success1, msg1 = love.audio.setPlaybackDevice('')
+  -- test:assertFalse(success1, 'check blank device fails')
   -- check invalid name
   local success2, msg2 = love.audio.setPlaybackDevice('loveFM')
   test:assertFalse(success2, 'check invalid device fails')

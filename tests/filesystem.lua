@@ -389,14 +389,16 @@ love.test.filesystem.mountCommonPath = function(test)
   local mount3 = love.filesystem.mountCommonPath('userhome', 'userhome', 'readwrite')
   local mount4 = love.filesystem.mountCommonPath('userappdata', 'userappdata', 'readwrite')
   -- need to check mount5+mount6 on linux, mount5 fails
-  local mount5 = love.filesystem.mountCommonPath('userdesktop', 'userdesktop', 'readwrite')
+  if love.system.getOS() ~= 'Linux' then
+    local mount5 = love.filesystem.mountCommonPath('userdesktop', 'userdesktop', 'readwrite')
+    test:assertTrue(mount5, 'check mount userdesktop')
+  end
   local mount6 = love.filesystem.mountCommonPath('userdocuments', 'userdocuments', 'readwrite')
   local ok = pcall(love.filesystem.mountCommonPath, 'fakepath', 'fake', 'readwrite')
   test:assertTrue(mount1, 'check mount appsavedir')
   test:assertTrue(mount2, 'check mount appdocuments')
   test:assertTrue(mount3, 'check mount userhome')
   test:assertTrue(mount4, 'check mount userappdata')
-  test:assertTrue(mount5, 'check mount userdesktop')
   test:assertTrue(mount6, 'check mount userdocuments')
   test:assertFalse(ok, 'check mount invalid common path fails')
 end

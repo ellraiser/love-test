@@ -3,17 +3,10 @@ These are all the outstanding methods that require test coverage, along with a f
 
 ## General 
 - ability to test loading different combinations of modules if needed?
-- performance tests? need to discuss what + how
+- performance tests? need to discuss what + how, might be better as a seperate thing
 - check expected behaviour of mount + unmount with common path
   try uncommenting love.filesystem.unmountCommonPath and you'll see the issues
-
-## Physics
-- love.physics.World:rayCastAny
-- love.physics.World:rayCastClosest
-- love.physics.World:getShapesInArea
-- love.physics.Body:getShapes
-- love.physics.Body:getShape
-- love.physics.Body:hasCustomMassData
+- revisit love.audio.setPlaybackDevice when we update openal soft for MacOS
 
 ## Graphics
 - love.graphics.copyBuffer
@@ -35,5 +28,5 @@ These are all the outstanding methods that require test coverage, along with a f
 - love.graphics.setOrthoProjection
 - love.graphics.setPerspectiveProjection
 - love.graphics.resetProjection
-- Mesh:getAttachedAttributes
-- Shader:hasStage
+- love.graphics.Mesh:getAttachedAttributes
+- love.graphics.Shader:hasStage

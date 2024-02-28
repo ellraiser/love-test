@@ -113,6 +113,8 @@ love.test.graphics.Canvas = function(test)
     debugname = 'testcanvas'
   })
   test:assertObject(canvas)
+  test:assertTrue(canvas:isCanvas(), 'check is canvas')
+  test:assertFalse(canvas:isComputeWritable(), 'check not compute writable')
 
   -- check dpi
   test:assertEquals(love.graphics.getDPIScale(), canvas:getDPIScale(), 'check dpi scale')
@@ -216,6 +218,16 @@ love.test.graphics.Canvas = function(test)
   dcanvas:setDepthSampleMode('equal')
   test:assertEquals('equal', dcanvas:getDepthSampleMode(), 'check depth sample mode set')
 
+  -- check compute writeable (wont work on opengl mac)
+  if love.graphics.getSupported()['glsl4'] then
+    local ccanvas = love.graphics.newCanvas(100, 100, {
+      type = '2d',
+      format = 'r32f',
+      computewrite = true
+    })
+    test:assertTrue(ccanvas:isComputeWritable())
+  end
+
 end
 
 
@@ -303,6 +315,8 @@ love.test.graphics.Image = function(test)
     mipmaps = true
   })
   test:assertObject(image)
+  test:assertFalse(image:isCanvas(), 'check not canvas')
+  test:assertFalse(image:isComputeWritable(), 'check not compute writable')
 
   -- check dpi
   test:assertEquals(love.graphics.getDPIScale(), image:getDPIScale(), 'check dpi scale')
@@ -803,7 +817,7 @@ love.test.graphics.Shader = function(test)
   ]]
   local shader1 = love.graphics.newShader(pixelcode1, vertexcode1, {debugname = 'testshader'})
   test:assertObject(shader1)
-  test:assertEquals('vertex shader:\npixel shader:\n', shader1:getWarnings(), 'check shader valid')
+  test:assertEquals('', shader1:getWarnings(), 'check shader valid')
   test:assertFalse(shader1:hasUniform('tex1'), 'check invalid uniform')
   test:assertTrue(shader1:hasUniform('tex2'), 'check valid uniform')
   test:assertEquals('testshader', shader1:getDebugName())
@@ -1383,19 +1397,16 @@ end
 -- love.graphics.points
 love.test.graphics.points = function(test)
   local canvas = love.graphics.newCanvas(16, 16)
-  love.graphics.setCanvas(canvas)
+  love.graphics.push("all")
+    love.graphics.setCanvas(canvas)
     love.graphics.clear(0, 0, 0, 1)
+    love.graphics.translate(0.5, 0.5) -- draw points at the center of pixels
     love.graphics.setColor(1, 0, 0, 1)
-    love.graphics.points(1,1,16,1,16,16,1,16,1,1)
+    love.graphics.points(0,0,15,0,15,15,0,15,0,0)
     love.graphics.setColor(1, 1, 0, 1)
-    love.graphics.points({2,2,8,8,15,2,8,9,15,15,9,9,2,15,9,8})
-    love.graphics.setColor(1, 1, 1, 1)
-  love.graphics.setCanvas()
+    love.graphics.points({1,1,7,7,14,1,7,8,14,14,8,8,1,14,8,7})
+  love.graphics.pop()
   local imgdata = love.graphics.readbackTexture(canvas)
-  -- on macOS runners points are drawn 1px off from the target
-  if GITHUB_RUNNER and love.system.getOS() == 'OS X' then
-    test.pixel_tolerance = 1
-  end
   test:compareImg(imgdata)
 end
 

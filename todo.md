@@ -1,19 +1,21 @@
 # TODO
+These are all the outstanding methods that require test coverage, along with a few bits that still need doing / discussion.  
 
-# 12.0 Methods
-- love.data.pack variant that accepts ByteData
-- love.filesystem.load (binary vs text chunks)
-- check expected behavior of mountCommonPath/unmountCommonPath
+## General 
+- ability to test loading different combinations of modules if needed?
+- performance tests? need to discuss what + how
+- check expected behaviour of mount + unmount with common path
+  try uncommenting love.filesystem.unmountCommonPath and you'll see the issues
 
-## physics
-- World:rayCastAny
-- World:rayCastClosest
-- World:getShapesInArea
-- Body:getShapes
-- Body:getShape
-- Body:hasCustomMassData
+## Physics
+- love.physics.World:rayCastAny
+- love.physics.World:rayCastClosest
+- love.physics.World:getShapesInArea
+- love.physics.Body:getShapes
+- love.physics.Body:getShape
+- love.physics.Body:hasCustomMassData
 
-## graphics
+## Graphics
 - love.graphics.copyBuffer
 - love.graphics.copyBufferToTexture
 - love.graphics.copyTextureToBuffer
@@ -33,13 +35,5 @@
 - love.graphics.setOrthoProjection
 - love.graphics.setPerspectiveProjection
 - love.graphics.resetProjection
-- Texture:isCanvas
-- Texture:isComputeWritable
-- Texture:generateMipmaps
-- ImageData:setLinear
-- ImageData:isLinear
-- ImageData:encode ('exr' format)
-- CompressedImageData:setLinear
-- CompressedImageData:isLinear
 - Mesh:getAttachedAttributes
 - Shader:hasStage

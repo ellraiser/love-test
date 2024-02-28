@@ -112,13 +112,9 @@ For sanity-checking, if it's currently not covered or it's not possible to test 
 ---
 
 ## Todo
-The following items are all the things still outstanding, expanding on any existing tests is also very welcome!
-- [ ] add BMfont alt. tests for font class tests (Rasterizer + GlyphData)
-- [ ] graphics.isCompressed() should have an example of all compressed files
-- [ ] graphics.Mesh should have some graphical tests ideally to check vertex settings w/ shaders
-- [ ] ability to test loading different combinations of modules if needed
-- [ ] more scenario based tests similar to some of the obj class tests
-- [ ] performance tests? need to discuss what + how
+If you would like to contribute to the test suite please raise a PR in this repo.
+
+There is a list of outstanding methods that require test coverage in `todo.md`, expanding on any existing tests is also very welcome!
 
 ---
 

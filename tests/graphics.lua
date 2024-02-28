@@ -222,7 +222,7 @@ love.test.graphics.Canvas = function(test)
   if love.graphics.getSupported().glsl4 then
     local ccanvas = love.graphics.newCanvas(100, 100, {
       type = '2d',
-      format = 'r32f',
+      format = 'rgba8',
       computewrite = true
     })
     test:assertTrue(ccanvas:isComputeWritable())

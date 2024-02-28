@@ -219,7 +219,7 @@ love.test.graphics.Canvas = function(test)
   test:assertEquals('equal', dcanvas:getDepthSampleMode(), 'check depth sample mode set')
 
   -- check compute writeable (wont work on opengl mac)
-  if love.graphics.getSupported()['glsl4'] then
+  if love.graphics.getSupported().glsl4 then
     local ccanvas = love.graphics.newCanvas(100, 100, {
       type = '2d',
       format = 'r32f',

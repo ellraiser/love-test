@@ -1,4 +1,5 @@
 function love.conf(t)
+  print("love.conf")
   t.console = true
   t.window.name = 'love.test'
   t.window.width = 360
@@ -17,5 +18,5 @@ end
 function love.errorhandler(msg)
 	msg = tostring(msg)
 	error_printer(msg, 2)
-  os.exit(1)
+  return nil
 end

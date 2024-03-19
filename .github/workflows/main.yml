@@ -9,18 +9,18 @@ jobs:
       uses: actions/checkout@v4
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/1300750825/zip"
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/1339160862/zip"
         7z x love12.zip -o*
         7z x love12/love-macos.zip -o*
     - name: Run Test Suite
-      run: love-macos/love.app/Contents/MacOS/love main.lua --runAllTests --isRunner
+      run: love-macos/love.app/Contents/MacOS/love main.lua --all --isRunner
     - name: Love Test Report
       id: report1
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite MacOS
         title: test-report-macos
-        path: output/lovetest_runAllTests.md
+        path: output/lovetest_all.md
     - name: Zip Test Output
       run: |
         7z a -tzip test-output-macos-opengl.zip output/
@@ -50,18 +50,18 @@ jobs:
         powershell.exe mesa\systemwidedeploy.cmd 1
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/1300746556/zip"
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/1339169120/zip"
         7z x love12.zip -o*
         7z x love12/love-12.0-win64.zip -o*
     - name: Run Tests (opengl)
-      run: powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --isRunner
+      run: powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --all --isRunner
     - name: Love Test Report (opengl)
       id: report1
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Windows (opengl)
         title: test-report-windows-opengl
-        path: output/lovetest_runAllTests.md
+        path: output/lovetest_all.md
     - name: Zip Test Output (opengl)
       run: |
         7z a -tzip test-output-windows-opengl.zip output\
@@ -74,14 +74,14 @@ jobs:
       env:
         LOVE_GRAPHICS_USE_OPENGLES: 1
       run: |
-        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --isRunner
+        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --all --isRunner
     - name: Love Test Report (opengles)
       id: report2
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Windows (opengles)
         title: test-report-windows-opengles
-        path: output/lovetest_runAllTests.md
+        path: output/lovetest_all.md
     - name: Zip Test Output (opengles)
       run: |
         7z a -tzip test-output-windows-opengles.zip output\
@@ -110,13 +110,13 @@ jobs:
 #    - name: Run Tests (vulkan)
 #      run: |
 #        $ENV:LOVE_GRAPHICS_DEBUG=1
-#        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --runAllTests --isRunner --renderers vulkan
+#        powershell.exe ./love-12.0-win64/love-12.0-win64/lovec.exe ./ --all --isRunner --renderers vulkan
 #    - name: Love Test Report (vulkan)
 #      uses: ellraiser/love-test-report@main
 #      with:
 #        name: Love Testsuite Windows (vulkan)
 #        title: test-report-windows-vulkan
-#        path: output/lovetest_runAllTests.md
+#        path: output/lovetest_all.md
 #    - name: Zip Test Output (vulkan)
 #      run: |
 #        7z a -tzip test-output-windows-vulkan.zip output/
@@ -147,7 +147,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Download Love
       run: |
-        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/1300745356/zip"
+        curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/1339164115/zip"
         7z x love12.zip -o*
         mv love12/love-*.AppImage love12/love12.AppImage
         ls love12
@@ -164,14 +164,14 @@ jobs:
     # linux opengl tests
     - name: Run Test Suite (opengl)
       run: |
-        love12/love12.AppImage main.lua --runAllTests --isRunner
+        love12/love12.AppImage main.lua --all --isRunner
     - name: Love Test Report (opengl)
       id: report1
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Linux
         title: test-report-linux-opengl
-        path: output/lovetest_runAllTests.md
+        path: output/lovetest_all.md
     - name: Zip Test Output (opengl)
       run: |
         7z a -tzip test-output-linux-opengl.zip output/
@@ -184,14 +184,14 @@ jobs:
     - name: Run Test Suite (opengles)
       run: |
         export LOVE_GRAPHICS_USE_OPENGLES=1
-        love12/love12.AppImage main.lua --runAllTests --isRunner
+        love12/love12.AppImage main.lua --all --isRunner
     - name: Love Test Report (opengles)
       id: report2
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite Linux
         title: test-report-linux-opengles
-        path: output/lovetest_runAllTests.md
+        path: output/lovetest_all.md
     - name: Zip Test Output (opengles)
       run: |
         7z a -tzip test-output-linux-opengles.zip output\
@@ -253,13 +253,13 @@ jobs:
 #    - name: Run Test Suite (vulkan)
 #      run: |
 #        export LOVE_GRAPHICS_DEBUG=1
-#        love12/love12.AppImage main.lua --runAllTests --isRunner --renderers vulkan
+#        love12/love12.AppImage main.lua --all --isRunner --renderers vulkan
 #    - name: Love Test Report (vulkan)
 #      uses: ellraiser/love-test-report@main
 #      with:
 #        name: Love Testsuite Linux
 #        title: test-report-linux-vulkan
-#        path: output/lovetest_runAllTests.md
+#        path: output/lovetest_all.md
 #    - name: Zip Test Output (vulkan)
 #      run: |
 #        7z a -tzip test-output-linux-vulkan.zip output/

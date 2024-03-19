@@ -786,7 +786,7 @@ love.test.graphics.Shader = function(test)
 
   -- check valid shader
   local pixelcode1 = [[
-    extern Image tex2;
+    uniform Image tex2;
     vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) { 
       vec4 texturecolor = Texel(tex2, texture_coords); 
       return texturecolor * color;
@@ -806,7 +806,7 @@ love.test.graphics.Shader = function(test)
 
   -- check invalid shader
   local pixelcode2 = [[
-    extern float ww;
+    uniform float ww;
     vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) { 
       vec4 texturecolor = Texel(tex, texture_coords);
       float unused = ww * 3 * color;
@@ -819,8 +819,8 @@ love.test.graphics.Shader = function(test)
   -- check using a shader to draw + sending uniforms
   -- shader will return a given color if overwrite set to 1, otherwise def. draw
   local pixelcode3 = [[
-    extern vec4 col;
-    extern float overwrite;
+    uniform vec4 col;
+    uniform float overwrite;
     vec4 effect(vec4 color, Image tex, vec2 texture_coords, vec2 screen_coords) { 
       vec4 texcol = Texel(tex, texture_coords); 
       if (overwrite == 1.0) {
@@ -832,7 +832,8 @@ love.test.graphics.Shader = function(test)
   ]]
   local shader3 = love.graphics.newShader(pixelcode3, vertexcode1)
   local canvas = love.graphics.newCanvas(16, 16)
-  love.graphics.setCanvas(canvas)
+  love.graphics.push("all")
+    love.graphics.setCanvas(canvas)
     -- set color to yellow
     love.graphics.setColor(1, 1, 0, 1)
     -- turn shader 'on' and use red to draw
@@ -845,11 +846,51 @@ love.test.graphics.Shader = function(test)
     shader3:send('overwrite', 0)
     love.graphics.setShader(shader3)
       love.graphics.rectangle('fill', 8, 8, 8, 8)
-    love.graphics.setShader()
-    love.graphics.setColor(1, 1, 1, 1)
-  love.graphics.setCanvas()
+  love.graphics.pop()
+
   local imgdata = love.graphics.readbackTexture(canvas)
   test:compareImg(imgdata)
+
+  -- test some uncommon paths for shader uniforms
+  local shader4 = love.graphics.newShader[[
+    uniform bool booleans[5];
+    vec4 effect(vec4 vcolor, Image tex, vec2 tc, vec2 pc) {
+      return booleans[3] ? vec4(0, 1, 0, 0) : vec4(1, 0, 0, 0);
+    }
+  ]]
+
+  shader4:send("booleans", false, true, true)
+
+  local shader5 = love.graphics.newShader[[
+    uniform sampler2D textures[5];
+    vec4 effect(vec4 vcolor, Image tex, vec2 tc, vec2 pc) {
+      return Texel(textures[2], tc) + Texel(textures[3], tc);
+    }
+  ]]
+
+  local canvas2 = love.graphics.newCanvas(1, 1)
+  love.graphics.setCanvas(canvas2)
+  love.graphics.clear(0, 0.5, 0, 1)
+  love.graphics.setCanvas()
+
+  shader5:send("textures", canvas2, canvas2, canvas2, canvas2, canvas2)
+
+  local shader6 = love.graphics.newShader[[
+    struct Data {
+      bool boolValue;
+      float floatValue;
+      sampler2D tex;
+    };
+
+    uniform Data data[3];
+
+    vec4 effect(vec4 vcolor, Image tex, vec2 tc, vec2 pc) {
+      return data[1].boolValue ? Texel(data[0].tex, tc) : vec4(0.0, 0.0, 0.0, 0.0);
+    }
+  ]]
+
+  shader6:send("data[1].boolValue", true)
+  shader6:send("data[0].tex", canvas2)
 
 end
 
@@ -1129,7 +1170,7 @@ love.test.graphics.arc = function(test)
     love.graphics.setColor(1, 1, 1, 1)
   love.graphics.setCanvas()
   local imgdata3 = love.graphics.readbackTexture(canvas)
-  if GITHUB_RUNNER and love.system.getOS() == 'OS X' then
+  if GITHUB_RUNNER and test:isOS('OS X') then
     -- on macosx runners, the arcs are not drawn as accurately at low res
     -- there's a couple pixels different in the curve of the arc but as we
     -- are at such a low resolution I think that can be expected
@@ -1411,15 +1452,29 @@ end
 -- love.graphics.captureScreenshot
 love.test.graphics.captureScreenshot = function(test)
   love.graphics.captureScreenshot('example-screenshot.png')
-  test:waitFrames(10)
+  test:waitFrames(1)
   -- need to wait until end of the frame for the screenshot
-  test:assertNotNil(love.filesystem.openFile('example-screenshot.png', 'r'))
+  test:assertTrue(love.filesystem.exists('example-screenshot.png'))
   love.filesystem.remove('example-screenshot.png')
   -- test callback version
+  local cbdata = nil
+  local prevtextcommand = TextCommand
+  TextCommand = "Capturing screenshot"
   love.graphics.captureScreenshot(function (idata)
     test:assertNotEquals(nil, idata, 'check we have image data')
+    cbdata = idata
   end)
-  test:waitFrames(10)
+  test:waitFrames(1)
+  TextCommand = prevtextcommand
+  test:assertNotNil(cbdata)
+
+  if test:isOS({'iOS', 'Android'}) then
+    -- Mobile operating systems don't let us control the window resolution,
+    -- so we can't compare the reference image properly.
+    test:assertTrue(true, 'skip test')
+  else
+    test:compareImg(cbdata)
+  end
 end
 
 
@@ -1531,11 +1586,19 @@ love.test.graphics.newSpriteBatch = function(test)
 end
 
 
--- love.graphics.newText
+-- love.graphics.newTextBatch
 -- @NOTE this is just basic nil checking, objs have their own test method
 love.test.graphics.newTextBatch = function(test)
   local font = love.graphics.newFont('resources/font.ttf')
   test:assertObject(love.graphics.newTextBatch(font, 'helloworld'))
+end
+
+
+-- love.graphics.newTexture
+-- @NOTE this is just basic nil checking, objs have their own test method
+love.test.graphics.newTexture = function(test)
+  local imgdata = love.image.newImageData('resources/love.png')
+  test:assertObject(love.graphics.newTexture(imgdata))
 end
 
 
@@ -1849,12 +1912,7 @@ end
 
 -- love.graphics.isActive
 love.test.graphics.isActive = function(test)
-  local name, version, vendor, device = love.graphics.getRendererInfo()
-  if string.find(name, 'Vulkan') ~= nil then
-    test:skipTest('love.graphics.isActive() crashes on Vulkan')
-  else 
-    test:assertTrue(love.graphics.isActive(), 'check graphics is active') -- i mean if you got this far
-  end
+  test:assertTrue(love.graphics.isActive(), 'check graphics is active') -- i mean if you got this far
 end
 
 
@@ -2117,7 +2175,7 @@ love.test.graphics.setLineStyle = function(test)
   love.graphics.setCanvas()
   local imgdata = love.graphics.readbackTexture(canvas)
   -- linux runner needs a 1/255 tolerance for the blend between a rough line + bg 
-  if GITHUB_RUNNER and love.system.getOS() == 'Linux' then
+  if GITHUB_RUNNER and test:isOS('Linux') then
     test.rgba_tolerance = 1
   end
   test:compareImg(imgdata)
@@ -2250,7 +2308,7 @@ love.test.graphics.setWireframe = function(test)
     love.graphics.setWireframe(false)
     local imgdata = love.graphics.readbackTexture(canvas)
     -- on macOS runners wireframes are drawn 1px off from the target
-    if GITHUB_RUNNER and love.system.getOS() == 'OS X' then
+    if GITHUB_RUNNER and test:isOS('OS X') then
       test.pixel_tolerance = 1
     end
     test:compareImg(imgdata)
@@ -2617,8 +2675,8 @@ love.test.graphics.getSupported = function(test)
     'clampzero', 'lighten', 'glsl3', 'instancing', 'fullnpot', 
     'pixelshaderhighp', 'shaderderivatives', 'indirectdraw', 'mipmaprange',
     'copyrendertargettobuffer', 'copytexturetobuffer', 'copybuffer',
-    'indexbuffer32bit', 'multirendertargetformats', 'clampone', 'blendminmax',
-    'glsl4'
+    'copybuffertotexture', 'indexbuffer32bit', 'multirendertargetformats', 
+    'clampone', 'blendminmax', 'glsl4'
   }
   local features = love.graphics.getSupported()
   for g=1,#gfs do

@@ -374,6 +374,23 @@ TestMethod = {
   end,
 
 
+  -- @method - TestMethod:isOS()
+  -- @desc - checks for a specific OS (or list of OSs)
+  -- @param {string||table} - single OS string or list of OSs that are allowed, 
+  --          these will be checked agaisnt love.system.getOS()'s return value
+  -- @return {boolean} - returns true if one of the OSs given matches actual OS
+  isOS = function(self, oss)
+    if type(oss) == 'table' then
+      for o=1,#oss do
+        if oss[o] == love.test.current_os then
+          return true
+        end
+      end
+    else
+      return love.test.current_os == oss
+    end
+  end,
+
   -- @method - TestMethod:evaluateTest()
   -- @desc - evaluates the results of all assertions for a final restult
   -- @return {nil}

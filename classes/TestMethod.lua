@@ -64,7 +64,7 @@ TestMethod = {
     table.insert(self.asserts, {
       key = 'assert ' .. tostring(self.count),
       passed = expected == actual,
-      message = 'expected \'' .. tostring(expected) .. '\' got \'' .. 
+      message = 'expected \'' .. tostring(expected) .. '\' got \'' ..
         tostring(actual) .. '\'',
       test = label or 'no label given'
     })
@@ -81,7 +81,7 @@ TestMethod = {
     table.insert(self.asserts, {
       key = 'assert ' .. tostring(self.count),
       passed = value == true,
-      message = 'expected \'true\' got \'' .. 
+      message = 'expected \'true\' got \'' ..
         tostring(value) .. '\'',
       test = label or 'no label given'
     })
@@ -98,7 +98,7 @@ TestMethod = {
     table.insert(self.asserts, {
       key = 'assert ' .. tostring(self.count),
       passed = value == false,
-      message = 'expected \'false\' got \'' .. 
+      message = 'expected \'false\' got \'' ..
         tostring(value) .. '\'',
       test = label or 'no label given'
     })
@@ -165,7 +165,7 @@ TestMethod = {
 
 
   -- @method - TestMethod:assertGreaterEqual()
-  -- @desc - used to check a value is >= than a certain target value 
+  -- @desc - used to check a value is >= than a certain target value
   -- @param {any} target - value to check the test agaisnt
   -- @param {any} actual - actual value of the test
   -- @param {string} label - label for this test to use in exports
@@ -187,7 +187,7 @@ TestMethod = {
 
 
   -- @method - TestMethod:assertLessEqual()
-  -- @desc - used to check a value is <= than a certain target value 
+  -- @desc - used to check a value is <= than a certain target value
   -- @param {any} target - value to check the test agaisnt
   -- @param {any} actual - actual value of the test
   -- @param {string} label - label for this test to use in exports
@@ -209,7 +209,7 @@ TestMethod = {
 
 
   -- @method - TestMethod:assertObject()
-  -- @desc - used to check a table is a love object, this runs 3 seperate 
+  -- @desc - used to check a table is a love object, this runs 3 seperate
   --         tests to check table has the basic properties of an object
   -- @note - actual object functionality tests have their own methods
   -- @param {table} obj - table to check is a valid love object
@@ -238,7 +238,7 @@ TestMethod = {
     table.insert(self.asserts, {
       key = 'assert ' .. tostring(self.count),
       passed = passing,
-      message = 'expected \'' .. tostring(expected[1]) .. 'x,' .. 
+      message = 'expected \'' .. tostring(expected[1]) .. 'x,' ..
         tostring(expected[2]) .. 'y\' got \'' ..
         tostring(actual[1]) .. 'x,' .. tostring(actual[2]) .. 'y\'',
       test = label or 'no label given'
@@ -247,7 +247,7 @@ TestMethod = {
 
 
   -- @method - TestMethod:assertNotNil()
-  -- @desc - quick assert for value not nil 
+  -- @desc - quick assert for value not nil
   -- @param {any} value - value to check not nil
   -- @return {nil}
   assertNotNil = function (self, value, err)
@@ -264,8 +264,8 @@ TestMethod = {
 
 
   -- @method - TestMethod:compareImg()
-  -- @desc - compares a given image to the 'expected' version, with a tolerance of 
-  --         1px in any direction, and then saves it as the 'actual' version for 
+  -- @desc - compares a given image to the 'expected' version, with a tolerance of
+  --         1px in any direction, and then saves it as the 'actual' version for
   --         report viewing
   -- @param {table} imgdata - imgdata to save as a png
   -- @return {nil}
@@ -328,12 +328,12 @@ TestMethod = {
 
   -- @method - TestMethod:exportImg()
   -- @desc - exports the given imgdata to the 'output/expected/' folder, to use when
-  --         writing new graphics tests to set the expected image output 
-  -- @NOTE - you should not leave this method in when you are finished this is 
+  --         writing new graphics tests to set the expected image output
+  -- @NOTE - you should not leave this method in when you are finished this is
   --         for test writing only
   -- @param {table} imgdata - imgdata to save as a png
   -- @param {integer} imgdata - index of the png, graphic tests are run sequentially
-  --                            and each test image is numbered in order that its 
+  --                            and each test image is numbered in order that its
   --                            compared to, so set the number here to match
   -- @return {nil}
   exportImg = function(self, imgdata, index)
@@ -386,6 +386,21 @@ TestMethod = {
     return false
   end,
 
+  ---@method - TestMethod:isLuaVersion()
+  -- @desc - checks for a specific Lua version (or list of versions)
+  -- @param {number} - the minimum Lua version to check against
+  -- @return {boolean} - returns true if the current Lua version is at least the given version
+  isAtLeastLuaVersion = function(self, version)
+    return version >= love.test.lua_version
+  end,
+
+  ---@method - TestMethod:isLuaJITEnabled()
+  -- @desc - checks if LuaJIT is enabled
+  -- @return {boolean} - returns true if LuaJIT is enabled
+  isLuaJITEnabled = function(self)
+    return love.test.has_lua_jit
+  end,
+
   -- @method - TestMethod:evaluateTest()
   -- @desc - evaluates the results of all assertions for a final restult
   -- @return {nil}
@@ -410,10 +425,10 @@ TestMethod = {
     if self.skipped then
       self.testmodule.skipped = self.testmodule.skipped + 1
       love.test.totals[3] = love.test.totals[3] + 1
-      self.result = { 
-        total = '', 
-        result = "SKIP", 
-        passed = false, 
+      self.result = {
+        total = '',
+        result = "SKIP",
+        passed = false,
         message = '(0/0) - method skipped [' .. self.skipreason .. ']',
         failures = {}
       }
@@ -424,10 +439,10 @@ TestMethod = {
         self.passed = true
         self.testmodule.passed = self.testmodule.passed + 1
         love.test.totals[1] = love.test.totals[1] + 1
-        self.result = { 
-          total = total, 
-          result = 'PASS', 
-          passed = true, 
+        self.result = {
+          total = total,
+          result = 'PASS',
+          passed = true,
           message = nil,
           failures = {}
         }
@@ -531,7 +546,7 @@ TestMethod = {
       end
     end
 
-    -- append HTML for the test class result 
+    -- append HTML for the test class result
     local status = '🔴'
     local cls = 'red'
     if self.passed then status = '🟢'; cls = '' end
@@ -565,7 +580,7 @@ TestMethod = {
       self.result.total .. msg
     )
 
-    -- if we failed on multiple asserts, list them here - makes it easier for 
+    -- if we failed on multiple asserts, list them here - makes it easier for
     -- debugging new methods added that are failing multiple asserts
     if #self.result.failures > 1 then
       for f=2,#self.result.failures do

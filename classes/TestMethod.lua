@@ -386,7 +386,7 @@ TestMethod = {
     return false
   end,
 
-  ---@method - TestMethod:isLuaVersion()
+  -- @method - TestMethod:isLuaVersion()
   -- @desc - checks for a specific Lua version (or list of versions)
   -- @param {number} - the minimum Lua version to check against
   -- @return {boolean} - returns true if the current Lua version is at least the given version
@@ -394,7 +394,7 @@ TestMethod = {
     return version >= love.test.lua_version
   end,
 
-  ---@method - TestMethod:isLuaJITEnabled()
+  -- @method - TestMethod:isLuaJITEnabled()
   -- @desc - checks if LuaJIT is enabled
   -- @return {boolean} - returns true if LuaJIT is enabled
   isLuaJITEnabled = function(self)

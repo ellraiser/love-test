@@ -391,7 +391,7 @@ TestMethod = {
   -- @param {number} - the minimum Lua version to check against
   -- @return {boolean} - returns true if the current Lua version is at least the given version
   isAtLeastLuaVersion = function(self, version)
-    return version >= love.test.lua_version
+    return love.test.lua_version >= version
   end,
 
   -- @method - TestMethod:isLuaJITEnabled()

@@ -275,24 +275,25 @@ TestMethod = {
     local ok, chunk, _ = pcall(love.image.newImageData, expected_path)
     if ok == false then return self:assertEquals(true, false, chunk) end
     local expected = chunk
-    local iw = imgdata:getWidth()-2
-    local ih = imgdata:getHeight()-2
+    local iw = imgdata:getWidth()-1
+    local ih = imgdata:getHeight()-1
+    local differences = {}
     local rgba_tolerance = self.rgba_tolerance * (1/255)
-    for ix=2,iw do
-      for iy=2,ih do
+    for ix=0,iw do
+      for iy=0,ih do
         local ir, ig, ib, ia = imgdata:getPixel(ix, iy)
         local points = {
           {expected:getPixel(ix, iy)}
         }
         if self.pixel_tolerance > 0 then
-          table.insert(points, {expected:getPixel(ix-1, iy+1)})
-          table.insert(points, {expected:getPixel(ix-1, iy)})
-          table.insert(points, {expected:getPixel(ix-1, iy-1)})
-          table.insert(points, {expected:getPixel(ix, iy+1)})
-          table.insert(points, {expected:getPixel(ix, iy-1)})
-          table.insert(points, {expected:getPixel(ix+1, iy+1)})
-          table.insert(points, {expected:getPixel(ix+1, iy)})
-          table.insert(points, {expected:getPixel(ix+1, iy-1)})
+          if ix > 0 and iy < ih-1 then table.insert(points, {expected:getPixel(ix-1, iy+1)}) end
+          if ix > 0 then table.insert(points, {expected:getPixel(ix-1, iy)}) end
+          if ix > 0 and iy > 0 then table.insert(points, {expected:getPixel(ix-1, iy-1)}) end
+          if iy < ih-1 then table.insert(points, {expected:getPixel(ix, iy+1)}) end
+          if iy > 0 then table.insert(points, {expected:getPixel(ix, iy-1)}) end
+          if ix < iw-1 and iy < ih-1 then table.insert(points, {expected:getPixel(ix+1, iy+1)}) end
+          if ix < iw-1 then table.insert(points, {expected:getPixel(ix+1, iy)}) end
+          if ix < iw-1 and iy > 0 then table.insert(points, {expected:getPixel(ix+1, iy-1)}) end
         end
         local has_match_r = false
         local has_match_g = false
@@ -317,11 +318,27 @@ TestMethod = {
           tostring(ix) .. ',' .. tostring(iy) .. ', matching = ' .. ymatch ..
           ', not matching = ' .. nmatch .. ' (' .. self.method .. '-' .. tostring(self.imgs) .. ')'
         )
+        if matching ~= true then
+          table.insert(differences, ix+1)
+          table.insert(differences, iy+1)
+        end
       end
     end
     local path = 'tempoutput/actual/love.test.graphics.' ..
       self.method .. '-' .. tostring(self.imgs) .. '.png'
     imgdata:encode('png', path)
+    if #differences > 0 then
+      local difference = love.graphics.newCanvas(iw+1, ih+1)
+      love.graphics.setCanvas(difference)
+        love.graphics.clear(0, 0, 0, 1)
+        love.graphics.setColor(1, 0, 1, 1)
+        love.graphics.points(differences)
+        love.graphics.setColor(1, 1, 1, 1)
+      love.graphics.setCanvas()
+      local dpath = 'tempoutput/difference/love.test.graphics.' ..
+        self.method .. '-' .. tostring(self.imgs) .. '.png'
+      love.graphics.readbackTexture(difference):encode('png', dpath)
+    end
     self.imgs = self.imgs + 1
   end,
 
@@ -532,17 +549,17 @@ TestMethod = {
     local preview = ''
     if self.testmodule.module == 'graphics' then
       local filename = 'love.test.graphics.' .. self.method
-      if love.filesystem.openFile('tempoutput/actual/' .. filename .. '-1.png', 'r') then
-        preview = '<div class="preview">' .. '<img src="expected/' .. filename .. '-1.png"/><p>Expected</p></div>' ..
-          '<div class="preview">' .. '<img src="actual/' .. filename .. '-1.png"/><p>Actual</p></div>'
-      end
-      if love.filesystem.openFile('tempoutput/actual/' .. filename .. '-2.png', 'r') then
-        preview = preview .. '<div class="preview">' .. '<img src="expected/' .. filename .. '-2.png"/><p>Expected</p></div>' ..
-          '<div class="preview">' .. '<img src="actual/' .. filename .. '-2.png"/><p>Actual</p></div>'
-      end
-      if love.filesystem.openFile('tempoutput/actual/' .. filename .. '-3.png', 'r') then
-        preview = preview .. '<div class="preview">' .. '<img src="expected/' .. filename .. '-3.png"/><p>Expected</p></div>' ..
-          '<div class="preview">' .. '<img src="actual/' .. filename .. '-3.png"/><p>Actual</p></div>'
+      for f=1,5 do
+        local fstr = tostring(f)
+        if love.filesystem.openFile('tempoutput/actual/' .. filename .. '-' .. fstr .. '.png', 'r') then
+          preview = preview .. '<div class="preview-wrap">'
+          preview = preview .. '<div class="preview">' .. '<img src="expected/' .. filename .. '-' .. fstr .. '.png"/><p>Expected</p></div>' ..
+            '<div class="preview">' .. '<img src="actual/' .. filename .. '-' .. fstr .. '.png"/><p>Actual</p></div>'
+          if love.filesystem.openFile('tempoutput/difference/' .. filename .. '-' .. fstr .. '.png', 'r') then
+            preview = preview .. '<div class="preview">' .. '<img src="difference/' .. filename .. '-' .. fstr .. '.png"/><p>Difference</p></div>'
+          end
+          preview = preview .. '</div>'
+        end
       end
     end
 

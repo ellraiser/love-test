@@ -3,5 +3,6 @@
 /output/*.html
 /output/*.md
 /output/actual/*.png
+/output/difference/*.png
 resources/.DS_Store
 resources/.DS_Store

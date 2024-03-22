@@ -279,6 +279,9 @@ TestMethod = {
     local ih = imgdata:getHeight()-1
     local differences = {}
     local rgba_tolerance = self.rgba_tolerance * (1/255)
+
+    -- for each pixel, compare the expected vs the actual pixel data
+    -- by default rgba_tolerance is 0
     for ix=0,iw do
       for iy=0,ih do
         local ir, ig, ib, ia = imgdata:getPixel(ix, iy)
@@ -318,6 +321,7 @@ TestMethod = {
           tostring(ix) .. ',' .. tostring(iy) .. ', matching = ' .. ymatch ..
           ', not matching = ' .. nmatch .. ' (' .. self.method .. '-' .. tostring(self.imgs) .. ')'
         )
+        -- add difference co-ord for rendering later
         if matching ~= true then
           table.insert(differences, ix+1)
           table.insert(differences, iy+1)
@@ -327,6 +331,10 @@ TestMethod = {
     local path = 'tempoutput/actual/love.test.graphics.' ..
       self.method .. '-' .. tostring(self.imgs) .. '.png'
     imgdata:encode('png', path)
+
+    -- if we have differences draw them to a new canvas to display in HTML report
+    local dpath = 'tempoutput/difference/love.test.graphics.' ..
+      self.method .. '-' .. tostring(self.imgs) .. '.png'
     if #differences > 0 then
       local difference = love.graphics.newCanvas(iw+1, ih+1)
       love.graphics.setCanvas(difference)
@@ -335,10 +343,14 @@ TestMethod = {
         love.graphics.points(differences)
         love.graphics.setColor(1, 1, 1, 1)
       love.graphics.setCanvas()
-      local dpath = 'tempoutput/difference/love.test.graphics.' ..
-        self.method .. '-' .. tostring(self.imgs) .. '.png'
       love.graphics.readbackTexture(difference):encode('png', dpath)
+
+    -- otherwise clear the old difference file (if any) to stop it coming up 
+    -- in future reports when there's no longer a difference
+    elseif love.filesystem.openFile(dpath, 'r') then
+      love.filesystem.remove(dpath)
     end
+
     self.imgs = self.imgs + 1
   end,
 

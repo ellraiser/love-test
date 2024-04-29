@@ -14,8 +14,9 @@ jobs:
         curl -L -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --output love12.zip --url "https://api.github.com/repos/love2d/love/actions/artifacts/1452893104/zip"
         7z x love12.zip -o*
         7z x love12/love-macos.zip -o*
+    # opengl
     - name: Run Test Suite
-      run: love-macos/love.app/Contents/MacOS/love main.lua --all --isRunner
+      run: love-macos/love.app/Contents/MacOS/love main.lua --all --isRunner --renderers opengl
     - name: Love Test Report
       id: report1
       uses: ellraiser/love-test-report@main
@@ -35,6 +36,29 @@ jobs:
       if: steps.report1.outputs.conclusion == 'failure'
       run: |
         echo "${{ steps.report1.outputs.failed }} tests failed"
+        exit 1
+    # metal
+    - name: Run Test Suite (metal)
+      run: love-macos/love.app/Contents/MacOS/love main.lua --all --isRunner --renderers metal
+    - name: Love Test Report (metal)
+      id: report2
+      uses: ellraiser/love-test-report@main
+      with:
+        name: Love Testsuite MacOS (metal)
+        title: test-report-macos-metal
+        path: output/lovetest_all.md
+    - name: Zip Test Output
+      run: |
+        7z a -tzip test-output-macos-metal.zip output/
+    - name: Artifact Test Output
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-output-macos-metal-${{ steps.report2.outputs.conclusion }}
+        path: test-output-macos-metal.zip
+    - name: Check Report Output
+      if: steps.report2.outputs.conclusion == 'failure'
+      run: |
+        echo "${{ steps.report2.outputs.failed }} tests failed"
         exit 1
   windows-latest:
     runs-on: windows-latest

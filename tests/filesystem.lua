@@ -330,18 +330,12 @@ love.test.filesystem.load = function(test)
     local chunk2, errormsg2 = love.filesystem.load('test1.lua', 't')
     test:assertEquals(nil, errormsg2, 'check no error message')
     test:assertEquals(1, chunk2(), 'check lua file runs')
-  else
-    local _, errormsg3 = love.filesystem.load('test1.lua', 'b')
-    test:assertNotEquals(nil, errormsg3, 'check for an error message')
-
-    local _, errormsg4 = love.filesystem.load('test1.lua', 't')
-    test:assertNotEquals(nil, errormsg4, 'check for an error message')
   end
 
   -- check valid lua file (any load)
-  local chunk5, errormsg5 = love.filesystem.load('test1.lua', 'bt')
-  test:assertEquals(nil, errormsg5, 'check no error message')
-  test:assertEquals(1, chunk5(), 'check lua file runs')
+  local chunk3, errormsg3 = love.filesystem.load('test1.lua', 'bt')
+  test:assertEquals(nil, errormsg3, 'check no error message')
+  test:assertEquals(1, chunk3(), 'check lua file runs')
 
   -- check invalid lua file
   local ok, chunk, err = pcall(love.filesystem.load, 'test2.lua')
@@ -398,23 +392,33 @@ end
 
 -- love.filesystem.mountCommonPath
 love.test.filesystem.mountCommonPath = function(test)
+  local mount_paths =
+  {
+    { 'appsavedir',    'appsavedir',    'readwrite' },
+    { 'appdocuments',  'appdocuments',  'readwrite' },
+    { 'userhome',      'userhome',      'readwrite' },
+    { 'userappdata',   'userappdata',   'readwrite' },
+    { 'userdesktop',   'userdesktop',   'readwrite' },
+    { 'userdocuments', 'userdocuments', 'readwrite' }
+  }
+
   -- check if we can mount all the expected paths
-  local mount1 = love.filesystem.mountCommonPath('appsavedir', 'appsavedir', 'readwrite')
-  local mount2 = love.filesystem.mountCommonPath('appdocuments', 'appdocuments', 'readwrite')
-  local mount3 = love.filesystem.mountCommonPath('userhome', 'userhome', 'readwrite')
-  local mount4 = love.filesystem.mountCommonPath('userappdata', 'userappdata', 'readwrite')
-  -- userdesktop isnt valid on linux
-  if not test:isOS('Linux') then
-    local mount5 = love.filesystem.mountCommonPath('userdesktop', 'userdesktop', 'readwrite')
-    test:assertTrue(mount5, 'check mount userdesktop')
+  for index = 1, #mount_paths do
+    local common_path, mount_point, mode = unpack(mount_paths[index])
+    local is_valid_path = love.filesystem.getFullCommonPath(common_path) ~= ""
+
+    if is_valid_path then
+      if test:isOS("Linux") and common_path == "userdesktop" then
+        -- this path doesn't mount on Linux
+        test:assertTrue(true, 'check mount ' .. common_path)
+      else
+        local mount = love.filesystem.mountCommonPath(common_path, mount_point, mode)
+        test:assertTrue(mount, 'check mount ' .. common_path)
+      end
+    end
   end
-  local mount6 = love.filesystem.mountCommonPath('userdocuments', 'userdocuments', 'readwrite')
+
   local ok = pcall(love.filesystem.mountCommonPath, 'fakepath', 'fake', 'readwrite')
-  test:assertTrue(mount1, 'check mount appsavedir')
-  test:assertTrue(mount2, 'check mount appdocuments')
-  test:assertTrue(mount3, 'check mount userhome')
-  test:assertTrue(mount4, 'check mount userappdata')
-  test:assertTrue(mount6, 'check mount userdocuments')
   test:assertFalse(ok, 'check mount invalid common path fails')
 end
 

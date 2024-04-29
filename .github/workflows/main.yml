@@ -22,7 +22,7 @@ jobs:
       uses: ellraiser/love-test-report@main
       with:
         name: Love Testsuite MacOS
-        title: test-report-macos
+        title: test-report-macos-opengl
         path: output/lovetest_all.md
     - name: Zip Test Output
       run: |

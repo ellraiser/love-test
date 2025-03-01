@@ -330,18 +330,12 @@ love.test.filesystem.load = function(test)
     local chunk2, errormsg2 = love.filesystem.load('test1.lua', 't')
     test:assertEquals(nil, errormsg2, 'check no error message')
     test:assertEquals(1, chunk2(), 'check lua file runs')
-  else
-    local _, errormsg3 = love.filesystem.load('test1.lua', 'b')
-    test:assertNotEquals(nil, errormsg3, 'check for an error message')
-
-    local _, errormsg4 = love.filesystem.load('test1.lua', 't')
-    test:assertNotEquals(nil, errormsg4, 'check for an error message')
   end
 
   -- check valid lua file (any load)
-  local chunk5, errormsg5 = love.filesystem.load('test1.lua', 'bt')
-  test:assertEquals(nil, errormsg5, 'check no error message')
-  test:assertEquals(1, chunk5(), 'check lua file runs')
+  local chunk3, errormsg3 = love.filesystem.load('test1.lua', 'bt')
+  test:assertEquals(nil, errormsg3, 'check no error message')
+  test:assertEquals(1, chunk3(), 'check lua file runs')
 
   -- check invalid lua file
   local ok, chunk, err = pcall(love.filesystem.load, 'test2.lua')

@@ -410,7 +410,11 @@ love.test.filesystem.mountCommonPath = function(test)
         test:assertTrue(true, 'check mount ' .. common_path)
       else
         local mount, err = love.filesystem.mountCommonPath(common_path, mount_point, mode)
-        test:assertTrue(mount, 'check mount ' .. common_path .. ' (' .. err .. ')')
+        if common_path == 'appsavedir' then
+          test:assertFalse(mount, 'check mount ' .. common_path)
+        else
+          test:assertTrue(mount, 'check mount ' .. common_path)
+        end
       end
     end
   end

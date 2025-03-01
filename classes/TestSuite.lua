@@ -193,7 +193,7 @@ TestSuite = {
           tr.red { background: #d26666; color: #111; }
           tr.yellow { background: slategrey; }
           .wrap { max-width: 800px; padding-top: 30px; margin: auto; position: relative; }
-          .preview-wrap { transition: none; display: inline-block; height: 80px; padding: 5px 0 0 5px; margin: 5px; background: rgba(0, 0, 0, 0.1); }
+          .preview-wrap { display: inline-block; height: 80px; padding: 5px 0 0 5px; margin: 5px; background: rgba(0, 0, 0, 0.1); }
           .preview { width: 64px; height: 80px; float: left; margin-right: 10px; }
           .preview:nth-last-child(1) { margin-right: 5px; }
           .preview img { width: 100%; image-rendering: pixelated; }
@@ -207,13 +207,12 @@ TestSuite = {
           .summary li:nth-child(1) { background: #2d9966; min-width: 70px; }
           .summary li:nth-child(2) { background: #d26666; min-width: 70px; }
           .summary li:nth-child(3) { background: slategrey; min-width: 70px; }
-          .summary li:nth-child(4) { background: #aaa; min-width: 60px; }
+          .summary li:nth-child(4) { background: #bbb; min-width: 60px; }
           .summary li.l0 { opacity: 0.2; }
           .renderer { position: absolute; top: 8px; right: 10px; color: #eee; }
           h1 { width: 100%; top: 0; position: absolute; height: 50px; left: 0; }
           table .icon.pass { position: relative; width: 8px; height: 8px; border-radius: 8px; margin-left: 6px; }
           table .icon.pass:after { content: '✓'; top: -3px; position: absolute; color: #2d9966; font-size: 12px;  }
-          .preview-wrap:hover { transform: scale(2); background: #555; }
           </style>
           <script type="text/javascript">
             function toggle(el) { 

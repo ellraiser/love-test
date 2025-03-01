@@ -391,7 +391,7 @@ end
 
 
 -- love.filesystem.mountCommonPath
-love.test.filesystem.mountCommonPath = function(test) 
+love.test.filesystem.mountCommonPath = function(test)
   local mount_paths = {
     { 'appsavedir',    'appsavedir',    'readwrite' },
     { 'appdocuments',  'appdocuments',  'readwrite' },
@@ -409,8 +409,8 @@ love.test.filesystem.mountCommonPath = function(test)
         -- this path doesn't mount on Linux
         test:assertTrue(true, 'check mount ' .. common_path)
       else
-        local mount = love.filesystem.mountCommonPath(common_path, mount_point, mode)
-        test:assertTrue(mount, 'check mount ' .. common_path)
+        local mount, err = love.filesystem.mountCommonPath(common_path, mount_point, mode)
+        test:assertTrue(mount, 'check mount ' .. common_path .. ' (' .. err .. ')')
       end
     end
   end
